@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
 import { trpc } from '../utils/trpc';
 
@@ -6,9 +6,23 @@ export default function Index() {
   // Query the tournaments
   const tournamentsQuery = trpc.getTournaments.useQuery();
 
+  const onRefresh = () => {
+    tournamentsQuery.refetch();
+  };
+
   return (
     <View style={styles.container}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView 
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={tournamentsQuery.isRefetching}
+            onRefresh={onRefresh}
+            colors={['#4a90e2']}
+            tintColor="#4a90e2"
+          />
+        }
+      >
       <View style={styles.header}>
         <Text style={styles.title}>🐕 Agility Scoring App</Text>
         <Text style={styles.subtitle}>Tournaments</Text>
