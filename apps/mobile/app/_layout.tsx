@@ -3,9 +3,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { trpc } from '../utils/trpc';
 import { useState } from 'react';
+import Constants from 'expo-constants';
 
 export default function RootLayout() {
   const [queryClient] = useState(() => new QueryClient());
+
+  const uri = Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':3000') ?? 'yourapi.com';
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
@@ -15,7 +19,7 @@ export default function RootLayout() {
           // - iOS Simulator: http://localhost:3000
           // - Android Emulator: http://10.0.2.2:3000
           // - Physical device: http://<your-computer-ip>:3000
-          url: 'http://localhost:3000/trpc',
+          url: `http://${uri}/trpc`,
         }),
       ],
     })
