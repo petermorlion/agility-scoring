@@ -33,8 +33,44 @@ export default function TournamentScoring() {
     tire: 0,
   });
   const [resultId, setResultId] = useState<string | undefined>(undefined);
+  const [currentResultId, setCurrentResultId] = useState<string>('1');
 
   const upsertResultMutation = trpc.upsertResult.useMutation();
+  const getResultQuery = trpc.getResult.useQuery(
+    { id: currentResultId, tournamentId: id },
+    { enabled: !!currentResultId }
+  );
+
+  // Load result data when query succeeds
+  useEffect(() => {
+    if (getResultQuery.data?.success && getResultQuery.data.result) {
+      const result = getResultQuery.data.result;
+      setResultId(result.id);
+      
+      // Convert obstacles array to values object
+      const newValues = { ...values };
+      result.obstacles.forEach((obstacle) => {
+        newValues[obstacle.obstacleKey] = obstacle.value;
+      });
+      setValues(newValues);
+    } else if (getResultQuery.data?.success === false) {
+      // Reset values when no result is found
+      setResultId(undefined);
+      setValues({
+        aframe: 0,
+        dogwalk: 0,
+        seesaw: 0,
+        tunnel: 0,
+        chute: 0,
+        jump: 0,
+        tire: 0,
+      });
+    }
+  }, [getResultQuery.data]);
+
+  const navigateToResult = (newResultId: string) => {
+    setCurrentResultId(newResultId);
+  };
 
   const updateValue = async (obstacleKey: ObstacleKey, delta: number) => {
     const newValue = Math.max(0, values[obstacleKey] + delta);
@@ -63,7 +99,32 @@ export default function TournamentScoring() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Tournament Scoring</Text>
+        <View style={styles.navigationRow}>
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={() => {
+              const prevId = String(Math.max(1, parseInt(currentResultId) - 1));
+              navigateToResult(prevId);
+            }}
+            disabled={currentResultId === '1'}
+          >
+            <Text style={[styles.navButtonText, currentResultId === '1' && styles.navButtonDisabled]}>
+              ←
+            </Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.title}>Contestant {currentResultId}</Text>
+          
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={() => {
+              const nextId = String(parseInt(currentResultId) + 1);
+              navigateToResult(nextId);
+            }}
+          >
+            <Text style={styles.navButtonText}>→</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.subtitle}>Tournament ID: {id}</Text>
       </View>
 
@@ -124,11 +185,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#4a90e2',
     alignItems: 'center',
   },
+  navigationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 5,
+  },
+  navButton: {
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  navButtonText: {
+    fontSize: 32,
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  navButtonDisabled: {
+    opacity: 0.3,
+  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 5,
   },
   subtitle: {
     fontSize: 14,

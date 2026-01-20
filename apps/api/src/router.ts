@@ -116,6 +116,27 @@ export const appRouter = router({
         action: input.id ? 'updated' : 'created',
       };
     }),
+
+  getResult: publicProcedure
+    .input(z.object({
+      id: z.string(),
+      tournamentId: z.string(),
+    }))
+    .query(({ input }) => {
+      const result = results.get(input.id);
+      
+      if (!result || result.tournamentId !== input.tournamentId) {
+        return {
+          success: false,
+          result: null,
+        };
+      }
+      
+      return {
+        success: true,
+        result,
+      };
+    }),
 });
 
 // Export type definition of API
