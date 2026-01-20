@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 import { trpc } from '../utils/trpc';
 
 export default function Index() {
@@ -6,7 +7,8 @@ export default function Index() {
   const tournamentsQuery = trpc.getTournaments.useQuery();
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollView}>
       <View style={styles.header}>
         <Text style={styles.title}>🐕 Agility Scoring App</Text>
         <Text style={styles.subtitle}>Tournaments</Text>
@@ -42,7 +44,16 @@ export default function Index() {
           ✨ Powered by tRPC, Expo & Express
         </Text>
       </View>
-    </ScrollView>
+      </ScrollView>
+
+      {/* Floating Action Button */}
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => router.push('/add-tournament')}
+      >
+        <Text style={styles.fabText}>+</Text>
+      </TouchableOpacity>
+    </View>
   );
 }
 
@@ -50,6 +61,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+  },
+  scrollView: {
+    flex: 1,
   },
   header: {
     padding: 20,
@@ -124,5 +138,26 @@ const styles = StyleSheet.create({
   footerText: {
     fontSize: 14,
     color: '#666',
+  },
+  fab: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#4a90e2',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  fabText: {
+    fontSize: 32,
+    color: '#fff',
+    fontWeight: '300',
   },
 });

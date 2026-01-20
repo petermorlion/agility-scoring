@@ -26,6 +26,7 @@ export default function RootLayout() {
       <QueryClientProvider client={queryClient}>
         <Stack>
           <Stack.Screen name="index" options={{ title: 'Agility Scoring' }} />
+          <Stack.Screen name="add-tournament" options={{ title: 'Add Tournament', presentation: 'modal' }} />
         </Stack>
       </QueryClientProvider>
     </trpc.Provider>
