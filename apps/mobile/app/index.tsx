@@ -2,66 +2,37 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-nat
 import { trpc } from '../utils/trpc';
 
 export default function Index() {
-  // Query the hello endpoint
-  const helloQuery = trpc.hello.useQuery({ name: 'Agility App' });
-  
-  // Query the dummy data endpoint
-  const dummyDataQuery = trpc.getDummyData.useQuery();
+  // Query the tournaments
+  const tournamentsQuery = trpc.getTournaments.useQuery();
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>🐕 Agility Scoring App</Text>
-        <Text style={styles.subtitle}>Connected to tRPC API</Text>
+        <Text style={styles.subtitle}>Tournaments</Text>
       </View>
 
-      {/* Hello Query */}
+      {/* Tournaments List */}
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Hello Endpoint</Text>
-        {helloQuery.isLoading && <ActivityIndicator />}
-        {helloQuery.error && (
-          <Text style={styles.error}>Error: {helloQuery.error.message}</Text>
+        <Text style={styles.cardTitle}>Tournaments</Text>
+        {tournamentsQuery.isLoading && <ActivityIndicator />}
+        {tournamentsQuery.error && (
+          <Text style={styles.error}>Error: {tournamentsQuery.error.message}</Text>
         )}
-        {helloQuery.data && (
+        {tournamentsQuery.data && (
           <View>
-            <Text style={styles.text}>{helloQuery.data.greeting}</Text>
-            <Text style={styles.subtext}>
-              Timestamp: {new Date(helloQuery.data.timestamp).toLocaleTimeString()}
-            </Text>
-            <Text style={styles.cardSubtitle}>Users:</Text>
-            {helloQuery.data.data.users.map((user) => (
-              <Text key={user.id} style={styles.text}>
-                • {user.name} - Score: {user.score}
-              </Text>
-            ))}
-          </View>
-        )}
-      </View>
-
-      {/* Dummy Data Query */}
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Competitions Data</Text>
-        {dummyDataQuery.isLoading && <ActivityIndicator />}
-        {dummyDataQuery.error && (
-          <Text style={styles.error}>Error: {dummyDataQuery.error.message}</Text>
-        )}
-        {dummyDataQuery.data && (
-          <View>
-            <Text style={styles.text}>
-              Total Participants: {dummyDataQuery.data.totalParticipants}
-            </Text>
-            <Text style={styles.text}>
-              Active Judges: {dummyDataQuery.data.activeJudges}
-            </Text>
-            <Text style={styles.cardSubtitle}>Competitions:</Text>
-            {dummyDataQuery.data.competitions.map((comp) => (
-              <View key={comp.id} style={styles.competitionItem}>
-                <Text style={styles.text}>📅 {comp.name}</Text>
-                <Text style={styles.subtext}>
-                  {comp.date} • {comp.status}
-                </Text>
-              </View>
-            ))}
+            {tournamentsQuery.data.tournaments.length === 0 ? (
+              <Text style={styles.emptyText}>No tournaments yet. Create one to get started!</Text>
+            ) : (
+              tournamentsQuery.data.tournaments.map((tournament) => (
+                <View key={tournament.id} style={styles.tournamentItem}>
+                  <Text style={styles.text}>🏆 {tournament.name}</Text>
+                  <Text style={styles.subtext}>
+                    📅 {tournament.date}
+                  </Text>
+                </View>
+              ))
+            )}
           </View>
         )}
       </View>
@@ -129,11 +100,18 @@ const styles = StyleSheet.create({
     color: '#666',
     marginBottom: 5,
   },
-  competitionItem: {
+  tournamentItem: {
     marginBottom: 10,
     paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
+  },
+  emptyText: {
+    fontSize: 16,
+    color: '#999',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    paddingVertical: 20,
   },
   error: {
     color: 'red',

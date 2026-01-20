@@ -1,6 +1,16 @@
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
 
+// In-memory storage for tournaments
+interface Tournament {
+  id: string;
+  name: string;
+  date: string;
+}
+
+const tournaments = new Map<string, Tournament>();
+let nextId = 1;
+
 // Initialize tRPC
 const t = initTRPC.create();
 
@@ -18,7 +28,7 @@ export const appRouter = router({
         timestamp: new Date().toISOString(),
         data: {
           users: [
-            { id: 1, name: 'Alice', score: 95 },
+            { id: 1, name: 'Alices', score: 95 },
             { id: 2, name: 'Bob', score: 87 },
             { id: 3, name: 'Charlie', score: 92 },
           ],
@@ -38,6 +48,35 @@ export const appRouter = router({
       activeJudges: 8,
     };
   }),
+
+  getTournaments: publicProcedure.query(() => {
+    return {
+      tournaments: Array.from(tournaments.values()),
+    };
+  }),
+
+  upsertTournament: publicProcedure
+    .input(z.object({
+      id: z.string().optional(),
+      name: z.string(),
+      date: z.string(),
+    }))
+    .mutation(({ input }) => {
+      const id = input.id || String(nextId++);
+      const tournament: Tournament = {
+        id,
+        name: input.name,
+        date: input.date,
+      };
+      
+      tournaments.set(id, tournament);
+      
+      return {
+        success: true,
+        tournament,
+        action: input.id ? 'updated' : 'created',
+      };
+    }),
 });
 
 // Export type definition of API
