@@ -68,6 +68,26 @@ export const appRouter = router({
     };
   }),
 
+  getTournament: publicProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ input }) => {
+      const tournament = tournaments.get(input.id);
+      
+      if (!tournament) {
+        return {
+          success: false,
+          tournament: null,
+        };
+      }
+      
+      return {
+        success: true,
+        tournament,
+      };
+    }),
+
   upsertTournament: publicProcedure
     .input(z.object({
       id: z.string().optional(),

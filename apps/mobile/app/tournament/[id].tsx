@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, Stack } from 'expo-router';
 import { trpc } from '../../utils/trpc';
 import { useState, useEffect } from 'react';
 
@@ -35,6 +35,7 @@ export default function TournamentScoring() {
   const [resultId, setResultId] = useState<string | undefined>(undefined);
   const [currentResultId, setCurrentResultId] = useState<string>('1');
 
+  const tournamentQuery = trpc.getTournament.useQuery({ id });
   const upsertResultMutation = trpc.upsertResult.useMutation();
   const getResultQuery = trpc.getResult.useQuery(
     { id: currentResultId, tournamentId: id },
@@ -97,7 +98,13 @@ export default function TournamentScoring() {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <>
+      <Stack.Screen 
+        options={{ 
+          title: tournamentQuery.data?.tournament?.name || 'Tournament'
+        }} 
+      />
+      <ScrollView style={styles.container}>
       <View style={styles.header}>
         <View style={styles.navigationRow}>
           <TouchableOpacity
@@ -165,6 +172,7 @@ export default function TournamentScoring() {
         ))}
       </View>
     </ScrollView>
+    </>
   );
 }
 
