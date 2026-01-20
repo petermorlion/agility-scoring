@@ -125,7 +125,6 @@ export default function TournamentScoring() {
             <Text style={styles.navButtonText}>→</Text>
           </TouchableOpacity>
         </View>
-        <Text style={styles.subtitle}>Tournament ID: {id}</Text>
       </View>
 
       <View style={styles.card}>
@@ -165,12 +164,6 @@ export default function TournamentScoring() {
           </View>
         ))}
       </View>
-
-      {resultId && (
-        <View style={styles.statusCard}>
-          <Text style={styles.statusText}>✓ Result ID: {resultId}</Text>
-        </View>
-      )}
     </ScrollView>
   );
 }
