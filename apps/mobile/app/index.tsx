@@ -41,12 +41,16 @@ export default function Index() {
               <Text style={styles.emptyText}>No tournaments yet. Create one to get started!</Text>
             ) : (
               tournamentsQuery.data.tournaments.map((tournament) => (
-                <View key={tournament.id} style={styles.tournamentItem}>
+                <TouchableOpacity 
+                  key={tournament.id} 
+                  style={styles.tournamentItem}
+                  onPress={() => router.push(`/tournament/${tournament.id}`)}
+                >
                   <Text style={styles.text}>🏆 {tournament.name}</Text>
                   <Text style={styles.subtext}>
                     📅 {tournament.date}
                   </Text>
-                </View>
+                </TouchableOpacity>
               ))
             )}
           </View>

@@ -8,8 +8,21 @@ interface Tournament {
   date: string;
 }
 
+interface ResultObstacle {
+  obstacleKey: 'aframe' | 'dogwalk' | 'seesaw' | 'tunnel' | 'chute' | 'jump' | 'tire';
+  value: number;
+}
+
+interface Result {
+  id: string;
+  tournamentId: string;
+  obstacles: ResultObstacle[];
+}
+
 const tournaments = new Map<string, Tournament>();
+const results = new Map<string, Result>();
 let nextId = 1;
+let nextResultId = 1;
 
 // Initialize tRPC
 const t = initTRPC.create();
@@ -74,6 +87,32 @@ export const appRouter = router({
       return {
         success: true,
         tournament,
+        action: input.id ? 'updated' : 'created',
+      };
+    }),
+
+  upsertResult: publicProcedure
+    .input(z.object({
+      id: z.string().optional(),
+      tournamentId: z.string(),
+      obstacles: z.array(z.object({
+        obstacleKey: z.enum(['aframe', 'dogwalk', 'seesaw', 'tunnel', 'chute', 'jump', 'tire']),
+        value: z.number(),
+      })),
+    }))
+    .mutation(({ input }) => {
+      const id = input.id || String(nextResultId++);
+      const result: Result = {
+        id,
+        tournamentId: input.tournamentId,
+        obstacles: input.obstacles,
+      };
+      
+      results.set(id, result);
+      
+      return {
+        success: true,
+        result,
         action: input.id ? 'updated' : 'created',
       };
     }),
