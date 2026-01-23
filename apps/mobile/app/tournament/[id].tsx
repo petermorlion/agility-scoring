@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { trpc } from '../../utils/trpc';
 import { useState, useEffect } from 'react';
@@ -139,25 +139,25 @@ export default function TournamentScoring() {
           title: tournamentQuery.data?.tournament?.name || 'Tournament'
         }} 
       />
-      <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.navigationRow}>
+      <ScrollView className="flex-1 bg-gray-100">
+      <View className="p-5 bg-blue-500 items-center">
+        <View className="flex-row items-center justify-between w-full mb-1">
           <TouchableOpacity
-            style={styles.navButton}
+            className="w-12 h-12 justify-center items-center"
             onPress={() => {
               const prevId = String(Math.max(1, parseInt(currentResultId) - 1));
               navigateToResult(prevId);
             }}
             disabled={currentResultId === '1'}
           >
-            <Text style={[styles.navButtonText, currentResultId === '1' && styles.navButtonDisabled]}>
+            <Text className={`text-4xl text-white font-bold ${currentResultId === '1' ? 'opacity-30' : ''}`}>
               ←
             </Text>
           </TouchableOpacity>
           
           {isEditingName ? (
             <TextInput
-              style={styles.nameInput}
+              className="text-2xl font-bold text-white bg-white/20 px-4 py-2 rounded-lg min-w-[200px] text-center"
               value={contestantName}
               onChangeText={setContestantName}
               onBlur={() => {
@@ -175,56 +175,56 @@ export default function TournamentScoring() {
             />
           ) : (
             <TouchableOpacity onPress={() => setIsEditingName(true)}>
-              <Text style={styles.title}>
+              <Text className="text-2xl font-bold text-white">
                 {contestantName || 'Contestant'}
               </Text>
             </TouchableOpacity>
           )}
           
           <TouchableOpacity
-            style={styles.navButton}
+            className="w-12 h-12 justify-center items-center"
             onPress={() => {
               const nextId = String(parseInt(currentResultId) + 1);
               navigateToResult(nextId);
             }}
           >
-            <Text style={styles.navButtonText}>→</Text>
+            <Text className="text-4xl text-white font-bold">→</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Obstacles</Text>
+      <View className="m-4 p-5 bg-white rounded-xl shadow-sm">
+        <Text className="text-xl font-bold mb-4 text-gray-800">Obstacles</Text>
         {obstacles.map((obstacle) => (
-          <View key={obstacle.key} style={styles.obstacleRow}>
-            <View style={styles.obstacleInfo}>
-              <Text style={styles.emoji}>{obstacle.emoji}</Text>
-              <Text style={styles.obstacleLabel}>{obstacle.label}</Text>
+          <View key={obstacle.key} className="flex-row items-center justify-between py-3 border-b border-gray-200">
+            <View className="flex-row items-center flex-1">
+              <Text className="text-2xl mr-2">{obstacle.emoji}</Text>
+              <Text className="text-base text-gray-800 font-medium">{obstacle.label}</Text>
             </View>
             
-            <View style={styles.controls}>
+            <View className="flex-row items-center">
               <TouchableOpacity
-                style={styles.button}
+                className="w-10 h-10 rounded-full bg-blue-500 justify-center items-center"
                 onPress={() => updateValue(obstacle.key, -1)}
                 disabled={upsertResultMutation.isPending}
               >
-                <Text style={styles.buttonText}>−</Text>
+                <Text className="text-2xl text-white font-light">−</Text>
               </TouchableOpacity>
               
-              <View style={styles.valueContainer}>
+              <View className="w-12 items-center justify-center">
                 {upsertResultMutation.isPending ? (
                   <ActivityIndicator size="small" color="#4a90e2" />
                 ) : (
-                  <Text style={styles.value}>{values[obstacle.key]}</Text>
+                  <Text className="text-xl font-bold text-gray-800">{values[obstacle.key]}</Text>
                 )}
               </View>
               
               <TouchableOpacity
-                style={styles.button}
+                className="w-10 h-10 rounded-full bg-blue-500 justify-center items-center"
                 onPress={() => updateValue(obstacle.key, 1)}
                 disabled={upsertResultMutation.isPending}
               >
-                <Text style={styles.buttonText}>+</Text>
+                <Text className="text-2xl text-white font-light">+</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -234,136 +234,3 @@ export default function TournamentScoring() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  header: {
-    padding: 20,
-    backgroundColor: '#4a90e2',
-    alignItems: 'center',
-  },
-  navigationRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginBottom: 5,
-  },
-  navButton: {
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  navButtonText: {
-    fontSize: 32,
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  navButtonDisabled: {
-    opacity: 0.3,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  nameInput: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 8,
-    minWidth: 200,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#e0e0e0',
-  },
-  card: {
-    margin: 15,
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    color: '#333',
-  },
-  obstacleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  obstacleInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  emoji: {
-    fontSize: 24,
-    marginRight: 10,
-  },
-  obstacleLabel: {
-    fontSize: 16,
-    color: '#333',
-    fontWeight: '500',
-  },
-  controls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  button: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#4a90e2',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: 24,
-    color: '#fff',
-    fontWeight: '300',
-  },
-  valueContainer: {
-    width: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  value: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  statusCard: {
-    margin: 15,
-    marginTop: 0,
-    padding: 15,
-    backgroundColor: '#e8f5e9',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#4caf50',
-  },
-  statusText: {
-    fontSize: 14,
-    color: '#2e7d32',
-    textAlign: 'center',
-  },
-});

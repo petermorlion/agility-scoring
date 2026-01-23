@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { trpc } from '../utils/trpc';
+import '../global.css';
 
 export default function AddTournament() {
   const [name, setName] = useState('');
@@ -29,14 +30,14 @@ export default function AddTournament() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Add Tournament</Text>
+    <ScrollView className="flex-1 bg-gray-100">
+      <View className="p-5">
+        <Text className="text-2xl font-bold mb-8 text-gray-800">Add Tournament</Text>
         
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Tournament Name</Text>
+        <View className="mb-5">
+          <Text className="text-base font-semibold mb-2 text-gray-800">Tournament Name</Text>
           <TextInput
-            style={styles.input}
+            className="bg-white rounded-lg p-4 text-base border border-gray-300 text-gray-800"
             value={name}
             onChangeText={setName}
             placeholder="Enter tournament name"
@@ -44,10 +45,10 @@ export default function AddTournament() {
           />
         </View>
 
-        <View style={styles.formGroup}>
-          <Text style={styles.label}>Date</Text>
+        <View className="mb-5">
+          <Text className="text-base font-semibold mb-2 text-gray-800">Date</Text>
           <TextInput
-            style={styles.input}
+            className="bg-white rounded-lg p-4 text-base border border-gray-300 text-gray-800"
             value={date}
             onChangeText={setDate}
             placeholder="YYYY-MM-DD"
@@ -56,93 +57,29 @@ export default function AddTournament() {
         </View>
 
         {mutation.error && (
-          <Text style={styles.error}>Error: {mutation.error.message}</Text>
+          <Text className="text-red-600 text-sm mb-2">Error: {mutation.error.message}</Text>
         )}
 
         <TouchableOpacity
-          style={[styles.button, (!name.trim() || !date.trim() || mutation.isPending) && styles.buttonDisabled]}
+          className={`p-4 rounded-lg items-center mt-2 ${(!name.trim() || !date.trim() || mutation.isPending) ? 'bg-gray-400' : 'bg-blue-500'}`}
           onPress={handleSubmit}
           disabled={!name.trim() || !date.trim() || mutation.isPending}
         >
           {mutation.isPending ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.buttonText}>Create Tournament</Text>
+            <Text className="text-white text-base font-semibold">Create Tournament</Text>
           )}
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={styles.cancelButton}
+          className="p-4 rounded-lg items-center mt-2"
           onPress={() => router.back()}
           disabled={mutation.isPending}
         >
-          <Text style={styles.cancelButtonText}>Cancel</Text>
+          <Text className="text-gray-600 text-base">Cancel</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#333',
-  },
-  formGroup: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 8,
-    color: '#333',
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 15,
-    fontSize: 16,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    color: '#333',
-  },
-  button: {
-    backgroundColor: '#4a90e2',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  buttonDisabled: {
-    backgroundColor: '#ccc',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  cancelButton: {
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  cancelButtonText: {
-    color: '#666',
-    fontSize: 16,
-  },
-  error: {
-    color: 'red',
-    fontSize: 14,
-    marginBottom: 10,
-  },
-});

@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
 import { trpc } from '../utils/trpc';
+import "../global.css"
 
 export default function Index() {
   // Query the tournaments
@@ -11,9 +12,9 @@ export default function Index() {
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-gray-100">
       <ScrollView 
-        style={styles.scrollView}
+        className="flex-1"
         refreshControl={
           <RefreshControl
             refreshing={tournamentsQuery.isRefetching}
@@ -23,31 +24,31 @@ export default function Index() {
           />
         }
       >
-      <View style={styles.header}>
-        <Text style={styles.title}>🐕 Agility Scoring App</Text>
-        <Text style={styles.subtitle}>Tournaments</Text>
+      <View className="p-5 bg-blue-500 items-center">
+        <Text className="text-3xl font-bold text-white mb-1">🐕 Agility Scoring App</Text>
+        <Text className="text-sm text-gray-200">Tournaments</Text>
       </View>
 
       {/* Tournaments List */}
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>Tournaments</Text>
+      <View className="m-4 p-5 bg-white rounded-xl shadow-sm">
+        <Text className="text-xl font-bold mb-4 text-gray-800">Tournaments</Text>
         {tournamentsQuery.isLoading && <ActivityIndicator />}
         {tournamentsQuery.error && (
-          <Text style={styles.error}>Error: {tournamentsQuery.error.message}</Text>
+          <Text className="text-red-600 text-sm">Error: {tournamentsQuery.error.message}</Text>
         )}
         {tournamentsQuery.data && (
           <View>
             {tournamentsQuery.data.tournaments.length === 0 ? (
-              <Text style={styles.emptyText}>No tournaments yet. Create one to get started!</Text>
+              <Text className="text-base text-gray-500 italic text-center py-5">No tournaments yet. Create one to get started!</Text>
             ) : (
               tournamentsQuery.data.tournaments.map((tournament) => (
                 <TouchableOpacity 
                   key={tournament.id} 
-                  style={styles.tournamentItem}
+                  className="mb-2 pb-2 border-b border-gray-200"
                   onPress={() => router.push(`/tournament/${tournament.id}`)}
                 >
-                  <Text style={styles.text}>🏆 {tournament.name}</Text>
-                  <Text style={styles.subtext}>
+                  <Text className="text-base mb-1 text-gray-800">🏆 {tournament.name}</Text>
+                  <Text className="text-sm text-gray-600 mb-1">
                     📅 {tournament.date}
                   </Text>
                 </TouchableOpacity>
@@ -57,8 +58,8 @@ export default function Index() {
         )}
       </View>
 
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>
+      <View className="p-5 items-center">
+        <Text className="text-sm text-gray-600">
           ✨ Powered by tRPC, Expo & Express
         </Text>
       </View>
@@ -66,116 +67,11 @@ export default function Index() {
 
       {/* Floating Action Button */}
       <TouchableOpacity
-        style={styles.fab}
+        className="absolute right-5 bottom-5 w-15 h-15 rounded-full bg-blue-500 justify-center items-center shadow-lg"
         onPress={() => router.push('/add-tournament')}
       >
-        <Text style={styles.fabText}>+</Text>
+        <Text className="text-4xl text-white font-light">+</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  header: {
-    padding: 20,
-    backgroundColor: '#4a90e2',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 5,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: '#e0e0e0',
-  },
-  card: {
-    margin: 15,
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    color: '#333',
-  },
-  cardSubtitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginTop: 15,
-    marginBottom: 10,
-    color: '#555',
-  },
-  text: {
-    fontSize: 16,
-    marginBottom: 5,
-    color: '#333',
-  },
-  subtext: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 5,
-  },
-  tournamentItem: {
-    marginBottom: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#999',
-    fontStyle: 'italic',
-    textAlign: 'center',
-    paddingVertical: 20,
-  },
-  error: {
-    color: 'red',
-    fontSize: 14,
-  },
-  footer: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 14,
-    color: '#666',
-  },
-  fab: {
-    position: 'absolute',
-    right: 20,
-    bottom: 20,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#4a90e2',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 8,
-  },
-  fabText: {
-    fontSize: 32,
-    color: '#fff',
-    fontWeight: '300',
-  },
-});
