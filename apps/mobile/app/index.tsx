@@ -68,10 +68,10 @@ export default function Index() {
       {/* Floating Action Button */}
       
       <TouchableOpacity
-        className="absolute right-5 bottom-5 w-15 h-15 rounded-full bg-primary justify-center items-center shadow-lg"
+        className="absolute right-5 bottom-5 w-14 h-14 rounded-full bg-primary justify-center items-center shadow-lg"
         onPress={() => router.push('/add-tournament')}
       >
-        <Text className="text-4xl text-white font-light">+</Text>
+        <Text className="text-4xl text-white font-light mb-2">+</Text>
       </TouchableOpacity>
     </View>
   );
