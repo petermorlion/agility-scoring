@@ -2,11 +2,13 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator 
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { trpc } from '../utils/trpc';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import '../global.css';
 
 export default function AddTournament() {
   const [name, setName] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   
   const utils = trpc.useContext();
   const mutation = trpc.upsertTournament.useMutation({
@@ -19,13 +21,13 @@ export default function AddTournament() {
   });
 
   const handleSubmit = () => {
-    if (!name.trim() || !date.trim()) {
+    if (!name.trim()) {
       return;
     }
     
     mutation.mutate({
       name: name.trim(),
-      date: date.trim(),
+      date: date.toISOString().split('T')[0],
     });
   };
 
@@ -47,13 +49,27 @@ export default function AddTournament() {
 
         <View className="mb-5">
           <Text className="text-base font-semibold mb-2 text-gray-800">Date</Text>
-          <TextInput
-            className="bg-white rounded-lg p-4 text-base border border-gray-300 text-gray-800"
-            value={date}
-            onChangeText={setDate}
-            placeholder="YYYY-MM-DD"
-            placeholderTextColor="#999"
-          />
+          <TouchableOpacity
+            className="bg-white rounded-lg p-4 border border-gray-300"
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text className="text-base text-gray-800">
+              {date.toISOString().split('T')[0]}
+            </Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) {
+                  setDate(selectedDate);
+                }
+              }}
+            />
+          )}
         </View>
 
         {mutation.error && (
@@ -61,9 +77,9 @@ export default function AddTournament() {
         )}
 
         <TouchableOpacity
-          className={`p-4 rounded-lg items-center mt-2 ${(!name.trim() || !date.trim() || mutation.isPending) ? 'bg-gray-400' : 'bg-blue-500'}`}
+          className={`p-4 rounded-lg bg-primary items-center mt-2 ${(!name.trim() || mutation.isPending) ? 'bg-gray-400' : 'bg-primary'}`}
           onPress={handleSubmit}
-          disabled={!name.trim() || !date.trim() || mutation.isPending}
+          disabled={!name.trim() || mutation.isPending}
         >
           {mutation.isPending ? (
             <ActivityIndicator color="#fff" />

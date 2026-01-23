@@ -140,7 +140,7 @@ export default function TournamentScoring() {
         }} 
       />
       <ScrollView className="flex-1 bg-gray-100">
-      <View className="p-5 bg-blue-500 items-center">
+      <View className="p-5 bg-primary items-center">
         <View className="flex-row items-center justify-between w-full mb-1">
           <TouchableOpacity
             className="w-12 h-12 justify-center items-center"
@@ -204,7 +204,7 @@ export default function TournamentScoring() {
             
             <View className="flex-row items-center">
               <TouchableOpacity
-                className="w-10 h-10 rounded-full bg-blue-500 justify-center items-center"
+                className="w-10 h-10 rounded-full bg-primary justify-center items-center"
                 onPress={() => updateValue(obstacle.key, -1)}
                 disabled={upsertResultMutation.isPending}
               >
@@ -220,7 +220,7 @@ export default function TournamentScoring() {
               </View>
               
               <TouchableOpacity
-                className="w-10 h-10 rounded-full bg-blue-500 justify-center items-center"
+                className="w-10 h-10 rounded-full bg-primary justify-center items-center"
                 onPress={() => updateValue(obstacle.key, 1)}
                 disabled={upsertResultMutation.isPending}
               >
