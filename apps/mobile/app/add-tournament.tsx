@@ -60,11 +60,11 @@ export default function AddTournament() {
         )}
 
         <TouchableOpacity
-          style={[styles.button, (!name.trim() || !date.trim() || mutation.isLoading) && styles.buttonDisabled]}
+          style={[styles.button, (!name.trim() || !date.trim() || mutation.isPending) && styles.buttonDisabled]}
           onPress={handleSubmit}
-          disabled={!name.trim() || !date.trim() || mutation.isLoading}
+          disabled={!name.trim() || !date.trim() || mutation.isPending}
         >
-          {mutation.isLoading ? (
+          {mutation.isPending ? (
             <ActivityIndicator color="#fff" />
           ) : (
             <Text style={styles.buttonText}>Create Tournament</Text>
@@ -74,7 +74,7 @@ export default function AddTournament() {
         <TouchableOpacity
           style={styles.cancelButton}
           onPress={() => router.back()}
-          disabled={mutation.isLoading}
+          disabled={mutation.isPending}
         >
           <Text style={styles.cancelButtonText}>Cancel</Text>
         </TouchableOpacity>
