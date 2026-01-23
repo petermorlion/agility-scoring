@@ -24,7 +24,7 @@ export default function Index() {
           />
         }
       >
-      <View className="p-5 bg-blue-500 items-center">
+      <View className="p-5 bg-primary items-center">
         <Text className="text-3xl font-bold text-white mb-1">🐕 Agility Scoring App</Text>
         <Text className="text-sm text-gray-200">Tournaments</Text>
       </View>
@@ -66,8 +66,9 @@ export default function Index() {
       </ScrollView>
 
       {/* Floating Action Button */}
+      
       <TouchableOpacity
-        className="absolute right-5 bottom-5 w-15 h-15 rounded-full bg-blue-500 justify-center items-center shadow-lg"
+        className="absolute right-5 bottom-5 w-15 h-15 rounded-full bg-primary justify-center items-center shadow-lg"
         onPress={() => router.push('/add-tournament')}
       >
         <Text className="text-4xl text-white font-light">+</Text>
