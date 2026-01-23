@@ -8,7 +8,7 @@ import Constants from 'expo-constants';
 export default function RootLayout() {
   const [queryClient] = useState(() => new QueryClient());
 
-  const uri = Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':3000') ?? 'yourapi.com';
+  const uri = Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':3000') ?? 'localhost:3000';
 
   const [trpcClient] = useState(() =>
     trpc.createClient({

@@ -16,6 +16,7 @@ interface ResultObstacle {
 interface Result {
   id: string;
   tournamentId: string;
+  name?: string;
   obstacles: ResultObstacle[];
 }
 
@@ -115,6 +116,7 @@ export const appRouter = router({
     .input(z.object({
       id: z.string().optional(),
       tournamentId: z.string(),
+      name: z.string().optional(),
       obstacles: z.array(z.object({
         obstacleKey: z.enum(['aframe', 'dogwalk', 'seesaw', 'tunnel', 'chute', 'jump', 'tire']),
         value: z.number(),
@@ -125,6 +127,7 @@ export const appRouter = router({
       const result: Result = {
         id,
         tournamentId: input.tournamentId,
+        name: input.name,
         obstacles: input.obstacles,
       };
       

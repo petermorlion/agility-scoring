@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { trpc } from '../../utils/trpc';
 import { useState, useEffect } from 'react';
@@ -34,12 +34,19 @@ export default function TournamentScoring() {
   });
   const [resultId, setResultId] = useState<string | undefined>(undefined);
   const [currentResultId, setCurrentResultId] = useState<string>('1');
+  const [contestantName, setContestantName] = useState<string>('');
+  const [isEditingName, setIsEditingName] = useState<boolean>(false);
 
   const tournamentQuery = trpc.getTournament.useQuery({ id });
   const upsertResultMutation = trpc.upsertResult.useMutation();
   const getResultQuery = trpc.getResult.useQuery(
     { id: currentResultId, tournamentId: id },
-    { enabled: !!currentResultId }
+    { 
+      enabled: !!currentResultId,
+      refetchOnMount: 'always',
+      refetchOnWindowFocus: true,
+      staleTime: 0,
+    }
   );
 
   // Load result data when query succeeds
@@ -47,6 +54,7 @@ export default function TournamentScoring() {
     if (getResultQuery.data?.success && getResultQuery.data.result) {
       const result = getResultQuery.data.result;
       setResultId(result.id);
+      setContestantName(result.name || '');
       
       // Convert obstacles array to values object
       const newValues = { ...values };
@@ -57,6 +65,7 @@ export default function TournamentScoring() {
     } else if (getResultQuery.data?.success === false) {
       // Reset values when no result is found
       setResultId(undefined);
+      setContestantName('');
       setValues({
         aframe: 0,
         dogwalk: 0,
@@ -71,6 +80,31 @@ export default function TournamentScoring() {
 
   const navigateToResult = (newResultId: string) => {
     setCurrentResultId(newResultId);
+    setIsEditingName(false);
+    getResultQuery.refetch();
+  };
+
+  const saveContestantName = async (name: string) => {
+    setContestantName(name);
+    
+    // Convert values to obstacles array
+    const obstaclesArray = Object.entries(values).map(([key, value]) => ({
+      obstacleKey: key as ObstacleKey,
+      value: value as number,
+    }));
+
+    // Call mutation
+    const result = await upsertResultMutation.mutateAsync({
+      id: resultId,
+      tournamentId: id,
+      name: name || undefined,
+      obstacles: obstaclesArray,
+    });
+
+    // Store result ID after first creation
+    if (!resultId && result.result?.id) {
+      setResultId(result.result.id);
+    }
   };
 
   const updateValue = async (obstacleKey: ObstacleKey, delta: number) => {
@@ -88,6 +122,7 @@ export default function TournamentScoring() {
     const result = await upsertResultMutation.mutateAsync({
       id: resultId,
       tournamentId: id,
+      name: contestantName || undefined,
       obstacles: obstaclesArray,
     });
 
@@ -120,7 +155,31 @@ export default function TournamentScoring() {
             </Text>
           </TouchableOpacity>
           
-          <Text style={styles.title}>Contestant {currentResultId}</Text>
+          {isEditingName ? (
+            <TextInput
+              style={styles.nameInput}
+              value={contestantName}
+              onChangeText={setContestantName}
+              onBlur={() => {
+                setIsEditingName(false);
+                saveContestantName(contestantName);
+              }}
+              onSubmitEditing={() => {
+                setIsEditingName(false);
+                saveContestantName(contestantName);
+              }}
+              placeholder="Enter name"
+              placeholderTextColor="#b3d4ff"
+              autoFocus
+              returnKeyType="done"
+            />
+          ) : (
+            <TouchableOpacity onPress={() => setIsEditingName(true)}>
+              <Text style={styles.title}>
+                {contestantName || 'Contestant'}
+              </Text>
+            </TouchableOpacity>
+          )}
           
           <TouchableOpacity
             style={styles.navButton}
@@ -211,6 +270,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#fff',
+  },
+  nameInput: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 8,
+    minWidth: 200,
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
