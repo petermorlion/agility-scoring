@@ -1,0 +1,22 @@
+services:
+  mongo:
+    image: mongo:6.0
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+  api:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017
+      - MONGODB_DB=agility_scoring
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/app
+volumes:
+  mongo-data:

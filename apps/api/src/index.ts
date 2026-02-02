@@ -2,28 +2,39 @@ import express from 'express';
 import cors from 'cors';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './router';
+import { connectToDb } from './db';
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+async function start() {
+  // Ensure DB connection before starting the server
+  await connectToDb();
 
-// Enable CORS for all origins (adjust in production)
-app.use(cors());
+  const app = express();
+  const PORT = process.env.PORT || 3000;
 
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+  // Enable CORS for all origins (adjust in production)
+  app.use(cors());
 
-// tRPC middleware
-app.use(
-  '/trpc',
-  createExpressMiddleware({
-    router: appRouter,
-    createContext: () => ({}),
-  })
-);
+  // Health check endpoint
+  app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
 
-app.listen(PORT, () => {
-  console.log(`🚀 API server running on http://localhost:${PORT}`);
-  console.log(`📡 tRPC endpoint: http://localhost:${PORT}/trpc`);
+  // tRPC middleware
+  app.use(
+    '/trpc',
+    createExpressMiddleware({
+      router: appRouter,
+      createContext: () => ({}),
+    })
+  );
+
+  app.listen(PORT, () => {
+    console.log(`🚀 API server running on http://localhost:${PORT}`);
+    console.log(`📡 tRPC endpoint: http://localhost:${PORT}/trpc`);
+  });
+}
+
+start().catch((err) => {
+  console.error('Failed to start server', err);
+  process.exit(1);
 });
