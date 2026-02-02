@@ -17,6 +17,7 @@ This monorepo includes the following apps:
 
 - Node.js 18+ and npm
 - For mobile development: [Expo Go app](https://expo.dev/go) on your phone or an emulator
+- For WSL development and Android: follow [these steps](https://www.tutorialpedia.org/blog/how-to-run-android-emulator-on-windows-while-using-wsl2-with-zsh/)
 
 ### Installation
 

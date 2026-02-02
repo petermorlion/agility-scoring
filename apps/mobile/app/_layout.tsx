@@ -29,7 +29,7 @@ export default function RootLayout() {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <Stack>
-          <Stack.Screen name="index" options={{ title: 'Agility Scoring' }} />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="add-tournament" options={{ title: 'Add Tournament', presentation: 'modal' }} />
         </Stack>
       </QueryClientProvider>
