@@ -3,6 +3,7 @@ import { useLocalSearchParams, Stack } from 'expo-router';
 import { trpc } from '../../utils/trpc';
 import { useState, useEffect } from 'react';
 import { t } from '../i18n';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type ObstacleKey = 'aframe' | 'dogwalk' | 'seesaw' | 'tunnel' | 'chute' | 'jump' | 'tire';
 
@@ -175,10 +176,9 @@ export default function TournamentScoring() {
               returnKeyType="done"
             />
           ) : (
-            <TouchableOpacity onPress={() => setIsEditingName(true)}>
-              <Text className="text-2xl font-bold text-white">
-                {contestantName || t('tournament.contestantPlaceholder')}
-              </Text>
+            <TouchableOpacity onPress={() => setIsEditingName(true)} className="flex-row items-center">
+              <Text className="text-2xl font-bold text-white">{contestantName || t('tournament.contestantPlaceholder')}</Text>
+              <MaterialCommunityIcons name="pencil" size={18} color="#fff" style={{ marginLeft: 8 }} />
             </TouchableOpacity>
           )}
           
