@@ -2,6 +2,7 @@ import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, RefreshCon
 import { router } from 'expo-router';
 import { trpc } from '../utils/trpc';
 import "../global.css"
+import { t } from './i18n';
 
 export default function Index() {
   // Query the tournaments
@@ -25,21 +26,21 @@ export default function Index() {
         }
       >
       <View className="p-5 bg-primary items-center">
-        <Text className="text-3xl font-bold text-white mb-1">🐕 Agility Scoring App</Text>
-        <Text className="text-sm text-gray-200">Tournaments</Text>
+        <Text className="text-3xl font-bold text-white mb-1">{t('index.header')}</Text>
+        <Text className="text-sm text-gray-200">{t('index.tournamentsLabelSmall')}</Text>
       </View>
 
       {/* Tournaments List */}
       <View className="m-4 p-5 bg-white rounded-xl shadow-sm">
-        <Text className="text-xl font-bold mb-4 text-gray-800">Tournaments</Text>
+        <Text className="text-xl font-bold mb-4 text-gray-800">{t('index.tournamentsCardTitle')}</Text>
         {tournamentsQuery.isLoading && <ActivityIndicator />}
         {tournamentsQuery.error && (
-          <Text className="text-red-600 text-sm">Error: {tournamentsQuery.error.message}</Text>
+          <Text className="text-red-600 text-sm">{t('index.errorPrefix')}{tournamentsQuery.error.message}</Text>
         )}
         {tournamentsQuery.data && (
           <View>
-            {tournamentsQuery.data.tournaments.length === 0 ? (
-              <Text className="text-base text-gray-500 italic text-center py-5">No tournaments yet. Create one to get started!</Text>
+              {tournamentsQuery.data.tournaments.length === 0 ? (
+              <Text className="text-base text-gray-500 italic text-center py-5">{t('index.noTournaments')}</Text>
             ) : (
               tournamentsQuery.data.tournaments.map((tournament) => (
                 <TouchableOpacity 
@@ -47,9 +48,9 @@ export default function Index() {
                   className="mb-2 pb-2 border-b border-gray-200"
                   onPress={() => router.push(`/tournament/${tournament.id}`)}
                 >
-                  <Text className="text-base mb-1 text-gray-800">🏆 {tournament.name}</Text>
+                  <Text className="text-base mb-1 text-gray-800">{t('index.trophyPrefix')}{tournament.name}</Text>
                   <Text className="text-sm text-gray-600 mb-1">
-                    📅 {tournament.date}
+                    {t('index.datePrefix')}{tournament.date}
                   </Text>
                 </TouchableOpacity>
               ))
@@ -59,9 +60,7 @@ export default function Index() {
       </View>
 
       <View className="p-5 items-center">
-        <Text className="text-sm text-gray-600">
-          ✨ Powered by tRPC, Expo & Express
-        </Text>
+        <Text className="text-sm text-gray-600">{t('index.poweredBy')}</Text>
       </View>
       </ScrollView>
 
@@ -71,7 +70,7 @@ export default function Index() {
         className="absolute right-5 bottom-5 w-14 h-14 rounded-full bg-primary justify-center items-center shadow-lg"
         onPress={() => router.push('/add-tournament')}
       >
-        <Text className="text-4xl text-white font-light">+</Text>
+        <Text className="text-4xl text-white font-light">{t('index.fabPlus')}</Text>
       </TouchableOpacity>
     </View>
   );

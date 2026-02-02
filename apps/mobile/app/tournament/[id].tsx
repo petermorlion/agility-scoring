@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, TextInput 
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { trpc } from '../../utils/trpc';
 import { useState, useEffect } from 'react';
+import { t } from '../i18n';
 
 type ObstacleKey = 'aframe' | 'dogwalk' | 'seesaw' | 'tunnel' | 'chute' | 'jump' | 'tire';
 
@@ -136,7 +137,7 @@ export default function TournamentScoring() {
     <>
       <Stack.Screen 
         options={{ 
-          title: tournamentQuery.data?.tournament?.name || 'Tournament'
+          title: tournamentQuery.data?.tournament?.name || t('tournament.defaultTitle')
         }} 
       />
       <ScrollView className="flex-1 bg-gray-100">
@@ -151,7 +152,7 @@ export default function TournamentScoring() {
             disabled={currentResultId === '1'}
           >
             <Text className={`text-4xl text-white font-bold ${currentResultId === '1' ? 'opacity-30' : ''}`}>
-              ←
+              {t('tournament.prevArrow')}
             </Text>
           </TouchableOpacity>
           
@@ -168,7 +169,7 @@ export default function TournamentScoring() {
                 setIsEditingName(false);
                 saveContestantName(contestantName);
               }}
-              placeholder="Enter name"
+              placeholder={t('tournament.enterNamePlaceholder')}
               placeholderTextColor="#b3d4ff"
               autoFocus
               returnKeyType="done"
@@ -176,7 +177,7 @@ export default function TournamentScoring() {
           ) : (
             <TouchableOpacity onPress={() => setIsEditingName(true)}>
               <Text className="text-2xl font-bold text-white">
-                {contestantName || 'Contestant'}
+                {contestantName || t('tournament.contestantPlaceholder')}
               </Text>
             </TouchableOpacity>
           )}
@@ -188,18 +189,18 @@ export default function TournamentScoring() {
               navigateToResult(nextId);
             }}
           >
-            <Text className="text-4xl text-white font-bold">→</Text>
+            <Text className="text-4xl text-white font-bold">{t('tournament.nextArrow')}</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <View className="m-4 p-5 bg-white rounded-xl shadow-sm">
-        <Text className="text-xl font-bold mb-4 text-gray-800">Obstacles</Text>
+        <Text className="text-xl font-bold mb-4 text-gray-800">{t('tournament.obstaclesTitle')}</Text>
         {obstacles.map((obstacle) => (
           <View key={obstacle.key} className="flex-row items-center justify-between py-3 border-b border-gray-200">
             <View className="flex-row items-center flex-1">
               <Text className="text-2xl mr-2">{obstacle.emoji}</Text>
-              <Text className="text-base text-gray-800 font-medium">{obstacle.label}</Text>
+              <Text className="text-base text-gray-800 font-medium">{t(`obstacles.${obstacle.key}`)}</Text>
             </View>
             
             <View className="flex-row items-center">
@@ -208,7 +209,7 @@ export default function TournamentScoring() {
                 onPress={() => updateValue(obstacle.key, -1)}
                 disabled={upsertResultMutation.isPending}
               >
-                <Text className="text-2xl text-white font-light">−</Text>
+                <Text className="text-2xl text-white font-light">{t('tournament.decrement')}</Text>
               </TouchableOpacity>
               
               <View className="w-12 items-center justify-center">
@@ -224,7 +225,7 @@ export default function TournamentScoring() {
                 onPress={() => updateValue(obstacle.key, 1)}
                 disabled={upsertResultMutation.isPending}
               >
-                <Text className="text-2xl text-white font-light">+</Text>
+                <Text className="text-2xl text-white font-light">{t('tournament.increment')}</Text>
               </TouchableOpacity>
             </View>
           </View>
