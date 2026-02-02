@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, TextInput, Image } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { trpc } from '../../utils/trpc';
 import { useState, useEffect } from 'react';
@@ -9,17 +9,17 @@ type ObstacleKey = 'aframe' | 'dogwalk' | 'seesaw' | 'tunnel' | 'chute' | 'jump'
 interface ObstacleData {
   key: ObstacleKey;
   label: string;
-  emoji: string;
+  icon: any;
 }
 
 const obstacles: ObstacleData[] = [
-  { key: 'aframe', label: 'A-Frame', emoji: '🔺' },
-  { key: 'dogwalk', label: 'Dog Walk', emoji: '🚶' },
-  { key: 'seesaw', label: 'Seesaw', emoji: '⚖️' },
-  { key: 'tunnel', label: 'Tunnel', emoji: '🌀' },
-  { key: 'chute', label: 'Chute', emoji: '📍' },
-  { key: 'jump', label: 'Jump', emoji: '🦘' },
-  { key: 'tire', label: 'Tire', emoji: '⭕' },
+  { key: 'aframe', label: 'A-Frame', icon: require('../../assets/obstacles/a-frame.png') },
+  { key: 'dogwalk', label: 'Dog Walk', icon: require('../../assets/obstacles/dog-walk.png') },
+  { key: 'seesaw', label: 'Seesaw', icon: require('../../assets/obstacles/seesaw.png') },
+  { key: 'tunnel', label: 'Tunnel', icon: require('../../assets/obstacles/tunnel.png') },
+  { key: 'chute', label: 'Chute', icon: require('../../assets/obstacles/chute.png') },
+  { key: 'jump', label: 'Jump', icon: require('../../assets/obstacles/hurdle-jump.png') },
+  { key: 'tire', label: 'Tire', icon: require('../../assets/obstacles/tire-jump.png') },
 ];
 
 export default function TournamentScoring() {
@@ -199,7 +199,7 @@ export default function TournamentScoring() {
         {obstacles.map((obstacle) => (
           <View key={obstacle.key} className="flex-row items-center justify-between py-3 border-b border-gray-200">
             <View className="flex-row items-center flex-1">
-              <Text className="text-2xl mr-2">{obstacle.emoji}</Text>
+              <Image source={obstacle.icon} style={{ width: 28, height: 28, marginRight: 8 }} />
               <Text className="text-base text-gray-800 font-medium">{t(`obstacles.${obstacle.key}`)}</Text>
             </View>
             
