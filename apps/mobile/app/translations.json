@@ -191,4 +191,18 @@
         "de": "Abbrechen",
         "nl": "Annuleren"
     }
+    ,
+    "settings.languageTitle": {
+        "en": "Language",
+        "fr": "Langue",
+        "de": "Sprache",
+        "nl": "Taal"
+    }
+    ,
+    "settings.title": {
+        "en": "Settings",
+        "fr": "Paramètres",
+        "de": "Einstellungen",
+        "nl": "Instellingen"
+    }
 }

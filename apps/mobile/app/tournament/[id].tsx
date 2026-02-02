@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, TextInput,
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { trpc } from '../../utils/trpc';
 import { useState, useEffect } from 'react';
-import { t } from '../i18n';
+import { useT } from '../i18n';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type ObstacleKey = 'aframe' | 'dogwalk' | 'seesaw' | 'tunnel' | 'chute' | 'jump' | 'tire';
@@ -133,6 +133,8 @@ export default function TournamentScoring() {
       setResultId(result.result.id);
     }
   };
+
+  const t = useT();
 
   return (
     <>

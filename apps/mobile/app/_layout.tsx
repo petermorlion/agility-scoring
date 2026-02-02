@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { trpc } from '../utils/trpc';
 import { useState } from 'react';
-import { t } from './i18n';
+import { LocaleProvider, useT } from './i18n';
 import Constants from 'expo-constants';
 
 export default function RootLayout() {
@@ -29,11 +29,24 @@ export default function RootLayout() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="add-tournament" options={{ title: t('layout.addTournamentTitle'), presentation: 'modal' }} />
-        </Stack>
+        <LocaleProvider>
+          <Screens />
+        </LocaleProvider>
       </QueryClientProvider>
     </trpc.Provider>
+  );
+}
+
+// locale is initialized by LocaleProvider
+
+function Screens() {
+  const t = useT();
+
+  return (
+    <Stack>
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="add-tournament" options={{ title: t('layout.addTournamentTitle'), presentation: 'modal' }} />
+      <Stack.Screen name="settings" options={{ title: t('settings.title') }} />
+    </Stack>
   );
 }

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { trpc } from '../utils/trpc';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import '../global.css';
-import { t } from './i18n';
+import { useT } from './i18n';
 
 export default function AddTournament() {
   const [name, setName] = useState('');
@@ -31,6 +31,8 @@ export default function AddTournament() {
       date: date.toISOString().split('T')[0],
     });
   };
+
+  const t = useT();
 
   return (
     <ScrollView className="flex-1 bg-gray-100">
