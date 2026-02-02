@@ -199,7 +199,7 @@ export default function TournamentScoring() {
         {obstacles.map((obstacle) => (
           <View key={obstacle.key} className="flex-row items-center justify-between py-3 border-b border-gray-200">
             <View className="flex-row items-center flex-1">
-              <Image source={obstacle.icon} style={{ width: 28, height: 28, marginRight: 8 }} />
+              <Image source={obstacle.icon} style={{ width: 40, height: 40, marginRight: 10 }} />
               <Text className="text-base text-gray-800 font-medium">{t(`obstacles.${obstacle.key}`)}</Text>
             </View>
             
