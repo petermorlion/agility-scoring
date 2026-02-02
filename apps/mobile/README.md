@@ -43,3 +43,4 @@ To find your computer's IP:
 - tRPC Client
 - React Query
 - TypeScript
+- [Material Design Icons](https://pictogrammers.com/library/mdi/)
