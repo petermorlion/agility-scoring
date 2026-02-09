@@ -47,6 +47,7 @@ function Screens() {
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="add-tournament" options={{ title: t('layout.addTournamentTitle'), presentation: 'modal' }} />
       <Stack.Screen name="settings" options={{ title: t('settings.title') }} />
+      <Stack.Screen name="login" options={{ title: t('login.title') }} />
     </Stack>
   );
 }

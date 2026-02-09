@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useT, useLocale } from './i18n';
 import { useEffect, useState } from 'react';
+import { router } from 'expo-router';
 import '../global.css';
 
 const languages = [
@@ -38,6 +39,16 @@ export default function Settings() {
             <Text className={`text-base ${selected === lang.code ? 'text-white' : 'text-gray-800'}`}>{lang.label}</Text>
           </TouchableOpacity>
         ))}
+
+        <View className="mt-8">
+          <Text className="text-xl font-bold mb-4 text-gray-800">{t('settings.accountTitle')}</Text>
+          <TouchableOpacity
+            className="p-4 rounded-lg bg-white border border-gray-200"
+            onPress={() => router.push('/login')}
+          >
+            <Text className="text-base text-primary text-center">{t('settings.loginButton')}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );

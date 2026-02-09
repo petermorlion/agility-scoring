@@ -204,5 +204,71 @@
         "fr": "Paramètres",
         "de": "Einstellungen",
         "nl": "Instellingen"
+    },
+    "settings.accountTitle": {
+        "en": "Account",
+        "fr": "Compte",
+        "de": "Konto",
+        "nl": "Account"
+    },
+    "settings.loginButton": {
+        "en": "Login with Google",
+        "fr": "Se connecter avec Google",
+        "de": "Mit Google anmelden",
+        "nl": "Inloggen met Google"
+    },
+    "login.title": {
+        "en": "Login",
+        "fr": "Connexion",
+        "de": "Anmelden",
+        "nl": "Inloggen"
+    },
+    "login.subtitle": {
+        "en": "Sign in to access your account",
+        "fr": "Connectez-vous pour accéder à votre compte",
+        "de": "Melden Sie sich an, um auf Ihr Konto zuzugreifen",
+        "nl": "Log in om toegang te krijgen tot uw account"
+    },
+    "login.googleButton": {
+        "en": "Continue with Google",
+        "fr": "Continuer avec Google",
+        "de": "Mit Google fortfahren",
+        "nl": "Doorgaan met Google"
+    },
+    "login.loading": {
+        "en": "Authenticating...",
+        "fr": "Authentification...",
+        "de": "Authentifizierung...",
+        "nl": "Authenticeren..."
+    },
+    "login.successTitle": {
+        "en": "Login Successful",
+        "fr": "Connexion réussie",
+        "de": "Anmeldung erfolgreich",
+        "nl": "Inloggen succesvol"
+    },
+    "login.successMessage": {
+        "en": "Welcome back, ",
+        "fr": "Bienvenue, ",
+        "de": "Willkommen zurück, ",
+        "nl": "Welkom terug, "
+    },
+    "login.errorTitle": {
+        "en": "Login Error",
+        "fr": "Erreur de connexion",
+        "de": "Anmeldefehler",
+        "nl": "Inlogfout"
+    },
+    "login.errorMessage": {
+        "en": "Failed to login with Google. Please try again.",
+        "fr": "Échec de la connexion avec Google. Veuillez réessayer.",
+        "de": "Anmeldung mit Google fehlgeschlagen. Bitte versuchen Sie es erneut.",
+        "nl": "Inloggen met Google mislukt. Probeer het opnieuw."
+    },
+    "login.backButton": {
+        "en": "Back to app",
+        "fr": "Retour à l'application",
+        "de": "Zurück zur App",
+        "nl": "Terug naar app"
     }
 }
