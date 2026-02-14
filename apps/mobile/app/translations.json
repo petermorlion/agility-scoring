@@ -59,6 +59,60 @@
         "de": "✨ Unterstützt von tRPC, Expo & Express",
         "nl": "✨ Aangedreven door tRPC, Expo & Express"
     },
+    "index.welcomeSubtitle": {
+        "en": "Agility Tournament Manager",
+        "fr": "Gestionnaire de tournois d'agility",
+        "de": "Agility-Turniermanager",
+        "nl": "Agility-toernooi beheer"
+    },
+    "index.welcomeTitle": {
+        "en": "Welcome to Agility Scoring!",
+        "fr": "Bienvenue dans Agility Scoring !",
+        "de": "Willkommen bei Agility Scoring!",
+        "nl": "Welkom bij Agility Scoring!"
+    },
+    "index.welcomeDescription": {
+        "en": "Manage your agility tournaments, track contestant performance, and analyze results all in one place.",
+        "fr": "Gérez vos tournois d'agility, suivez les performances des concurrents et analysez les résultats, le tout au même endroit.",
+        "de": "Verwalten Sie Ihre Agility-Turniere, verfolgen Sie die Leistung der Teilnehmer und analysieren Sie die Ergebnisse, alles an einem Ort.",
+        "nl": "Beheer uw agility-toernooien, volg de prestaties van deelnemers en analyseer de resultaten, allemaal op één plek."
+    },
+    "index.loginToContinue": {
+        "en": "Login to Continue",
+        "fr": "Se connecter pour continuer",
+        "de": "Anmelden, um fortzufahren",
+        "nl": "Inloggen om door te gaan"
+    },
+    "index.viewTournaments": {
+        "en": "View Your Tournaments",
+        "fr": "Voir vos tournois",
+        "de": "Ihre Turniere anzeigen",
+        "nl": "Bekijk uw toernooien"
+    },
+    "index.featuresTitle": {
+        "en": "App Features",
+        "fr": "Fonctionnalités de l'application",
+        "de": "App-Funktionen",
+        "nl": "App-functies"
+    },
+    "index.featureManageTournaments": {
+        "en": "Manage tournaments and contestants",
+        "fr": "Gérer les tournois et les concurrents",
+        "de": "Turniere und Teilnehmer verwalten",
+        "nl": "Beheer toernooien en deelnemers"
+    },
+    "index.featureTrackPerformance": {
+        "en": "Track performance and times",
+        "fr": "Suivre les performances et les temps",
+        "de": "Leistung und Zeiten verfolgen",
+        "nl": "Volg prestaties en tijden"
+    },
+    "index.featureAnalyzeResults": {
+        "en": "Analyze results and improve training",
+        "fr": "Analyser les résultats et améliorer l'entraînement",
+        "de": "Ergebnisse analysieren und Training verbessern",
+        "nl": "Analyseer resultaten en verbeter training"
+    }
     "tournament.defaultTitle": {
         "en": "Tournament",
         "fr": "Tournoi",

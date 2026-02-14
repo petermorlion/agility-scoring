@@ -67,11 +67,11 @@ export default function Login() {
         `${t('login.successMessage')} ${mockUser.name}`
       );
       
-      // Redirect to the original page or home
+      // Redirect to the original page or tournament list
       if (redirect) {
         router.replace(redirect);
       } else {
-        router.replace('/');
+        router.replace('/tournament-list');
       }
       
     } catch (error) {
