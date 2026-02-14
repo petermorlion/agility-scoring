@@ -5,6 +5,7 @@ import { trpc } from '../utils/trpc';
 import { useState } from 'react';
 import { LocaleProvider, useT } from './i18n';
 import Constants from 'expo-constants';
+import { AuthProvider } from './context/AuthContext';
 
 export default function RootLayout() {
   const [queryClient] = useState(() => new QueryClient());
@@ -29,9 +30,11 @@ export default function RootLayout() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <LocaleProvider>
-          <Screens />
-        </LocaleProvider>
+        <AuthProvider>
+          <LocaleProvider>
+            <Screens />
+          </LocaleProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </trpc.Provider>
   );

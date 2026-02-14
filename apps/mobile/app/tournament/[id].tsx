@@ -1,9 +1,10 @@
 import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, TextInput, Image } from 'react-native';
-import { useLocalSearchParams, Stack } from 'expo-router';
+import { useLocalSearchParams, Stack, router } from 'expo-router';
 import { trpc } from '../../utils/trpc';
 import { useState, useEffect } from 'react';
 import { useT } from '../i18n';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useAuth } from '../context/AuthContext';
 
 type ObstacleKey = 'aframe' | 'dogwalk' | 'seesaw' | 'tunnel' | 'chute' | 'jump' | 'tire';
 
@@ -25,6 +26,7 @@ const obstacles: ObstacleData[] = [
 
 export default function TournamentScoring() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { isAuthenticated, loading: authLoading, checkAuth } = useAuth();
   const [values, setValues] = useState<Record<ObstacleKey, number>>({
     aframe: 0,
     dogwalk: 0,
@@ -34,6 +36,30 @@ export default function TournamentScoring() {
     jump: 0,
     tire: 0,
   });
+
+  useEffect(() => {
+    const verifyAuth = async () => {
+      const isAuth = await checkAuth();
+      if (!isAuth) {
+        router.replace('/login');
+      }
+    };
+
+    verifyAuth();
+  }, [checkAuth]);
+
+  if (authLoading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null; // The useEffect will handle the redirect
+  }
+
   const [resultId, setResultId] = useState<string | undefined>(undefined);
   const [currentResultId, setCurrentResultId] = useState<string>('1');
   const [contestantName, setContestantName] = useState<string>('');

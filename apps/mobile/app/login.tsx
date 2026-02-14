@@ -1,9 +1,10 @@
 import { View, Text, TouchableOpacity, ActivityIndicator, Alert, Linking } from 'react-native';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useState, useEffect } from 'react';
 import '../global.css';
 import { useT } from './i18n';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useAuth } from './context/AuthContext';
 
 // Import better-auth library
 import { betterAuth } from 'better-auth';
@@ -12,6 +13,8 @@ import { google } from '@better-auth/core/social-providers';
 export default function Login() {
   const [loading, setLoading] = useState(false);
   const t = useT();
+  const { redirect } = useLocalSearchParams<{ redirect?: string }>();
+  const { login } = useAuth();
 
   const handleGoogleLogin = async () => {
     try {
@@ -49,14 +52,27 @@ export default function Login() {
       // 3. Exchange the code for tokens
       // 4. Validate the tokens and get user info
       
-      // For this demo, we'll simulate a successful login
+      // For this demo, we'll simulate a successful login with mock user data
+      const mockUser = {
+        id: 'google-12345',
+        name: 'Test User',
+        email: 'test@example.com'
+      };
+      
+      await login(mockUser);
+      
+      // Show success message
       Alert.alert(
         t('login.successTitle'),
-        `${t('login.successMessage')} User`
+        `${t('login.successMessage')} ${mockUser.name}`
       );
       
-      // Redirect to home page after successful login
-      router.replace('/');
+      // Redirect to the original page or home
+      if (redirect) {
+        router.replace(redirect);
+      } else {
+        router.replace('/');
+      }
       
     } catch (error) {
       console.error('Google login error:', error);

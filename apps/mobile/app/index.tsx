@@ -4,11 +4,13 @@ import { trpc } from '../utils/trpc';
 import "../global.css"
 import { useT } from './i18n';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useAuth } from './context/AuthContext';
 
 export default function Index() {
   // Query the tournaments
   const tournamentsQuery = trpc.getTournaments.useQuery();
   const t = useT();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const onRefresh = () => {
     tournamentsQuery.refetch();
@@ -29,10 +31,25 @@ export default function Index() {
       >
       <View className="p-5 bg-primary items-center relative">
         <Text className="text-3xl font-bold text-white mb-1">{t('index.header')}</Text>
-        <Text className="text-sm text-gray-200">{t('index.tournamentsLabelSmall')}</Text>
-        <TouchableOpacity className="absolute right-5 top-5" onPress={() => router.push('/settings')}>
-          <MaterialCommunityIcons name="cog" size={24} color="#fff" />
-        </TouchableOpacity>
+        {isAuthenticated && user ? (
+          <Text className="text-sm text-gray-200 mb-1">Welcome, {user.name}!</Text>
+        ) : (
+          <Text className="text-sm text-gray-200 mb-1">{t('index.tournamentsLabelSmall')}</Text>
+        )}
+        <View className="absolute right-5 top-5 flex-row space-x-3">
+          {isAuthenticated ? (
+            <TouchableOpacity onPress={logout}>
+              <MaterialCommunityIcons name="logout" size={24} color="#fff" />
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity onPress={() => router.push('/login')}>
+              <MaterialCommunityIcons name="login" size={24} color="#fff" />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity onPress={() => router.push('/settings')}>
+            <MaterialCommunityIcons name="cog" size={24} color="#fff" />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Tournaments List */}
@@ -73,7 +90,13 @@ export default function Index() {
       
       <TouchableOpacity
         className="absolute right-5 bottom-5 w-14 h-14 rounded-full bg-primary justify-center items-center shadow-lg"
-        onPress={() => router.push('/add-tournament')}
+        onPress={() => {
+          if (isAuthenticated) {
+            router.push('/add-tournament');
+          } else {
+            router.push('/login');
+          }
+        }}
       >
         <Text className="text-4xl text-white font-light">{t('index.fabPlus')}</Text>
       </TouchableOpacity>

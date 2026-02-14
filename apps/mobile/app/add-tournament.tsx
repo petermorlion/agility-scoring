@@ -1,12 +1,37 @@
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { trpc } from '../utils/trpc';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import '../global.css';
 import { useT } from './i18n';
+import { useAuth } from './context/AuthContext';
 
 export default function AddTournament() {
+  const { isAuthenticated, loading: authLoading, checkAuth } = useAuth();
+
+  useEffect(() => {
+    const verifyAuth = async () => {
+      const isAuth = await checkAuth();
+      if (!isAuth) {
+        router.replace('/login');
+      }
+    };
+
+    verifyAuth();
+  }, [checkAuth]);
+
+  if (authLoading) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null; // The useEffect will handle the redirect
+  }
   const [name, setName] = useState('');
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
