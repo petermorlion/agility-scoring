@@ -8,28 +8,38 @@ import { useAuth } from './context/AuthContext';
 import { useEffect } from 'react';
 
 export default function TournamentListPage() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const tournamentsQuery = trpc.getTournaments.useQuery();
   const t = useT();
 
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isAuthenticated && !authLoading) {
       router.replace('/login?redirect=/tournament-list');
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, authLoading]);
 
-  const onRefresh = () => {
-    tournamentsQuery.refetch();
-  };
+  if (authLoading) {
+    return (
+      <View className="flex-1 bg-gray-100 justify-center items-center">
+        <ActivityIndicator size="large" color="#4a90e2" />
+        <Text className="mt-4 text-gray-600">Loading auth...</Text>
+      </View>
+    );
+  }
 
   if (!isAuthenticated) {
     return (
       <View className="flex-1 bg-gray-100 justify-center items-center">
         <ActivityIndicator size="large" color="#4a90e2" />
+        <Text className="mt-4 text-gray-600">Redirecting to login...</Text>
       </View>
     );
   }
+
+  const onRefresh = () => {
+    tournamentsQuery.refetch();
+  };
 
   return (
     <View className="flex-1 bg-gray-100">

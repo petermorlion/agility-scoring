@@ -6,6 +6,18 @@ import { useState } from 'react';
 import { LocaleProvider, useT } from './i18n';
 import Constants from 'expo-constants';
 import { AuthProvider } from './context/AuthContext';
+import { ErrorBoundary } from 'react-error-boundary';
+import { View, Text, Button } from 'react-native';
+
+function ErrorFallback({ error, resetErrorBoundary }) {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+      <Text style={{ color: 'red', marginBottom: 10 }}>Something went wrong:</Text>
+      <Text style={{ color: 'black', marginBottom: 20 }}>{error.message}</Text>
+      <Button onPress={resetErrorBoundary} title="Try again" />
+    </View>
+  );
+}
 
 export default function RootLayout() {
   const [queryClient] = useState(() => new QueryClient());
@@ -28,15 +40,17 @@ export default function RootLayout() {
   );
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <LocaleProvider>
-            <Screens />
-          </LocaleProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>
+            <LocaleProvider>
+              <Screens />
+            </LocaleProvider>
+          </AuthProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
+    </ErrorBoundary>
   );
 }
 
