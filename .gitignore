@@ -34,3 +34,10 @@ yarn-error.log*
 
 # TypeScript
 *.tsbuildinfo
+
+# .NET
+bin/
+obj/
+
+# Visual Studio
+.vs/
