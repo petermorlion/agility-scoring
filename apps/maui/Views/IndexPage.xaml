@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AgilityScoring.Maui.Converters"
+             x:Class="AgilityScoring.Maui.Views.IndexPage"
+             xmlns:viewmodels="clr-namespace:AgilityScoring.Maui.ViewModels"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <viewmodels:IndexViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="16" Padding="16">
+            
+            <!-- Header -->
+            <Frame BackgroundColor="{StaticResource Primary}" 
+                   CornerRadius="12" 
+                   Padding="16" 
+                   HorizontalOptions="FillAndExpand">
+                
+                <VerticalStackLayout>
+                    <Label Text="Agility Scoring App"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center" />
+                    
+                    <Label Text="Agility Tournament Manager"
+                           FontSize="14"
+                           TextColor="{StaticResource PrimaryLight}"
+                           HorizontalOptions="Center" />
+                    
+                    <HorizontalStackLayout HorizontalOptions="End">
+                        <Button Text="⚙"
+                                BackgroundColor="Transparent"
+                                TextColor="White"
+                                Command="{Binding NavigateToSettingsCommand}"
+                                WidthRequest="40"
+                                HeightRequest="40"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Welcome Content -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   Padding="16"
+                   HorizontalOptions="FillAndExpand">
+                
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Dog"
+                           FontSize="48"
+                           TextColor="{StaticResource Primary}"
+                           HorizontalOptions="Center" />
+                    
+                    <Label Text="Welcome to Agility Scoring!"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextDark}"
+                           HorizontalOptions="Center" />
+                    
+                    <Label Text="Manage your agility tournaments and track performance"
+                           FontSize="16"
+                           TextColor="{StaticResource TextMedium}"
+                           HorizontalOptions="Center" />
+
+                    <!-- Login Button -->
+                    <Button Text="{Binding IsAuthenticated, Converter={StaticResource BoolToLoginTextConverter}}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="16"
+                            Command="{Binding NavigateToTournamentsCommand}"
+                            HorizontalOptions="FillAndExpand" />
+
+                    <!-- Features -->
+                    <VerticalStackLayout Spacing="12" Margin="0,24,0,0">
+                        <Label Text="App Features"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextDark}"
+                               HorizontalOptions="Center" />
+
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="Trophy"
+                                   FontSize="20"
+                                   TextColor="{StaticResource Primary}" />
+                            <Label Text="Manage tournaments"
+                                   FontSize="16"
+                                   TextColor="{StaticResource TextMedium}" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="Timer"
+                                   FontSize="20"
+                                   TextColor="{StaticResource Primary}" />
+                            <Label Text="Track performance"
+                                   FontSize="16"
+                                   TextColor="{StaticResource TextMedium}" />
+                        </HorizontalStackLayout>
+
+                        <HorizontalStackLayout Spacing="8">
+                            <Label Text="Chart"
+                                   FontSize="20"
+                                   TextColor="{StaticResource Primary}" />
+                            <Label Text="Analyze results"
+                                   FontSize="16"
+                                   TextColor="{StaticResource TextMedium}" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="Powered by .NET MAUI and tRPC"
+                   FontSize="12"
+                   TextColor="{StaticResource TextLight}"
+                   HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolToLoginTextConverter x:Key="BoolToLoginTextConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>

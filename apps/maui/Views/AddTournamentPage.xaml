@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AgilityScoring.Maui.Converters"
+             x:Class="AgilityScoring.Maui.Views.AddTournamentPage"
+             xmlns:viewmodels="clr-namespace:AgilityScoring.Maui.ViewModels"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <viewmodels:AddTournamentViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="16" Padding="16">
+            
+            <Label Text="Add Tournament"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextDark}"
+                   HorizontalOptions="Center" />
+
+            <!-- Tournament Name -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Tournament Name"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextDark}" />
+                
+                <Entry Text="{Binding Name}"
+                       Placeholder="Enter tournament name"
+                       PlaceholderColor="{StaticResource TextLight}"
+                       BackgroundColor="White"
+                       CornerRadius="8"
+                       HeightRequest="50" />
+            </VerticalStackLayout>
+
+            <!-- Date -->
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Date"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextDark}" />
+                
+                <DatePicker Date="{Binding Date}"
+                           BackgroundColor="White"
+                           CornerRadius="8"
+                           HeightRequest="50" />
+            </VerticalStackLayout>
+
+            <!-- Error Message -->
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="Red"
+                   FontSize="14"
+                   IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}" />
+
+            <!-- Buttons -->
+            <VerticalStackLayout Spacing="12">
+                <Button Text="Create Tournament"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        CornerRadius="8"
+                        Padding="16"
+                        Command="{Binding SaveTournamentCommand}"
+                        IsEnabled="{Binding IsNotBusy}" />
+
+                <Button Text="Cancel"
+                        BackgroundColor="Transparent"
+                        TextColor="{StaticResource TextMedium}"
+                        CornerRadius="8"
+                        Padding="16"
+                        Command="{Binding CancelCommand}" />
+            </VerticalStackLayout>
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                              IsVisible="{Binding IsLoading}"
+                              Color="{StaticResource Primary}"
+                              HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:StringToBoolConverter x:Key="StringToBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>

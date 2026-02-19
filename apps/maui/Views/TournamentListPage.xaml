@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AgilityScoring.Maui.Converters"
+             x:Class="AgilityScoring.Maui.Views.TournamentListPage"
+             xmlns:viewmodels="clr-namespace:AgilityScoring.Maui.ViewModels"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <viewmodels:TournamentListViewModel />
+    </ContentPage.BindingContext>
+
+    <RefreshView Command="{Binding LoadTournamentsCommand}" 
+                 IsRefreshing="{Binding IsRefreshing}">
+        
+        <ScrollView>
+            <VerticalStackLayout Spacing="16" Padding="16">
+                
+                <!-- Header -->
+                <Frame BackgroundColor="{StaticResource Primary}" 
+                       CornerRadius="12" 
+                       Padding="16" 
+                       HorizontalOptions="FillAndExpand">
+                    
+                    <VerticalStackLayout>
+                        <Label Text="Agility Scoring App"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        
+                        <Label Text="{Binding UserName, StringFormat='Welcome, {0}!'}"
+                               FontSize="14"
+                               TextColor="{StaticResource PrimaryLight}"
+                               HorizontalOptions="Center" />
+                        
+                        <HorizontalStackLayout HorizontalOptions="End" Spacing="8">
+                            <Button Text="⚙"
+                                    BackgroundColor="Transparent"
+                                    TextColor="White"
+                                    Command="{Binding NavigateToSettingsCommand}"
+                                    WidthRequest="40"
+                                    HeightRequest="40"/>
+                            <Button Text="Logout"
+                                    BackgroundColor="Transparent"
+                                    TextColor="White"
+                                    Command="{Binding LogoutCommand}"
+                                    WidthRequest="60"
+                                    HeightRequest="40"/>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Tournaments List -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="12"
+                       Padding="16"
+                       HorizontalOptions="FillAndExpand">
+                    
+                    <VerticalStackLayout Spacing="16">
+                        <Label Text="Tournaments"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextDark}" />
+
+                        <CollectionView ItemsSource="{Binding Tournaments}"
+                                        SelectionMode="None">
+                            <CollectionView.EmptyView>
+                                <Label Text="No tournaments yet. Create one to get started!"
+                                       FontSize="16"
+                                       TextColor="{StaticResource TextLight}"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center" />
+                            </CollectionView.EmptyView>
+
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="12" CornerRadius="8" BorderColor="{StaticResource PrimaryLight}">
+                                        <VerticalStackLayout Spacing="4">
+                                            <Label Text="{Binding Name, StringFormat='Trophy: {0}'}"
+                                                   FontSize="16"
+                                                   TextColor="{StaticResource TextDark}" />
+                                            <Label Text="{Binding Date, StringFormat='Date: {0}'}"
+                                                   FontSize="14"
+                                                   TextColor="{StaticResource TextMedium}" />
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <Label Text="Powered by .NET MAUI and tRPC"
+                       FontSize="12"
+                       TextColor="{StaticResource TextLight}"
+                       HorizontalOptions="Center" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+    
+    <!-- Floating Action Button -->
+    <AbsoluteLayout>
+        <Button Text="+"
+                FontSize="24"
+                BackgroundColor="{StaticResource Primary}"
+                TextColor="White"
+                WidthRequest="56"
+                HeightRequest="56"
+                CornerRadius="28"
+                Command="{Binding NavigateToAddTournamentCommand}"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="1,1,-1,-1" />
+    </AbsoluteLayout>
+</ContentPage>

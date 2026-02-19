@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, ActivityIndicator, Alert, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, ActivityIndicator, Alert, Linking, Platform } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useState, useEffect } from 'react';
 import '../global.css';
 import { useT } from './i18n';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAuth } from './context/AuthContext';
+import { Config } from '../config';
 
 // Import better-auth library
 import { betterAuth } from 'better-auth';
@@ -16,15 +17,82 @@ export default function Login() {
   const { redirect } = useLocalSearchParams<{ redirect?: string }>();
   const { login } = useAuth();
 
+  // Handle deep linking for OAuth callback
+  useEffect(() => {
+    const handleDeepLink = (event: { url: string }) => {
+      const url = event.url;
+      console.log('Deep link received:', url);
+      
+      // Check if this is our Google OAuth redirect
+      if (url.startsWith(Config.googleAuth.redirectUri)) {
+        // Extract the authorization code from the URL
+        const urlObj = new URL(url);
+        const code = urlObj.searchParams.get('code');
+        const state = urlObj.searchParams.get('state');
+        const error = urlObj.searchParams.get('error');
+        
+        if (error) {
+          console.error('Google OAuth error:', error);
+          Alert.alert(t('login.errorTitle'), `${t('login.errorMessage')}: ${error}`);
+          return;
+        }
+        
+        if (code && state) {
+          // In a real implementation, you would exchange the code for tokens here
+          console.log('Authorization code received:', code);
+          
+          // For now, we'll simulate a successful login with mock user data
+          const mockUser = {
+            id: 'google-12345',
+            name: 'Test User',
+            email: 'test@example.com'
+          };
+          
+          login(mockUser).then(() => {
+            Alert.alert(
+              t('login.successTitle'),
+              `${t('login.successMessage')} ${mockUser.name}`
+            );
+            
+            if (redirect) {
+              router.replace(redirect);
+            } else {
+              router.replace('/tournament-list');
+            }
+          });
+        }
+      }
+    };
+    
+    // Add event listener for deep links
+    const subscription = Linking.addEventListener('url', handleDeepLink);
+    
+    // Check if app was launched from a deep link
+    Linking.getInitialURL().then(url => {
+      if (url) {
+        handleDeepLink({ url });
+      }
+    });
+    
+    return () => {
+      subscription.remove();
+    };
+  }, [redirect, t, login]);
+
   const handleGoogleLogin = async () => {
     try {
       setLoading(true);
       
-      // Initialize better-auth with Google provider
-      // Note: In a real app, you would configure this in your backend
-      // and get the clientId from environment variables
+      // Use the appropriate client ID based on platform
+      const clientId = Platform.OS === 'android'
+        ? Config.googleAuth.androidClientId
+        : Platform.OS === 'ios'
+          ? Config.googleAuth.iosClientId
+          : Config.googleAuth.webClientId;
+
+      // Initialize better-auth with Google provider using config
       const googleProvider = google({
-        clientId: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com', // Replace with your actual Google Client ID
+        clientId: clientId,
         accessType: 'offline',
         display: 'popup'
       });
@@ -32,7 +100,7 @@ export default function Login() {
       // Generate authorization URL
       const state = 'random_state_string'; // In production, use a proper state management
       const codeVerifier = 'random_code_verifier'; // In production, use PKCE
-      const redirectURI = 'com.your.app:/oauth2redirect/google'; // Your app's deep link URI
+      const redirectURI = Config.googleAuth.redirectUri; // Your app's deep link URI
       
       const authorizationURL = await googleProvider.createAuthorizationURL({
         state,
@@ -46,33 +114,8 @@ export default function Login() {
       // Open the URL in the browser for Google authentication
       await Linking.openURL(authorizationURL.toString());
       
-      // In a real app, you would:
-      // 1. Handle the redirect back to your app
-      // 2. Extract the authorization code from the URL
-      // 3. Exchange the code for tokens
-      // 4. Validate the tokens and get user info
-      
-      // For this demo, we'll simulate a successful login with mock user data
-      const mockUser = {
-        id: 'google-12345',
-        name: 'Test User',
-        email: 'test@example.com'
-      };
-      
-      await login(mockUser);
-      
-      // Show success message
-      Alert.alert(
-        t('login.successTitle'),
-        `${t('login.successMessage')} ${mockUser.name}`
-      );
-      
-      // Redirect to the original page or tournament list
-      if (redirect) {
-        router.replace(redirect);
-      } else {
-        router.replace('/tournament-list');
-      }
+      // The deep link handler (useEffect) will take care of the rest
+      // when Google redirects back to our app
       
     } catch (error) {
       console.error('Google login error:', error);
@@ -83,7 +126,6 @@ export default function Login() {
       }
       
       Alert.alert(t('login.errorTitle'), errorMessage);
-    } finally {
       setLoading(false);
     }
   };

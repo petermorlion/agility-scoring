@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AgilityScoring.Maui.Converters"
+             x:Class="AgilityScoring.Maui.Views.SettingsPage"
+             xmlns:viewmodels="clr-namespace:AgilityScoring.Maui.ViewModels"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <viewmodels:SettingsViewModel />
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="24" Padding="16">
+            
+            <Label Text="Settings"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextDark}"
+                   HorizontalOptions="Center" />
+
+            <!-- Account Section -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   Padding="16"
+                   HorizontalOptions="FillAndExpand">
+                
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Account"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextDark}" />
+
+                    <Label Text="{Binding UserName, StringFormat='Logged in as: {0}'}"
+                           FontSize="16"
+                           TextColor="{StaticResource TextMedium}"
+                           IsVisible="{Binding IsAuthenticated}" />
+
+                    <Button Text="Login with Google"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="16"
+                            Command="{Binding NavigateToLoginCommand}"
+                            IsVisible="{Binding IsAuthenticated, Converter={StaticResource BoolInverterConverter}}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Language Section -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   Padding="16"
+                   HorizontalOptions="FillAndExpand">
+                
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Language"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextDark}" />
+
+                    <Picker Title="Select language"
+                            ItemsSource="{Binding AvailableLanguages}"
+                            SelectedItem="{Binding SelectedLanguage}"
+                            HorizontalOptions="FillAndExpand" />
+
+                    <Button Text="Change Language"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="16"
+                            Command="{Binding ChangeLanguageCommand}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Back Button -->
+            <Button Text="Back"
+                    BackgroundColor="Transparent"
+                    TextColor="{StaticResource Primary}"
+                    CornerRadius="8"
+                    Padding="16"
+                    Command="{Binding GoBackCommand}" />
+
+            <!-- Loading Indicator -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                              IsVisible="{Binding IsLoading}"
+                              Color="{StaticResource Primary}"
+                              HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:BoolInverterConverter x:Key="BoolInverterConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+</ContentPage>
