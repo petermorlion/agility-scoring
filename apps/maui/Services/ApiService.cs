@@ -25,11 +25,11 @@ namespace AgilityScoring.Maui.Services
     public class ApiService
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
+        private readonly ConfigService _configService;
 
-        public ApiService(string baseUrl)
+        public ApiService(ConfigService configService)
         {
-            _baseUrl = baseUrl;
+            _configService = configService;
             _httpClient = new HttpClient();
         }
 
@@ -37,7 +37,7 @@ namespace AgilityScoring.Maui.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_baseUrl}/trpc/getTournaments");
+                var response = await _httpClient.GetAsync($"{_configService.GetConfig().ApiUrl}/trpc/getTournaments");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -71,7 +71,7 @@ namespace AgilityScoring.Maui.Services
                     Encoding.UTF8,
                     "application/json");
                     
-                var response = await _httpClient.PostAsync($"{_baseUrl}/trpc/getTournament", content);
+                var response = await _httpClient.PostAsync($"{_configService.GetConfig().ApiUrl}/trpc/getTournament", content);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
@@ -104,7 +104,7 @@ namespace AgilityScoring.Maui.Services
                     Encoding.UTF8,
                     "application/json");
                     
-                var response = await _httpClient.PostAsync($"{_baseUrl}/trpc/upsertTournament", content);
+                var response = await _httpClient.PostAsync($"{_configService.GetConfig().ApiUrl}/trpc/upsertTournament", content);
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();

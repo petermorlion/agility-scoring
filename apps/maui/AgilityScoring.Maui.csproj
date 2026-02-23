@@ -43,7 +43,6 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1-build.4" />
     <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.58.0" />
     <PackageReference Include="CommunityToolkit.Maui" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
