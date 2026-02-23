@@ -1,0 +1,52 @@
+{
+  "agents": {
+    "mal": {
+      "persistent_name": "Mal",
+      "universe": "Firefly",
+      "role": "Lead",
+      "created_at": "2026-02-23",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "zoe": {
+      "persistent_name": "Zoe",
+      "universe": "Firefly",
+      "role": "Backend Dev",
+      "created_at": "2026-02-23",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "kaylee": {
+      "persistent_name": "Kaylee",
+      "universe": "Firefly",
+      "role": "MAUI Dev",
+      "created_at": "2026-02-23",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "simon": {
+      "persistent_name": "Simon",
+      "universe": "Firefly",
+      "role": "Tester",
+      "created_at": "2026-02-23",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "scribe": {
+      "persistent_name": "Scribe",
+      "universe": null,
+      "role": "Session Logger",
+      "created_at": "2026-02-23",
+      "legacy_named": false,
+      "status": "active"
+    },
+    "ralph": {
+      "persistent_name": "Ralph",
+      "universe": null,
+      "role": "Work Monitor",
+      "created_at": "2026-02-23",
+      "legacy_named": false,
+      "status": "active"
+    }
+  }
+}

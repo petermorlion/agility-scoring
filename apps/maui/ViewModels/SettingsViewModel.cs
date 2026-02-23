@@ -8,6 +8,10 @@ namespace AgilityScoring.Maui.ViewModels
     {
         private readonly AuthService _authService;
 
+        public SettingsViewModel() : this(null)
+        {
+        }
+
         public SettingsViewModel(AuthService authService)
         {
             _authService = authService;

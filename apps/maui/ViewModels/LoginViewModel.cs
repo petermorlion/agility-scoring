@@ -10,6 +10,10 @@ namespace AgilityScoring.Maui.ViewModels
         private readonly ConfigService _configService;
         private readonly NavigationService _navigationService;
 
+        public LoginViewModel() : this(null, null, null)
+        {
+        }
+
         public LoginViewModel(AuthService authService, ConfigService configService, NavigationService navigationService)
         {
             _authService = authService;

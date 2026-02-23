@@ -30,7 +30,6 @@
                        Placeholder="Enter tournament name"
                        PlaceholderColor="{StaticResource TextLight}"
                        BackgroundColor="White"
-                       CornerRadius="8"
                        HeightRequest="50" />
             </VerticalStackLayout>
 
@@ -43,7 +42,6 @@
                 
                 <DatePicker Date="{Binding Date}"
                            BackgroundColor="White"
-                           CornerRadius="8"
                            HeightRequest="50" />
             </VerticalStackLayout>
 

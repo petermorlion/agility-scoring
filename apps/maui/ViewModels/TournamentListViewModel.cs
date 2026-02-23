@@ -11,6 +11,10 @@ namespace AgilityScoring.Maui.ViewModels
         private readonly ApiService _apiService;
         private readonly NavigationService _navigationService;
 
+        public TournamentListViewModel() : this(null, null, null)
+        {
+        }
+
         public TournamentListViewModel(AuthService authService, ApiService apiService, NavigationService navigationService)
         {
             _authService = authService;

@@ -33,20 +33,10 @@
                     CornerRadius="8"
                     Padding="16"
                     Command="{Binding LoginWithGoogleCommand}"
-                    IsEnabled="{Binding IsNotBusy}">
-                
-                <Button.Content>
-                    <HorizontalStackLayout Spacing="12" HorizontalOptions="Center">
-                        <Label Text="G"
-                               FontSize="20"
-                               TextColor="#DB4437"
-                               FontAttributes="Bold" />
-                        <Label Text="Continue with Google"
-                               FontSize="16"
-                               TextColor="{StaticResource TextDark}" />
-                    </HorizontalStackLayout>
-                </Button.Content>
-            </Button>
+                    IsEnabled="{Binding IsNotBusy}"
+                    FontAttributes="Bold"
+                    FontSize="20"
+                    />
 
             <!-- Error Message -->
             <Label Text="{Binding ErrorMessage}"
