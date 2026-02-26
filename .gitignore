@@ -41,3 +41,12 @@ obj/
 
 # Visual Studio
 .vs/
+
+# Unignore
+!.agents/
+!.gitattributes
+!.github/
+!.copilot/
+!.squad-templates/
+!.squad/
+!.vibe/
