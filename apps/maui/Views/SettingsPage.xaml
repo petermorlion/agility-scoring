@@ -19,38 +19,12 @@
                    TextColor="{StaticResource TextDark}"
                    HorizontalOptions="Center" />
 
-            <!-- Account Section -->
-            <Frame BackgroundColor="White"
-                   CornerRadius="12"
-                   Padding="16"
-                   HorizontalOptions="FillAndExpand">
-                
-                <VerticalStackLayout Spacing="16">
-                    <Label Text="Account"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           TextColor="{StaticResource TextDark}" />
-
-                    <Label Text="{Binding UserName, StringFormat='Logged in as: {0}'}"
-                           FontSize="16"
-                           TextColor="{StaticResource TextMedium}"
-                           IsVisible="{Binding IsAuthenticated}" />
-
-                    <Button Text="Login with Google"
-                            BackgroundColor="{StaticResource Primary}"
-                            TextColor="White"
-                            CornerRadius="8"
-                            Padding="16"
-                            Command="{Binding NavigateToLoginCommand}"
-                            IsVisible="{Binding IsAuthenticated, Converter={StaticResource BoolInverterConverter}}" />
-                </VerticalStackLayout>
-            </Frame>
-
             <!-- Language Section -->
-            <Frame BackgroundColor="White"
-                   CornerRadius="12"
-                   Padding="16"
-                   HorizontalOptions="FillAndExpand">
+            <Border BackgroundColor="White"
+                    StrokeShape="RoundRectangle 12"
+                    Stroke="Transparent"
+                    Padding="16"
+                    HorizontalOptions="FillAndExpand">
                 
                 <VerticalStackLayout Spacing="16">
                     <Label Text="Language"
@@ -70,7 +44,7 @@
                             Padding="16"
                             Command="{Binding ChangeLanguageCommand}" />
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <!-- Back Button -->
             <Button Text="Back"
@@ -80,18 +54,10 @@
                     Padding="16"
                     Command="{Binding GoBackCommand}" />
 
-            <!-- Loading Indicator -->
-            <ActivityIndicator IsRunning="{Binding IsLoading}"
-                              IsVisible="{Binding IsLoading}"
-                              Color="{StaticResource Primary}"
-                              HorizontalOptions="Center" />
-
         </VerticalStackLayout>
     </ScrollView>
     
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:BoolInverterConverter x:Key="BoolInverterConverter" />
-        </ResourceDictionary>
+        <ResourceDictionary />
     </ContentPage.Resources>
 </ContentPage>

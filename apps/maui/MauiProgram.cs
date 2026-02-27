@@ -1,4 +1,3 @@
-using Microsoft.Extensions.Logging;
 using AgilityScoring.Maui.Services;
 using AgilityScoring.Maui.ViewModels;
 using AgilityScoring.Maui.Views;
@@ -22,28 +21,20 @@ namespace AgilityScoring.Maui
                 });
 
             // Register services
-            builder.Services.AddSingleton<ConfigService>();
-            builder.Services.AddSingleton<AuthService>();
-            builder.Services.AddSingleton<ApiService>();
+            builder.Services.AddSingleton<LocalStorageService>();
             builder.Services.AddSingleton<NavigationService>();
 
             // Register view models
             builder.Services.AddSingleton<IndexViewModel>();
             builder.Services.AddSingleton<TournamentListViewModel>();
             builder.Services.AddSingleton<AddTournamentViewModel>();
-            builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<SettingsViewModel>();
 
             // Register pages
             builder.Services.AddSingleton<IndexPage>();
             builder.Services.AddSingleton<TournamentListPage>();
             builder.Services.AddSingleton<AddTournamentPage>();
-            builder.Services.AddSingleton<LoginPage>();
             builder.Services.AddSingleton<SettingsPage>();
-
-#if DEBUG
-            //builder.Logging.AddDebug();
-#endif
 
             return builder.Build();
         }

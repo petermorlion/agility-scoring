@@ -21,11 +21,6 @@
         Route="add-tournament" />
 
     <ShellContent
-        Title="Login"
-        ContentTemplate="{DataTemplate local:LoginPage}"
-        Route="login" />
-
-    <ShellContent
         Title="Settings"
         ContentTemplate="{DataTemplate local:SettingsPage}"
         Route="settings" />

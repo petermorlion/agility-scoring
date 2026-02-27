@@ -13,7 +13,6 @@ namespace AgilityScoring.Maui
             Routing.RegisterRoute("index", typeof(IndexPage));
             Routing.RegisterRoute("tournament-list", typeof(TournamentListPage));
             Routing.RegisterRoute("add-tournament", typeof(AddTournamentPage));
-            Routing.RegisterRoute("login", typeof(LoginPage));
             Routing.RegisterRoute("settings", typeof(SettingsPage));
         }
     }

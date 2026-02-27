@@ -14,10 +14,11 @@
         <VerticalStackLayout Spacing="16" Padding="16">
             
             <!-- Header -->
-            <Frame BackgroundColor="{StaticResource Primary}" 
-                   CornerRadius="12" 
-                   Padding="16" 
-                   HorizontalOptions="FillAndExpand">
+            <Border BackgroundColor="{StaticResource Primary}" 
+                    StrokeShape="RoundRectangle 12"
+                    Stroke="Transparent"
+                    Padding="16" 
+                    HorizontalOptions="FillAndExpand">
                 
                 <VerticalStackLayout>
                     <Label Text="Agility Scoring App"
@@ -40,13 +41,14 @@
                                 HeightRequest="40"/>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
             <!-- Welcome Content -->
-            <Frame BackgroundColor="White"
-                   CornerRadius="12"
-                   Padding="16"
-                   HorizontalOptions="FillAndExpand">
+            <Border BackgroundColor="White"
+                    StrokeShape="RoundRectangle 12"
+                    Stroke="Transparent"
+                    Padding="16"
+                    HorizontalOptions="FillAndExpand">
                 
                 <VerticalStackLayout Spacing="16">
                     <Label Text="Dog"
@@ -65,8 +67,8 @@
                            TextColor="{StaticResource TextMedium}"
                            HorizontalOptions="Center" />
 
-                    <!-- Login Button -->
-                    <Button Text="{Binding IsAuthenticated, Converter={StaticResource BoolToLoginTextConverter}}"
+                    <!-- Go to Tournaments Button -->
+                    <Button Text="View Tournaments"
                             BackgroundColor="{StaticResource Primary}"
                             TextColor="White"
                             CornerRadius="8"
@@ -110,9 +112,9 @@
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </VerticalStackLayout>
-            </Frame>
+            </Border>
 
-            <Label Text="Powered by .NET MAUI and tRPC"
+            <Label Text="Powered by .NET MAUI"
                    FontSize="12"
                    TextColor="{StaticResource TextLight}"
                    HorizontalOptions="Center" />
@@ -121,8 +123,6 @@
     </ScrollView>
     
     <ContentPage.Resources>
-        <ResourceDictionary>
-            <local:BoolToLoginTextConverter x:Key="BoolToLoginTextConverter" />
-        </ResourceDictionary>
+        <ResourceDictionary />
     </ContentPage.Resources>
 </ContentPage>

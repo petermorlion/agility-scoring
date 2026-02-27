@@ -7,19 +7,15 @@ namespace AgilityScoring.Maui.ViewModels
 {
     public partial class AddTournamentViewModel : BaseViewModel
     {
-        private readonly AuthService _authService;
-        private readonly ApiService _apiService;
-        private readonly NavigationService _navigationService;
+        private readonly LocalStorageService _localStorageService;
 
-        public AddTournamentViewModel() : this(null, null, null)
+        public AddTournamentViewModel() : this(null)
         {
         }
 
-        public AddTournamentViewModel(AuthService authService, ApiService apiService, NavigationService navigationService)
+        public AddTournamentViewModel(LocalStorageService localStorageService)
         {
-            _authService = authService;
-            _apiService = apiService;
-            _navigationService = navigationService;
+            _localStorageService = localStorageService;
             Title = "Add Tournament";
             Date = DateTime.Today;
         }
@@ -53,24 +49,6 @@ namespace AgilityScoring.Maui.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
-        public async Task InitializeAsync()
-        {
-            try
-            {
-                IsLoading = true;
-                var isAuthenticated = await _authService.CheckAuthAsync();
-                
-                if (!isAuthenticated)
-                {
-                    await _navigationService.NavigateToLoginAsync("//add-tournament");
-                }
-            }
-            finally
-            {
-                IsLoading = false;
-            }
-        }
-
         [RelayCommand]
         private async Task SaveTournament()
         {
@@ -91,16 +69,8 @@ namespace AgilityScoring.Maui.ViewModels
                     Date = Date.ToString("yyyy-MM-dd")
                 };
 
-                var result = await _apiService.UpsertTournamentAsync(tournament);
-                
-                if (result.Success)
-                {
-                    await Shell.Current.GoToAsync("//tournament-list");
-                }
-                else
-                {
-                    ErrorMessage = "Failed to save tournament";
-                }
+                await _localStorageService.SaveTournamentAsync(tournament);
+                await Shell.Current.GoToAsync("//tournament-list");
             }
             catch (Exception ex)
             {

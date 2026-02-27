@@ -10,30 +10,25 @@
         <viewmodels:TournamentListViewModel />
     </ContentPage.BindingContext>
 
-    <RefreshView Command="{Binding LoadTournamentsCommand}" 
-                 IsRefreshing="{Binding IsRefreshing}">
-        
-        <ScrollView>
-            <VerticalStackLayout Spacing="16" Padding="16">
-                
+    <!-- Root Grid: RefreshView fills all space, FAB overlaid -->
+    <Grid>
+        <RefreshView Command="{Binding LoadTournamentsCommand}" 
+                     IsRefreshing="{Binding IsRefreshing}">
+
+            <Grid RowDefinitions="Auto,*,Auto" Padding="16" RowSpacing="16">
+
                 <!-- Header -->
-                <Frame BackgroundColor="{StaticResource Primary}" 
-                       CornerRadius="12" 
-                       Padding="16" 
-                       HorizontalOptions="FillAndExpand">
-                    
+                <Border Grid.Row="0"
+                        BackgroundColor="{StaticResource Primary}" 
+                        StrokeShape="RoundRectangle 12"
+                        Stroke="Transparent"
+                        Padding="16">
                     <VerticalStackLayout>
-                        <Label Text="Agility Scoring App"
+                        <Label Text="Tournaments"
                                FontSize="24"
                                FontAttributes="Bold"
                                TextColor="White"
                                HorizontalOptions="Center" />
-                        
-                        <Label Text="{Binding UserName, StringFormat='Welcome, {0}!'}"
-                               FontSize="14"
-                               TextColor="{StaticResource PrimaryLight}"
-                               HorizontalOptions="Center" />
-                        
                         <HorizontalStackLayout HorizontalOptions="End" Spacing="8">
                             <Button Text="⚙"
                                     BackgroundColor="Transparent"
@@ -41,29 +36,26 @@
                                     Command="{Binding NavigateToSettingsCommand}"
                                     WidthRequest="40"
                                     HeightRequest="40"/>
-                            <Button Text="Logout"
-                                    BackgroundColor="Transparent"
-                                    TextColor="White"
-                                    Command="{Binding LogoutCommand}"
-                                    WidthRequest="60"
-                                    HeightRequest="40"/>
                         </HorizontalStackLayout>
                     </VerticalStackLayout>
-                </Frame>
+                </Border>
 
-                <!-- Tournaments List -->
-                <Frame BackgroundColor="White"
-                       CornerRadius="12"
-                       Padding="16"
-                       HorizontalOptions="FillAndExpand">
-                    
-                    <VerticalStackLayout Spacing="16">
-                        <Label Text="Tournaments"
+                <!-- Tournaments List — Row="*" gives CollectionView real height -->
+                <Border Grid.Row="1"
+                        BackgroundColor="White"
+                        StrokeShape="RoundRectangle 12"
+                        Stroke="Transparent"
+                        Padding="16">
+                    <Grid RowDefinitions="Auto,*">
+                        <Label Grid.Row="0"
+                               Text="Tournaments"
                                FontSize="18"
                                FontAttributes="Bold"
                                TextColor="{StaticResource TextDark}" />
 
-                        <CollectionView ItemsSource="{Binding Tournaments}"
+                        <CollectionView Grid.Row="1"
+                                        Margin="0,8,0,0"
+                                        ItemsSource="{Binding Tournaments}"
                                         SelectionMode="None">
                             <CollectionView.EmptyView>
                                 <Label Text="No tournaments yet. Create one to get started!"
@@ -72,36 +64,38 @@
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center" />
                             </CollectionView.EmptyView>
-
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Frame Padding="12" CornerRadius="8" BorderColor="{StaticResource PrimaryLight}">
+                                    <Border Padding="12"
+                                            StrokeShape="RoundRectangle 8"
+                                            Stroke="{StaticResource PrimaryLight}"
+                                            Margin="0,0,0,8">
                                         <VerticalStackLayout Spacing="4">
-                                            <Label Text="{Binding Name, StringFormat='Trophy: {0}'}"
+                                            <Label Text="{Binding Name}"
                                                    FontSize="16"
+                                                   FontAttributes="Bold"
                                                    TextColor="{StaticResource TextDark}" />
-                                            <Label Text="{Binding Date, StringFormat='Date: {0}'}"
+                                            <Label Text="{Binding Date}"
                                                    FontSize="14"
                                                    TextColor="{StaticResource TextMedium}" />
                                         </VerticalStackLayout>
-                                    </Frame>
+                                    </Border>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                    </VerticalStackLayout>
-                </Frame>
+                    </Grid>
+                </Border>
 
-                <Label Text="Powered by .NET MAUI and tRPC"
+                <Label Grid.Row="2"
+                       Text="Powered by .NET MAUI"
                        FontSize="12"
                        TextColor="{StaticResource TextLight}"
                        HorizontalOptions="Center" />
 
-            </VerticalStackLayout>
-        </ScrollView>
-    </RefreshView>
-    
-    <!-- Floating Action Button -->
-    <AbsoluteLayout>
+            </Grid>
+        </RefreshView>
+
+        <!-- Floating Action Button overlaid on same Grid cell -->
         <Button Text="+"
                 FontSize="24"
                 BackgroundColor="{StaticResource Primary}"
@@ -110,7 +104,8 @@
                 HeightRequest="56"
                 CornerRadius="28"
                 Command="{Binding NavigateToAddTournamentCommand}"
-                AbsoluteLayout.LayoutFlags="PositionProportional"
-                AbsoluteLayout.LayoutBounds="1,1,-1,-1" />
-    </AbsoluteLayout>
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="0,0,16,16" />
+    </Grid>
 </ContentPage>

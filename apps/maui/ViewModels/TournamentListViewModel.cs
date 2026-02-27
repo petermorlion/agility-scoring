@@ -7,35 +7,17 @@ namespace AgilityScoring.Maui.ViewModels
 {
     public partial class TournamentListViewModel : BaseViewModel
     {
-        private readonly AuthService _authService;
-        private readonly ApiService _apiService;
-        private readonly NavigationService _navigationService;
+        private readonly LocalStorageService _localStorageService;
 
-        public TournamentListViewModel() : this(null, null, null)
+        public TournamentListViewModel() : this(null)
         {
         }
 
-        public TournamentListViewModel(AuthService authService, ApiService apiService, NavigationService navigationService)
+        public TournamentListViewModel(LocalStorageService localStorageService)
         {
-            _authService = authService;
-            _apiService = apiService;
-            _navigationService = navigationService;
+            _localStorageService = localStorageService;
             Title = "Tournaments";
             Tournaments = new ObservableCollection<TournamentDto>();
-        }
-
-        private bool _isAuthenticated;
-        public bool IsAuthenticated
-        {
-            get => _isAuthenticated;
-            set => SetProperty(ref _isAuthenticated, value);
-        }
-
-        private string _userName;
-        public string UserName
-        {
-            get => _userName;
-            set => SetProperty(ref _userName, value);
         }
 
         public ObservableCollection<TournamentDto> Tournaments { get; }
@@ -56,26 +38,7 @@ namespace AgilityScoring.Maui.ViewModels
 
         public async Task InitializeAsync()
         {
-            try
-            {
-                IsLoading = true;
-                IsAuthenticated = await _authService.CheckAuthAsync();
-                
-                if (IsAuthenticated)
-                {
-                    var user = await _authService.GetUserAsync();
-                    UserName = user?.Name ?? "User";
-                    await LoadTournamentsAsync();
-                }
-                else
-                {
-                    await _navigationService.NavigateToLoginAsync("//tournament-list");
-                }
-            }
-            finally
-            {
-                IsLoading = false;
-            }
+            await LoadTournamentsAsync();
         }
 
         [RelayCommand]
@@ -88,13 +51,13 @@ namespace AgilityScoring.Maui.ViewModels
             {
                 IsBusy = true;
                 IsRefreshing = true;
-                
-                var response = await _apiService.GetTournamentsAsync();
-                
+
+                var tournaments = await _localStorageService.GetTournamentsAsync();
+
                 Application.Current.Dispatcher.Dispatch(() =>
                 {
                     Tournaments.Clear();
-                    foreach (var tournament in response.Tournaments)
+                    foreach (var tournament in tournaments)
                     {
                         Tournaments.Add(tournament);
                     }
@@ -117,19 +80,6 @@ namespace AgilityScoring.Maui.ViewModels
         private async Task NavigateToAddTournament()
         {
             await Shell.Current.GoToAsync("//add-tournament");
-        }
-
-        [RelayCommand]
-        private async Task Logout()
-        {
-            await _authService.LogoutAsync();
-            await Shell.Current.GoToAsync("//index");
-        }
-
-        [RelayCommand]
-        private async Task NavigateToLogin()
-        {
-            await Shell.Current.GoToAsync("//login");
         }
     }
 }
