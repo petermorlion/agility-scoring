@@ -13,7 +13,7 @@
     <ScrollView>
         <VerticalStackLayout Spacing="16" Padding="16">
             
-            <Label Text="Add Tournament"
+            <Label Text="{Binding [AddTournament], Source={StaticResource Loc}}"
                    FontSize="24"
                    FontAttributes="Bold"
                    TextColor="{StaticResource TextDark}"
@@ -21,13 +21,13 @@
 
             <!-- Tournament Name -->
             <VerticalStackLayout Spacing="8">
-                <Label Text="Tournament Name"
+                <Label Text="{Binding [TournamentName], Source={StaticResource Loc}}"
                        FontSize="16"
                        FontAttributes="Bold"
                        TextColor="{StaticResource TextDark}" />
                 
                 <Entry Text="{Binding Name}"
-                       Placeholder="Enter tournament name"
+                       Placeholder="{Binding [TournamentNamePlaceholder], Source={StaticResource Loc}}"
                        PlaceholderColor="{StaticResource TextLight}"
                        BackgroundColor="White"
                        HeightRequest="50" />
@@ -35,7 +35,7 @@
 
             <!-- Date -->
             <VerticalStackLayout Spacing="8">
-                <Label Text="Date"
+                <Label Text="{Binding [Date], Source={StaticResource Loc}}"
                        FontSize="16"
                        FontAttributes="Bold"
                        TextColor="{StaticResource TextDark}" />
@@ -53,7 +53,7 @@
 
             <!-- Buttons -->
             <VerticalStackLayout Spacing="12">
-                <Button Text="Create Tournament"
+                <Button Text="{Binding [CreateTournament], Source={StaticResource Loc}}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White"
                         CornerRadius="8"
@@ -61,7 +61,7 @@
                         Command="{Binding SaveTournamentCommand}"
                         IsEnabled="{Binding IsNotBusy}" />
 
-                <Button Text="Cancel"
+                <Button Text="{Binding [Cancel], Source={StaticResource Loc}}"
                         BackgroundColor="Transparent"
                         TextColor="{StaticResource TextMedium}"
                         CornerRadius="8"

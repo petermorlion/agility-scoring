@@ -21,6 +21,7 @@ namespace AgilityScoring.Maui
                 });
 
             // Register services
+            builder.Services.AddSingleton<LocalizationService>();
             builder.Services.AddSingleton<LocalStorageService>();
             builder.Services.AddSingleton<NavigationService>();
 

@@ -1,3 +1,4 @@
+using AgilityScoring.Maui.Services;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls;
 
@@ -5,11 +6,14 @@ namespace AgilityScoring.Maui.ViewModels
 {
     public partial class SettingsViewModel : BaseViewModel
     {
-        public SettingsViewModel()
+        private readonly LocalizationService _localizationService;
+
+        public SettingsViewModel(LocalizationService localizationService)
         {
+            _localizationService = localizationService;
             Title = "Settings";
             AvailableLanguages = new List<string> { "English", "Français", "Deutsch", "Nederlands" };
-            SelectedLanguage = "English";
+            SelectedLanguage = localizationService.CurrentLanguage;
         }
 
         public List<string> AvailableLanguages { get; }
@@ -22,16 +26,15 @@ namespace AgilityScoring.Maui.ViewModels
         }
 
         [RelayCommand]
-        private async Task ChangeLanguage()
+        private void ChangeLanguage()
         {
-            // TODO: Implement language change logic
-            await Shell.Current.DisplayAlert("Language", $"Language changed to {SelectedLanguage}", "OK");
+            _localizationService.SetLanguage(SelectedLanguage);
         }
 
         [RelayCommand]
         private async Task GoBack()
         {
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("//tournament-list");
         }
     }
 }

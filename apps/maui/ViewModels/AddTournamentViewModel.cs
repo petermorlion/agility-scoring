@@ -85,7 +85,7 @@ namespace AgilityScoring.Maui.ViewModels
         [RelayCommand]
         private async Task Cancel()
         {
-            await Shell.Current.GoToAsync("..");
+            await Shell.Current.GoToAsync("//tournament-list");
         }
     }
 }

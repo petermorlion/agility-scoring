@@ -54,10 +54,13 @@ namespace AgilityScoring.Maui.ViewModels
 
                 var tournaments = await _localStorageService.GetTournamentsAsync();
 
+                var sorted = tournaments.OrderByDescending(t =>
+                    DateTime.TryParse(t.Date, out var d) ? d : DateTime.MinValue);
+
                 Application.Current.Dispatcher.Dispatch(() =>
                 {
                     Tournaments.Clear();
-                    foreach (var tournament in tournaments)
+                    foreach (var tournament in sorted)
                     {
                         Tournaments.Add(tournament);
                     }

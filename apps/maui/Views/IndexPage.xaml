@@ -21,13 +21,13 @@
                     HorizontalOptions="FillAndExpand">
                 
                 <VerticalStackLayout>
-                    <Label Text="Agility Scoring App"
+                    <Label Text="{Binding [AppTitle], Source={StaticResource Loc}}"
                            FontSize="24"
                            FontAttributes="Bold"
                            TextColor="White"
                            HorizontalOptions="Center" />
                     
-                    <Label Text="Agility Tournament Manager"
+                    <Label Text="{Binding [AppSubtitle], Source={StaticResource Loc}}"
                            FontSize="14"
                            TextColor="{StaticResource PrimaryLight}"
                            HorizontalOptions="Center" />
@@ -56,19 +56,19 @@
                            TextColor="{StaticResource Primary}"
                            HorizontalOptions="Center" />
                     
-                    <Label Text="Welcome to Agility Scoring!"
+                    <Label Text="{Binding [WelcomeMessage], Source={StaticResource Loc}}"
                            FontSize="20"
                            FontAttributes="Bold"
                            TextColor="{StaticResource TextDark}"
                            HorizontalOptions="Center" />
                     
-                    <Label Text="Manage your agility tournaments and track performance"
+                    <Label Text="{Binding [WelcomeDescription], Source={StaticResource Loc}}"
                            FontSize="16"
                            TextColor="{StaticResource TextMedium}"
                            HorizontalOptions="Center" />
 
                     <!-- Go to Tournaments Button -->
-                    <Button Text="View Tournaments"
+                    <Button Text="{Binding [ViewTournaments], Source={StaticResource Loc}}"
                             BackgroundColor="{StaticResource Primary}"
                             TextColor="White"
                             CornerRadius="8"
@@ -78,7 +78,7 @@
 
                     <!-- Features -->
                     <VerticalStackLayout Spacing="12" Margin="0,24,0,0">
-                        <Label Text="App Features"
+                        <Label Text="{Binding [AppFeatures], Source={StaticResource Loc}}"
                                FontSize="18"
                                FontAttributes="Bold"
                                TextColor="{StaticResource TextDark}"
@@ -88,7 +88,7 @@
                             <Label Text="Trophy"
                                    FontSize="20"
                                    TextColor="{StaticResource Primary}" />
-                            <Label Text="Manage tournaments"
+                            <Label Text="{Binding [FeatureManage], Source={StaticResource Loc}}"
                                    FontSize="16"
                                    TextColor="{StaticResource TextMedium}" />
                         </HorizontalStackLayout>
@@ -97,7 +97,7 @@
                             <Label Text="Timer"
                                    FontSize="20"
                                    TextColor="{StaticResource Primary}" />
-                            <Label Text="Track performance"
+                            <Label Text="{Binding [FeatureTrack], Source={StaticResource Loc}}"
                                    FontSize="16"
                                    TextColor="{StaticResource TextMedium}" />
                         </HorizontalStackLayout>
@@ -106,7 +106,7 @@
                             <Label Text="Chart"
                                    FontSize="20"
                                    TextColor="{StaticResource Primary}" />
-                            <Label Text="Analyze results"
+                            <Label Text="{Binding [FeatureAnalyze], Source={StaticResource Loc}}"
                                    FontSize="16"
                                    TextColor="{StaticResource TextMedium}" />
                         </HorizontalStackLayout>
@@ -114,7 +114,7 @@
                 </VerticalStackLayout>
             </Border>
 
-            <Label Text="Powered by .NET MAUI"
+            <Label Text="{Binding [PoweredBy], Source={StaticResource Loc}}"
                    FontSize="12"
                    TextColor="{StaticResource TextLight}"
                    HorizontalOptions="Center" />

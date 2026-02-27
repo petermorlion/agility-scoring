@@ -6,14 +6,10 @@
              xmlns:viewmodels="clr-namespace:AgilityScoring.Maui.ViewModels"
              Title="{Binding Title}">
     
-    <ContentPage.BindingContext>
-        <viewmodels:SettingsViewModel />
-    </ContentPage.BindingContext>
-
     <ScrollView>
         <VerticalStackLayout Spacing="24" Padding="16">
             
-            <Label Text="Settings"
+            <Label Text="{Binding [Settings], Source={StaticResource Loc}}"
                    FontSize="24"
                    FontAttributes="Bold"
                    TextColor="{StaticResource TextDark}"
@@ -27,17 +23,17 @@
                     HorizontalOptions="FillAndExpand">
                 
                 <VerticalStackLayout Spacing="16">
-                    <Label Text="Language"
+                    <Label Text="{Binding [Language], Source={StaticResource Loc}}"
                            FontSize="18"
                            FontAttributes="Bold"
                            TextColor="{StaticResource TextDark}" />
 
-                    <Picker Title="Select language"
+                    <Picker Title="{Binding [SelectLanguage], Source={StaticResource Loc}}"
                             ItemsSource="{Binding AvailableLanguages}"
                             SelectedItem="{Binding SelectedLanguage}"
                             HorizontalOptions="FillAndExpand" />
 
-                    <Button Text="Change Language"
+                    <Button Text="{Binding [ChangeLanguage], Source={StaticResource Loc}}"
                             BackgroundColor="{StaticResource Primary}"
                             TextColor="White"
                             CornerRadius="8"
@@ -47,7 +43,7 @@
             </Border>
 
             <!-- Back Button -->
-            <Button Text="Back"
+            <Button Text="{Binding [Back], Source={StaticResource Loc}}"
                     BackgroundColor="Transparent"
                     TextColor="{StaticResource Primary}"
                     CornerRadius="8"

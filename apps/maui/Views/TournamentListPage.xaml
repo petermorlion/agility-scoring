@@ -24,7 +24,7 @@
                         Stroke="Transparent"
                         Padding="16">
                     <VerticalStackLayout>
-                        <Label Text="Tournaments"
+                        <Label Text="{Binding [Tournaments], Source={StaticResource Loc}}"
                                FontSize="24"
                                FontAttributes="Bold"
                                TextColor="White"
@@ -48,7 +48,7 @@
                         Padding="16">
                     <Grid RowDefinitions="Auto,*">
                         <Label Grid.Row="0"
-                               Text="Tournaments"
+                               Text="{Binding [Tournaments], Source={StaticResource Loc}}"
                                FontSize="18"
                                FontAttributes="Bold"
                                TextColor="{StaticResource TextDark}" />
@@ -58,7 +58,7 @@
                                         ItemsSource="{Binding Tournaments}"
                                         SelectionMode="None">
                             <CollectionView.EmptyView>
-                                <Label Text="No tournaments yet. Create one to get started!"
+                                <Label Text="{Binding [NoTournaments], Source={StaticResource Loc}}"
                                        FontSize="16"
                                        TextColor="{StaticResource TextLight}"
                                        HorizontalOptions="Center"
@@ -87,7 +87,7 @@
                 </Border>
 
                 <Label Grid.Row="2"
-                       Text="Powered by .NET MAUI"
+                       Text="{Binding [PoweredBy], Source={StaticResource Loc}}"
                        FontSize="12"
                        TextColor="{StaticResource TextLight}"
                        HorizontalOptions="Center" />
