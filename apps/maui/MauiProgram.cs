@@ -30,12 +30,14 @@ namespace AgilityScoring.Maui
             builder.Services.AddSingleton<TournamentListViewModel>();
             builder.Services.AddSingleton<AddTournamentViewModel>();
             builder.Services.AddSingleton<SettingsViewModel>();
+            builder.Services.AddSingleton<TournamentDetailViewModel>();
 
             // Register pages
             builder.Services.AddSingleton<IndexPage>();
             builder.Services.AddSingleton<TournamentListPage>();
             builder.Services.AddSingleton<AddTournamentPage>();
             builder.Services.AddSingleton<SettingsPage>();
+            builder.Services.AddSingleton<TournamentDetailPage>();
 
             return builder.Build();
         }

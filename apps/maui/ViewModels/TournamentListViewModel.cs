@@ -84,5 +84,12 @@ namespace AgilityScoring.Maui.ViewModels
         {
             await Shell.Current.GoToAsync("//add-tournament");
         }
+
+        [RelayCommand]
+        private async Task SelectTournament(TournamentDto tournament)
+        {
+            if (tournament == null) return;
+            await Shell.Current.GoToAsync($"tournament-detail?tournamentId={tournament.Id}&tournamentName={Uri.EscapeDataString(tournament.Name)}");
+        }
     }
 }

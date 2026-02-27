@@ -49,3 +49,15 @@
 - Build and deployment succeeded in 53.4 seconds using `dotnet build -t:Run -f net10.0-android`
 - App deployed to physical Android device successfully via ADB
 - Key: Device must show status "device" (not "unauthorized" or "offline") in `adb devices` output before deployment will work
+
+### 2026-06-09 — TournamentDetailPage: Shell navigation + IQueryAttributable pattern
+- Created `TournamentDetailPage` with contestant navigation (←/→ arrows)
+- **Shell navigation to pushed pages:** Use `Routing.RegisterRoute("route-name", typeof(MyPage))` in `AppShell.xaml.cs` constructor for pages that aren't tabs
+- Pass query params via `Shell.Current.GoToAsync($"route?param={value}")` — URL-encode values with `Uri.EscapeDataString()`
+- **IQueryAttributable:** ViewModels implement `IQueryAttributable.ApplyQueryAttributes(query)` to receive query params; decode with `Uri.UnescapeDataString()`
+- **RelayCommand CanExecute:** Use `[RelayCommand(CanExecute = nameof(PropertyName))]` to auto-bind button IsEnabled — must call `Command.NotifyCanExecuteChanged()` when property changes
+- **TapGestureRecognizer binding:** Use `Command="{Binding Source={RelativeSource AncestorType={x:Type vm:MyViewModel}}, Path=CommandName}"` to bind to parent ViewModel command from DataTemplate
+- **NavigationPage.HasNavigationBar="False"** hides the default Shell navigation bar for custom title bars
+- Contestant counter starts at 1 (no upper limit) — left arrow disabled when on contestant 1
+- Build: 0 errors (pre-existing warning in AddTournamentViewModel unrelated)
+

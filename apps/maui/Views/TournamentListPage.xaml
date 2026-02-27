@@ -70,6 +70,10 @@
                                             StrokeShape="RoundRectangle 8"
                                             Stroke="{StaticResource PrimaryLight}"
                                             Margin="0,0,0,8">
+                                        <Border.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TournamentListViewModel}}, Path=SelectTournamentCommand}"
+                                                                  CommandParameter="{Binding .}" />
+                                        </Border.GestureRecognizers>
                                         <VerticalStackLayout Spacing="4">
                                             <Label Text="{Binding Name}"
                                                    FontSize="16"

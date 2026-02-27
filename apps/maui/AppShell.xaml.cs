@@ -14,6 +14,7 @@ namespace AgilityScoring.Maui
             Routing.RegisterRoute("tournament-list", typeof(TournamentListPage));
             Routing.RegisterRoute("add-tournament", typeof(AddTournamentPage));
             Routing.RegisterRoute("settings", typeof(SettingsPage));
+            Routing.RegisterRoute("tournament-detail", typeof(TournamentDetailPage));
         }
     }
 }
