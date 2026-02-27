@@ -41,7 +41,10 @@ namespace AgilityScoring.Maui.Services
                     WebClientId = isDevelopment 
                         ? "YOUR_DEV_WEB_CLIENT_ID.apps.googleusercontent.com" 
                         : "YOUR_PROD_WEB_CLIENT_ID.apps.googleusercontent.com",
-                    RedirectUri = "agility-scoring-maui://oauth2redirect",
+                    // Reverse client ID scheme — supported by Google for native Android apps.
+                    // The Google Cloud Console credential must be an Android type (or a Web type
+                    // with this redirect URI explicitly allowed).
+                    RedirectUri = "com.googleusercontent.apps.650791542042-6ub4916cfv65tt54566ecedu6qkaqgti:/oauth2redirect",
                     Scopes = new string[] { "openid", "email", "profile" }
                 }
             };

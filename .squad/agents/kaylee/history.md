@@ -9,6 +9,14 @@
 
 ## Learnings
 
+### 2026-06-09 — Google OAuth: WebAuthenticator custom scheme → reverse client ID scheme
+- Google deprecated arbitrary custom URI schemes (e.g. `agility-scoring-maui://`) for OAuth redirects
+- Migrated to the reverse client ID URI scheme: `com.googleusercontent.apps.{client-id}:/oauth2redirect`
+- This format is Google-approved for native Android apps; WebAuthenticator + PKCE flow unchanged
+- Only two files changed: `WebAuthCallbackActivity.cs` (DataScheme + DataPath) and `ConfigService.cs` (RedirectUri)
+- Rejected the native Google Sign-In NuGet approach (`Xamarin.Google.Android.Play.Services.Auth`) due to compatibility risk with `net10.0-android` and MAUI 8.x Activity lifecycle wiring
+- **Google Cloud Console note:** If the credential is Android-type, no Cloud Console changes needed. If Web-type, add the reverse client ID redirect URI to Authorised Redirect URIs.
+
 ### 2026-02-23 — AuthConfig DI fix
 - `AuthService` requires `AuthConfig` via constructor injection
 - `AuthConfig` was not registered in `MauiProgram.cs` — caused runtime DI resolution error
@@ -24,3 +32,20 @@
 - ID token is a JWT: split on `.`, base64url decode the middle segment, deserialize JSON to get `sub` (user ID), `name`, `email`
 - Store refresh token in `SecureStorage` to enable silent token refresh in `CheckAuthAsync()`
 - Token expiry should have a 5-minute buffer to avoid edge-case failures
+
+### 2026-02-23 — Android deployment attempt
+- Device `R3CX500VME` initially appeared as "offline" in `adb devices`
+- After `adb kill-server` + `adb start-server`, device disappeared entirely
+- Build compiled successfully (114 warnings, 0 errors) in 47.7s
+- Deployment failed with **error XA0010: No available device** — device must be connected and authorized via ADB
+- **To deploy:** 
+  1. Ensure USB debugging is enabled on the Android device
+  2. Accept the ADB authorization prompt on the phone
+  3. Verify device shows as online in `adb devices` (not "offline" or "unauthorized")
+  4. Then run: `dotnet build -t:Run -f net10.0-android` from `apps/maui/`
+
+### 2026-02-23 — Android deployment SUCCESS
+- After user accepted USB debugging prompt, device `R3CX500VMEL` showed as "device" (authorized) in `adb devices`
+- Build and deployment succeeded in 53.4 seconds using `dotnet build -t:Run -f net10.0-android`
+- App deployed to physical Android device successfully via ADB
+- Key: Device must show status "device" (not "unauthorized" or "offline") in `adb devices` output before deployment will work
