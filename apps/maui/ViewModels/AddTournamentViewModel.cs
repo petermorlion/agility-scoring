@@ -17,15 +17,18 @@ namespace AgilityScoring.Maui.ViewModels
         {
             _localStorageService = localStorageService;
             Title = "Add Tournament";
-            Date = DateTime.Today;
+            _date = DateTime.Today;
         }
 
         private string _name;
-        [Required(ErrorMessage = "Tournament name is required")]
         public string Name
         {
             get => _name;
-            set => SetProperty(ref _name, value);
+            set
+            {
+                if (SetProperty(ref _name, value))
+                    OnPropertyChanged(nameof(CanSave));
+            }
         }
 
         private DateTime _date;
@@ -34,6 +37,19 @@ namespace AgilityScoring.Maui.ViewModels
             get => _date;
             set => SetProperty(ref _date, value);
         }
+
+        private bool _isDateSet;
+        public bool IsDateSet
+        {
+            get => _isDateSet;
+            set
+            {
+                if (SetProperty(ref _isDateSet, value))
+                    OnPropertyChanged(nameof(CanSave));
+            }
+        }
+
+        public bool CanSave => !string.IsNullOrWhiteSpace(Name) && IsDateSet;
 
         private string _errorMessage;
         public string ErrorMessage
@@ -49,7 +65,15 @@ namespace AgilityScoring.Maui.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
-        [RelayCommand]
+        public void ResetForm()
+        {
+            Name = string.Empty;
+            Date = DateTime.Today;
+            IsDateSet = false;
+            ErrorMessage = string.Empty;
+        }
+
+        [RelayCommand(CanExecute = nameof(CanSave))]
         private async Task SaveTournament()
         {
             if (string.IsNullOrWhiteSpace(Name))
