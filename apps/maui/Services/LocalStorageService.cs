@@ -7,6 +7,7 @@ namespace AgilityScoring.Maui.Services
         public string Id { get; set; }
         public string Name { get; set; }
         public string Date { get; set; }
+        public Dictionary<int, string> ContestantNames { get; set; } = new();
     }
 
     public class LocalStorageService
@@ -32,6 +33,12 @@ namespace AgilityScoring.Maui.Services
             {
                 return new List<TournamentDto>();
             }
+        }
+
+        public async Task<TournamentDto> GetTournamentAsync(string id)
+        {
+            var tournaments = await GetTournamentsAsync();
+            return tournaments.FirstOrDefault(t => t.Id == id);
         }
 
         public async Task SaveTournamentAsync(TournamentDto tournament)

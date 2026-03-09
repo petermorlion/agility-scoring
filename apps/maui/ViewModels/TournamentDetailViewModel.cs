@@ -1,3 +1,4 @@
+using AgilityScoring.Maui.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
@@ -8,6 +9,9 @@ namespace AgilityScoring.Maui.ViewModels
     [QueryProperty(nameof(TournamentName), "tournamentName")]
     public partial class TournamentDetailViewModel : BaseViewModel, IQueryAttributable
     {
+        private readonly LocalStorageService _localStorageService;
+        private Dictionary<int, string> _contestantNames = new();
+
         private string _tournamentId;
         public string TournamentId
         {
@@ -38,13 +42,39 @@ namespace AgilityScoring.Maui.ViewModels
             }
         }
 
-        public string ContestantName => $"Contestant {ContestantNumber}";
+        public string ContestantName => _contestantNames.TryGetValue(ContestantNumber, out var name)
+            ? name
+            : $"Contestant {ContestantNumber}";
 
         public bool CanGoPrevious => ContestantNumber > 1;
 
-        public TournamentDetailViewModel()
+        public TournamentDetailViewModel(LocalStorageService localStorageService)
         {
+            _localStorageService = localStorageService;
             Title = "Tournament Detail";
+        }
+
+        public async Task LoadContestantNamesAsync()
+        {
+            if (string.IsNullOrEmpty(TournamentId)) return;
+            var tournament = await _localStorageService.GetTournamentAsync(TournamentId);
+            _contestantNames = tournament?.ContestantNames != null
+                ? new Dictionary<int, string>(tournament.ContestantNames)
+                : new Dictionary<int, string>();
+            OnPropertyChanged(nameof(ContestantName));
+        }
+
+        public async Task SetContestantNameAsync(int contestantNumber, string name)
+        {
+            if (string.IsNullOrEmpty(TournamentId)) return;
+            _contestantNames[contestantNumber] = name;
+            var tournament = await _localStorageService.GetTournamentAsync(TournamentId);
+            if (tournament != null)
+            {
+                tournament.ContestantNames = _contestantNames;
+                await _localStorageService.SaveTournamentAsync(tournament);
+            }
+            OnPropertyChanged(nameof(ContestantName));
         }
 
         [RelayCommand]
@@ -73,6 +103,8 @@ namespace AgilityScoring.Maui.ViewModels
             {
                 TournamentName = Uri.UnescapeDataString(query["tournamentName"].ToString());
             }
+
+            _ = LoadContestantNamesAsync();
         }
     }
 }
