@@ -1,4 +1,5 @@
 using AgilityScoring.Maui.ViewModels;
+using MauiIcons.Core;
 
 namespace AgilityScoring.Maui.Views
 {
@@ -6,6 +7,8 @@ namespace AgilityScoring.Maui.Views
     {
         public TournamentDetailPage(TournamentDetailViewModel viewModel)
         {
+            // Workaround for MauiIcons url-style namespace in XAML (dotnet/maui#7503)
+            _ = new MauiIcon();
             InitializeComponent();
             BindingContext = viewModel;
         }

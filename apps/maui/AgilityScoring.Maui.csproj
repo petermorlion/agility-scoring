@@ -47,10 +47,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="6.0.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.1-build.4" />
-    <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.14" />
-    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.14" />
-    <PackageReference Include="CommunityToolkit.Maui" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Maui.Controls" Version="10.0.41" />
+    <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.41" />
+    <PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
