@@ -34,7 +34,9 @@ namespace AgilityScoring.Maui.Services
                 ["SelectLanguage"] = "Select language",
                 ["ChangeLanguage"] = "Change Language",
                 ["CurrentLanguageLabel"] = "Current:",
-                ["Back"] = "Back",= new()
+                ["Back"] = "Back",
+            },
+            ["Français"] = new()
             {
                 ["AppTitle"] = "Application Agility",
                 ["AppSubtitle"] = "Gestionnaire de tournois d'agility",
@@ -59,7 +61,9 @@ namespace AgilityScoring.Maui.Services
                 ["SelectLanguage"] = "Sélectionner la langue",
                 ["ChangeLanguage"] = "Changer la langue",
                 ["CurrentLanguageLabel"] = "Actuelle :",
-                ["Back"] = "Retour",= new()
+                ["Back"] = "Retour",
+            },
+            ["Deutsch"] = new()
             {
                 ["AppTitle"] = "Agility Score App",
                 ["AppSubtitle"] = "Agility Turnier-Manager",
@@ -84,7 +88,9 @@ namespace AgilityScoring.Maui.Services
                 ["SelectLanguage"] = "Sprache auswählen",
                 ["ChangeLanguage"] = "Sprache ändern",
                 ["CurrentLanguageLabel"] = "Aktuell:",
-                ["Back"] = "Zurück",= new()
+                ["Back"] = "Zurück",
+            },
+            ["Nederlands"] = new()
             {
                 ["AppTitle"] = "Agility Score App",
                 ["AppSubtitle"] = "Agility Toernooi Manager",
@@ -110,6 +116,7 @@ namespace AgilityScoring.Maui.Services
                 ["ChangeLanguage"] = "Taal wijzigen",
                 ["CurrentLanguageLabel"] = "Huidig:",
                 ["Back"] = "Terug",
+            },
         };
 
         public LocalizationService()
