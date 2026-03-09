@@ -14,11 +14,13 @@ namespace AgilityScoring.Maui.Views
         {
             base.OnAppearing();
             if (BindingContext is AddTournamentViewModel vm)
-            {
-                vm.Name = string.Empty;
-                vm.Date = DateTime.Today;
-                vm.ErrorMessage = string.Empty;
-            }
+                vm.ResetForm();
+        }
+
+        private void OnDateSelected(object sender, DateChangedEventArgs e)
+        {
+            if (BindingContext is AddTournamentViewModel vm)
+                vm.IsDateSet = true;
         }
     }
 }
