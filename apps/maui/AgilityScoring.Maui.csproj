@@ -13,6 +13,11 @@
     <DebugSymbolType>portable</DebugSymbolType>
     <DebugType>portable</DebugType>
 
+    <!-- Include satellite resource assemblies for all supported languages.
+         Without this, a FileNotFoundException for e.g. System.Private.CoreLib.resources
+         is thrown at startup when the device locale doesn't match a bundled satellite DLL. -->
+    <SatelliteResourceLanguages>en;fr;de;nl</SatelliteResourceLanguages>
+
     <!-- Application -->
     <ApplicationId>com.agilityscoring.maui</ApplicationId>
     <ApplicationTitle>Agility Scoring</ApplicationTitle>
