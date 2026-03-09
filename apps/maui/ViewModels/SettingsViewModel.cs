@@ -26,9 +26,10 @@ namespace AgilityScoring.Maui.ViewModels
         }
 
         [RelayCommand]
-        private void ChangeLanguage()
+        private async Task ChangeLanguage()
         {
             _localizationService.SetLanguage(SelectedLanguage);
+            await Shell.Current.GoToAsync("//tournament-list");
         }
 
         [RelayCommand]

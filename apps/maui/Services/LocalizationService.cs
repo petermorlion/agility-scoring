@@ -33,8 +33,8 @@ namespace AgilityScoring.Maui.Services
                 ["Language"] = "Language",
                 ["SelectLanguage"] = "Select language",
                 ["ChangeLanguage"] = "Change Language",
+                ["CurrentLanguageLabel"] = "Current:",
                 ["Back"] = "Back",
-                ["TournamentNameRequired"] = "Tournament name is required",
             },
             ["Français"] = new()
             {
@@ -60,8 +60,8 @@ namespace AgilityScoring.Maui.Services
                 ["Language"] = "Langue",
                 ["SelectLanguage"] = "Sélectionner la langue",
                 ["ChangeLanguage"] = "Changer la langue",
+                ["CurrentLanguageLabel"] = "Actuelle :",
                 ["Back"] = "Retour",
-                ["TournamentNameRequired"] = "Le nom du tournoi est obligatoire",
             },
             ["Deutsch"] = new()
             {
@@ -87,8 +87,8 @@ namespace AgilityScoring.Maui.Services
                 ["Language"] = "Sprache",
                 ["SelectLanguage"] = "Sprache auswählen",
                 ["ChangeLanguage"] = "Sprache ändern",
+                ["CurrentLanguageLabel"] = "Aktuell:",
                 ["Back"] = "Zurück",
-                ["TournamentNameRequired"] = "Turniername ist erforderlich",
             },
             ["Nederlands"] = new()
             {
@@ -114,9 +114,9 @@ namespace AgilityScoring.Maui.Services
                 ["Language"] = "Taal",
                 ["SelectLanguage"] = "Kies taal",
                 ["ChangeLanguage"] = "Taal wijzigen",
+                ["CurrentLanguageLabel"] = "Huidig:",
                 ["Back"] = "Terug",
-                ["TournamentNameRequired"] = "Toernooinaam is verplicht",
-            }
+            },
         };
 
         public LocalizationService()
