@@ -5,6 +5,11 @@
         x:Class="AgilityScoring.Maui.AppShell"
         Shell.FlyoutBehavior="Flyout">
 
+    <Shell.FlyoutHeader>
+        <!-- Top padding to push flyout items below the device status bar -->
+        <BoxView HeightRequest="32" BackgroundColor="Transparent" />
+    </Shell.FlyoutHeader>
+
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:IndexPage}"
