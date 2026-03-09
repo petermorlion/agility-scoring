@@ -13,6 +13,13 @@
     <DebugSymbolType>portable</DebugSymbolType>
     <DebugType>portable</DebugType>
 
+    <!-- Bundle only English satellite resource assemblies. Setting this to "en" means
+         the runtime will always fall back to English when a culture-specific resource DLL
+         (e.g. fr/System.Private.CoreLib.resources.dll) does not exist in the APK, rather
+         than throwing a FileNotFoundException. Our own localization is handled entirely
+         by LocalizationService, not by .NET satellite assemblies. -->
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+
     <!-- Application -->
     <ApplicationId>com.agilityscoring.maui</ApplicationId>
     <ApplicationTitle>Agility Scoring</ApplicationTitle>
