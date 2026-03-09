@@ -29,6 +29,7 @@
                 <Entry Text="{Binding Name}"
                        Placeholder="{Binding [TournamentNamePlaceholder], Source={StaticResource Loc}}"
                        PlaceholderColor="{StaticResource TextLight}"
+                       TextColor="{StaticResource TextDark}"
                        BackgroundColor="White"
                        HeightRequest="50" />
             </VerticalStackLayout>
@@ -41,6 +42,7 @@
                        TextColor="{StaticResource TextDark}" />
                 
                 <DatePicker Date="{Binding Date}"
+                           TextColor="{StaticResource TextDark}"
                            BackgroundColor="White"
                            HeightRequest="50" />
             </VerticalStackLayout>
