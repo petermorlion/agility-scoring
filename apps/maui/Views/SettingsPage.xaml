@@ -28,6 +28,19 @@
                            FontAttributes="Bold"
                            TextColor="{StaticResource TextDark}" />
 
+                    <!-- Current language display -->
+                    <HorizontalStackLayout Spacing="8">
+                        <Label Text="{Binding [CurrentLanguageLabel], Source={StaticResource Loc}}"
+                               FontSize="14"
+                               TextColor="{StaticResource TextMedium}"
+                               VerticalOptions="Center" />
+                        <Label Text="{Binding CurrentLanguage, Source={StaticResource Loc}}"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextDark}"
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
                     <Picker Title="{Binding [SelectLanguage], Source={StaticResource Loc}}"
                             ItemsSource="{Binding AvailableLanguages}"
                             SelectedItem="{Binding SelectedLanguage}"

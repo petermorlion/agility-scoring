@@ -33,10 +33,8 @@ namespace AgilityScoring.Maui.Services
                 ["Language"] = "Language",
                 ["SelectLanguage"] = "Select language",
                 ["ChangeLanguage"] = "Change Language",
-                ["Back"] = "Back",
-                ["TournamentNameRequired"] = "Tournament name is required",
-            },
-            ["Français"] = new()
+                ["CurrentLanguageLabel"] = "Current:",
+                ["Back"] = "Back",= new()
             {
                 ["AppTitle"] = "Application Agility",
                 ["AppSubtitle"] = "Gestionnaire de tournois d'agility",
@@ -60,10 +58,8 @@ namespace AgilityScoring.Maui.Services
                 ["Language"] = "Langue",
                 ["SelectLanguage"] = "Sélectionner la langue",
                 ["ChangeLanguage"] = "Changer la langue",
-                ["Back"] = "Retour",
-                ["TournamentNameRequired"] = "Le nom du tournoi est obligatoire",
-            },
-            ["Deutsch"] = new()
+                ["CurrentLanguageLabel"] = "Actuelle :",
+                ["Back"] = "Retour",= new()
             {
                 ["AppTitle"] = "Agility Score App",
                 ["AppSubtitle"] = "Agility Turnier-Manager",
@@ -87,10 +83,8 @@ namespace AgilityScoring.Maui.Services
                 ["Language"] = "Sprache",
                 ["SelectLanguage"] = "Sprache auswählen",
                 ["ChangeLanguage"] = "Sprache ändern",
-                ["Back"] = "Zurück",
-                ["TournamentNameRequired"] = "Turniername ist erforderlich",
-            },
-            ["Nederlands"] = new()
+                ["CurrentLanguageLabel"] = "Aktuell:",
+                ["Back"] = "Zurück",= new()
             {
                 ["AppTitle"] = "Agility Score App",
                 ["AppSubtitle"] = "Agility Toernooi Manager",
@@ -114,9 +108,8 @@ namespace AgilityScoring.Maui.Services
                 ["Language"] = "Taal",
                 ["SelectLanguage"] = "Kies taal",
                 ["ChangeLanguage"] = "Taal wijzigen",
+                ["CurrentLanguageLabel"] = "Huidig:",
                 ["Back"] = "Terug",
-                ["TournamentNameRequired"] = "Toernooinaam is verplicht",
-            }
         };
 
         public LocalizationService()
