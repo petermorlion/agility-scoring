@@ -23,21 +23,11 @@
                         StrokeShape="RoundRectangle 12"
                         Stroke="Transparent"
                         Padding="16">
-                    <VerticalStackLayout>
-                        <Label Text="{Binding [Tournaments], Source={StaticResource Loc}}"
-                               FontSize="24"
-                               FontAttributes="Bold"
-                               TextColor="White"
-                               HorizontalOptions="Center" />
-                        <HorizontalStackLayout HorizontalOptions="End" Spacing="8">
-                            <Button Text="⚙"
-                                    BackgroundColor="Transparent"
-                                    TextColor="White"
-                                    Command="{Binding NavigateToSettingsCommand}"
-                                    WidthRequest="40"
-                                    HeightRequest="40"/>
-                        </HorizontalStackLayout>
-                    </VerticalStackLayout>
+                    <Label Text="{Binding [Tournaments], Source={StaticResource Loc}}"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center" />
                 </Border>
 
                 <!-- Tournaments List — Row="*" gives CollectionView real height -->

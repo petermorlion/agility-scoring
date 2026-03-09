@@ -74,12 +74,6 @@ namespace AgilityScoring.Maui.ViewModels
         }
 
         [RelayCommand]
-        private async Task NavigateToSettings()
-        {
-            await Shell.Current.GoToAsync("//settings");
-        }
-
-        [RelayCommand]
         private async Task NavigateToAddTournament()
         {
             await Shell.Current.GoToAsync("//add-tournament");

@@ -3,26 +3,30 @@
         xmlns:local="clr-namespace:AgilityScoring.Maui.Views"
         xmlns:viewmodels="clr-namespace:AgilityScoring.Maui.ViewModels"
         x:Class="AgilityScoring.Maui.AppShell"
-        Shell.FlyoutBehavior="Disabled">
+        Shell.FlyoutBehavior="Flyout">
 
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:IndexPage}"
-        Route="index" />
+        Route="index"
+        FlyoutItemIsVisible="False" />
 
-    <ShellContent
-        Title="Tournaments"
-        ContentTemplate="{DataTemplate local:TournamentListPage}"
-        Route="tournament-list" />
+    <FlyoutItem Title="Tournaments">
+        <ShellContent
+            ContentTemplate="{DataTemplate local:TournamentListPage}"
+            Route="tournament-list" />
+    </FlyoutItem>
 
     <ShellContent
         Title="Add Tournament"
         ContentTemplate="{DataTemplate local:AddTournamentPage}"
-        Route="add-tournament" />
+        Route="add-tournament"
+        FlyoutItemIsVisible="False" />
 
-    <ShellContent
-        Title="Settings"
-        ContentTemplate="{DataTemplate local:SettingsPage}"
-        Route="settings" />
+    <FlyoutItem Title="Settings">
+        <ShellContent
+            ContentTemplate="{DataTemplate local:SettingsPage}"
+            Route="settings" />
+    </FlyoutItem>
 
 </Shell>
