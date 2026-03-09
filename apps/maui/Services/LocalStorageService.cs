@@ -2,12 +2,19 @@ using System.Text.Json;
 
 namespace AgilityScoring.Maui.Services
 {
+    public class ObstacleScore
+    {
+        public int Refusals { get; set; }
+        public int Faults { get; set; }
+    }
+
     public class TournamentDto
     {
         public string Id { get; set; }
         public string Name { get; set; }
         public string Date { get; set; }
         public Dictionary<int, string> ContestantNames { get; set; } = new();
+        public Dictionary<int, Dictionary<string, ObstacleScore>> ContestantScores { get; set; } = new();
     }
 
     public class LocalStorageService
