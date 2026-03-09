@@ -41,6 +41,7 @@ obj/
 
 # Visual Studio
 .vs/
+*.csproj.user
 
 # Unignore
 !.agents/
