@@ -2,7 +2,6 @@ using AgilityScoring.Maui.Services;
 using AgilityScoring.Maui.ViewModels;
 using AgilityScoring.Maui.Views;
 using CommunityToolkit.Maui;
-using MauiIcons.Fluent;
 
 namespace AgilityScoring.Maui
 {
@@ -14,12 +13,10 @@ namespace AgilityScoring.Maui
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
-                .UseFluentMauiIcons()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-                    fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons");
                 });
 
             // Register services

@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using Microsoft.Maui.Storage;
 
 namespace AgilityScoring.Maui.Services
 {
@@ -35,6 +34,17 @@ namespace AgilityScoring.Maui.Services
                 ["ChangeLanguage"] = "Change Language",
                 ["CurrentLanguageLabel"] = "Current:",
                 ["Back"] = "Back",
+                ["ObstacleJump"] = "Jump",
+                ["ObstacleAFrame"] = "A-Frame",
+                ["ObstacleTunnel"] = "Tunnel",
+                ["ObstacleChute"] = "Chute",
+                ["ObstacleWeave"] = "Weave",
+                ["ObstacleTire"] = "Tire",
+                ["ObstacleTeeter"] = "Teeter",
+                ["ObstacleTable"] = "Table",
+                ["ObstacleDogWalk"] = "Dog Walk",
+                ["ScoreRefusals"] = "R",
+                ["ScoreFaults"] = "F",
             },
             ["Français"] = new()
             {
@@ -62,6 +72,17 @@ namespace AgilityScoring.Maui.Services
                 ["ChangeLanguage"] = "Changer la langue",
                 ["CurrentLanguageLabel"] = "Actuelle :",
                 ["Back"] = "Retour",
+                ["ObstacleJump"] = "Haie",
+                ["ObstacleAFrame"] = "Cadre en A",
+                ["ObstacleTunnel"] = "Tunnel",
+                ["ObstacleChute"] = "Tunnel en tissu",
+                ["ObstacleWeave"] = "Slalom",
+                ["ObstacleTire"] = "Pneu",
+                ["ObstacleTeeter"] = "Bascule",
+                ["ObstacleTable"] = "Table",
+                ["ObstacleDogWalk"] = "Passerelle",
+                ["ScoreRefusals"] = "R",
+                ["ScoreFaults"] = "F",
             },
             ["Deutsch"] = new()
             {
@@ -89,6 +110,17 @@ namespace AgilityScoring.Maui.Services
                 ["ChangeLanguage"] = "Sprache ändern",
                 ["CurrentLanguageLabel"] = "Aktuell:",
                 ["Back"] = "Zurück",
+                ["ObstacleJump"] = "Hürde",
+                ["ObstacleAFrame"] = "A-Wand",
+                ["ObstacleTunnel"] = "Tunnel",
+                ["ObstacleChute"] = "Schlauch",
+                ["ObstacleWeave"] = "Stangen",
+                ["ObstacleTire"] = "Reifen",
+                ["ObstacleTeeter"] = "Wippe",
+                ["ObstacleTable"] = "Tisch",
+                ["ObstacleDogWalk"] = "Laufsteg",
+                ["ScoreRefusals"] = "R",
+                ["ScoreFaults"] = "F",
             },
             ["Nederlands"] = new()
             {
@@ -116,6 +148,17 @@ namespace AgilityScoring.Maui.Services
                 ["ChangeLanguage"] = "Taal wijzigen",
                 ["CurrentLanguageLabel"] = "Huidig:",
                 ["Back"] = "Terug",
+                ["ObstacleJump"] = "Horde",
+                ["ObstacleAFrame"] = "Dak",
+                ["ObstacleTunnel"] = "Tunnel",
+                ["ObstacleChute"] = "Slurf",
+                ["ObstacleWeave"] = "Paaltjes",
+                ["ObstacleTire"] = "Band",
+                ["ObstacleTeeter"] = "Wip",
+                ["ObstacleTable"] = "Tafel",
+                ["ObstacleDogWalk"] = "Kattenloop",
+                ["ScoreRefusals"] = "R",
+                ["ScoreFaults"] = "F",
             },
         };
 
