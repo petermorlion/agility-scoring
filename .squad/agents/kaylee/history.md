@@ -130,4 +130,27 @@
 - Commit: ddadb66 on branch `squad/17-pdf-export`
 - **Final verdict:** PDFsharp is the ONLY PDF library we tested that works on Android without native dependencies.
 
+### 2026-06-09 — PDFsharp IFontResolver for Android (Issue #17 follow-up)
+- **Problem:** PDFsharp on Android cannot resolve system fonts like "Helvetica" or "Arial" — causes font-not-found errors
+- **Root cause:** Android does not expose system fonts to .NET apps; PDFsharp's default font resolver fails
+- **Solution:** Implemented custom `IFontResolver` that loads TTF font bytes from MAUI app package
+- **Font assets found:** `OpenSans-Regular.ttf` and `OpenSans-Semibold.ttf` already in `Resources/Fonts/` via `<MauiFont Include="Resources\Fonts\*" />` in csproj
+- **Implementation:**
+  - Created `Services/PdfFontResolver.cs` with `IFontResolver` interface
+  - Static fields `RegularFontData` and `BoldFontData` cache font bytes loaded at startup
+  - `ResolveTypeface()` maps all font requests to our two faces ("OpenSans-Regular" / "OpenSans-Bold")
+  - `GetFont()` returns pre-cached font bytes synchronously (no async allowed in this API)
+- **Font loading strategy:** Async font loading happens BEFORE `Task.Run` block in `ExportTournamentToPdfAsync()`
+  - `InitializeFontResolverAsync()` reads TTF files via `FileSystem.OpenAppPackageFileAsync()`, copies to `MemoryStream`, converts to byte arrays
+  - Falls back to regular font if bold font fails to load
+  - `GlobalFontSettings.FontResolver` set once on first PDF generation (static/global setting, thread-safe via null check)
+- **XFont changes:** Updated font family name from "Helvetica" → "OpenSans" (though any name works since resolver catches all requests)
+- **Key lessons:**
+  - PDFsharp `IFontResolver.GetFont()` is synchronous but MAUI `FileSystem` APIs are async — solution: load fonts before Task.Run
+  - `GlobalFontSettings.FontResolver` is static/global — once set, applies to all `PdfDocument` instances in app
+  - Font file names are case-sensitive on Android — use exact names from `Resources/Fonts/`
+- Build: 0 errors, 53 warnings (PDFsharp deprecation warnings about XUnit implicit conversions, unrelated to font resolver)
+- Commit: 7cc20cd on branch `squad/17-pdf-export`
+- **Status:** PDFsharp now functional on Android with proper font rendering using OpenSans
+
 
