@@ -1,12 +1,43 @@
 using PdfSharp.Drawing;
+using PdfSharp.Fonts;
 using PdfSharp.Pdf;
 
 namespace AgilityScoring.Maui.Services
 {
     public class PdfExportService
     {
+        private static async Task InitializeFontResolverAsync()
+        {
+            // Load OpenSans-Regular font bytes from MAUI app package
+            using var stream = await FileSystem.OpenAppPackageFileAsync("OpenSans-Regular.ttf");
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            PdfFontResolver.RegularFontData = ms.ToArray();
+            
+            // Load OpenSans-Semibold (use as bold font)
+            try
+            {
+                using var boldStream = await FileSystem.OpenAppPackageFileAsync("OpenSans-Semibold.ttf");
+                using var boldMs = new MemoryStream();
+                await boldStream.CopyToAsync(boldMs);
+                PdfFontResolver.BoldFontData = boldMs.ToArray();
+            }
+            catch
+            {
+                // Fall back to regular font for bold
+                PdfFontResolver.BoldFontData = PdfFontResolver.RegularFontData;
+            }
+        }
+
         public async Task<string> ExportTournamentToPdfAsync(TournamentDto tournament, List<ContestantResult> contestants)
         {
+            // Initialize font resolver on first use (before Task.Run since it's async)
+            if (GlobalFontSettings.FontResolver == null)
+            {
+                await InitializeFontResolverAsync();
+                GlobalFontSettings.FontResolver = new PdfFontResolver();
+            }
+
             return await Task.Run(() =>
             {
                 var invalidChars = System.IO.Path.GetInvalidFileNameChars();
@@ -21,10 +52,10 @@ namespace AgilityScoring.Maui.Services
                 page.Size = PdfSharp.PageSize.A4;
                 using var gfx = XGraphics.FromPdfPage(page);
 
-                var titleFont = new XFont("Helvetica", 24, XFontStyleEx.Bold);
-                var dateFont = new XFont("Helvetica", 14, XFontStyleEx.Regular);
-                var headerFont = new XFont("Helvetica", 11, XFontStyleEx.Bold);
-                var regularFont = new XFont("Helvetica", 11, XFontStyleEx.Regular);
+                var titleFont = new XFont("OpenSans", 24, XFontStyleEx.Bold);
+                var dateFont = new XFont("OpenSans", 14, XFontStyleEx.Regular);
+                var headerFont = new XFont("OpenSans", 11, XFontStyleEx.Bold);
+                var regularFont = new XFont("OpenSans", 11, XFontStyleEx.Regular);
 
                 double yPos = 50;
                 gfx.DrawString(tournament.Name, titleFont, XBrushes.Black, new XRect(50, yPos, page.Width - 100, 40), XStringFormats.TopLeft);
