@@ -64,15 +64,28 @@
                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TournamentListViewModel}}, Path=SelectTournamentCommand}"
                                                                   CommandParameter="{Binding .}" />
                                         </Border.GestureRecognizers>
-                                        <VerticalStackLayout Spacing="4">
-                                            <Label Text="{Binding Name}"
-                                                   FontSize="16"
-                                                   FontAttributes="Bold"
-                                                   TextColor="{StaticResource TextDark}" />
-                                            <Label Text="{Binding Date}"
-                                                   FontSize="14"
-                                                   TextColor="{StaticResource TextMedium}" />
-                                        </VerticalStackLayout>
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <VerticalStackLayout Grid.Column="0" Spacing="4">
+                                                <Label Text="{Binding Name}"
+                                                       FontSize="16"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{StaticResource TextDark}" />
+                                                <Label Text="{Binding Date}"
+                                                       FontSize="14"
+                                                       TextColor="{StaticResource TextMedium}" />
+                                            </VerticalStackLayout>
+                                            <Button Grid.Column="1"
+                                                    Text="📄 PDF"
+                                                    FontSize="12"
+                                                    BackgroundColor="{StaticResource Primary}"
+                                                    TextColor="White"
+                                                    WidthRequest="80"
+                                                    HeightRequest="36"
+                                                    CornerRadius="8"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TournamentListViewModel}}, Path=ExportToPdfCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    VerticalOptions="Center" />
+                                        </Grid>
                                     </Border>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>

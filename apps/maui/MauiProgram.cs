@@ -2,6 +2,7 @@ using AgilityScoring.Maui.Services;
 using AgilityScoring.Maui.ViewModels;
 using AgilityScoring.Maui.Views;
 using CommunityToolkit.Maui;
+using QuestPDF.Infrastructure;
 
 namespace AgilityScoring.Maui
 {
@@ -9,6 +10,9 @@ namespace AgilityScoring.Maui
     {
         public static MauiApp CreateMauiApp()
         {
+            // Set QuestPDF license
+            QuestPDF.Settings.License = LicenseType.Community;
+
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
@@ -23,6 +27,7 @@ namespace AgilityScoring.Maui
             builder.Services.AddSingleton<LocalizationService>();
             builder.Services.AddSingleton<LocalStorageService>();
             builder.Services.AddSingleton<NavigationService>();
+            builder.Services.AddSingleton<PdfExportService>();
 
             // Register view models
             builder.Services.AddSingleton<IndexViewModel>();

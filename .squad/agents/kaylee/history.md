@@ -74,5 +74,17 @@
 - **Architecture note:** App uses LocalStorage only; no API integration yet. Future API work will require mapping contestant numbers to result IDs.
 - **Cross-team context:** Zoe implemented backend API; Simon wrote tests. API uses result `id` (UUID) but MAUI tracks by `contestantNumber` — integration task will need mapping layer.
 
+### 2026-03-13 — PDF Export Feature (Issue #17)
+- Implemented PDF export for tournaments using **QuestPDF** (NuGet package, MIT license, community edition)
+- **PdfExportService:** Created service to generate tournament PDFs with table layout showing contestant #, name, refusals, faults, and DQ status
+- **PDF content:** Tournament name (24pt bold), date (16pt), table with headers and data rows; DQ status shown as red "DQ" text
+- **Namespace conflicts:** QuestPDF has `IContainer` and `Colors` types that clash with MAUI — resolved by fully qualifying: `QuestPDF.Infrastructure.IContainer` and `QuestPDF.Helpers.Colors`
+- **QuestPDF license:** Added `QuestPDF.Settings.License = LicenseType.Community;` to `MauiProgram.CreateMauiApp()` (required for community use)
+- **File handling:** PDFs saved to `FileSystem.CacheDirectory` with filename `{TournamentName}_{timestamp}.pdf`; opened via `Launcher.OpenAsync()` for sharing
+- **UI:** Added "📄 PDF" button to each tournament card in TournamentListPage (80px wide, primary color, positioned at right of card)
+- **Data aggregation:** `ExportToPdf` command builds `ContestantResult` list from `TournamentDto` (sums refusals/faults across obstacles, reads DQ status from dictionary)
+- **DI wiring:** Registered `PdfExportService` as singleton in `MauiProgram.cs`; injected into `TournamentListViewModel` alongside `LocalStorageService`
+- Build: 0 errors, 47 warnings (pre-existing nullability warnings)
+- **Layout:** Grid with two columns — left column has tournament name/date, right column has export button (aligned vertically center)
 
 
