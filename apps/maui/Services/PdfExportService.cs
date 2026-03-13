@@ -10,8 +10,12 @@ namespace AgilityScoring.Maui.Services
         {
             return await Task.Run(() =>
             {
-                var fileName = $"{tournament.Name.Replace(" ", "_")}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
-                var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+                var invalidChars = Path.GetInvalidFileNameChars();
+                var safeName = string.Concat(tournament.Name.Select(c => invalidChars.Contains(c) ? '_' : c));
+                var fileName = $"{safeName}_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+                var exportsDir = Path.Combine(FileSystem.AppDataDirectory, "exports");
+                Directory.CreateDirectory(exportsDir);
+                var filePath = Path.Combine(exportsDir, fileName);
 
                 Document.Create(container =>
                 {
