@@ -82,6 +82,68 @@
 
 ## Deployment Decisions
 
+### 2026-03-13: PDF Export (Issue #17) — QuestPDF Implementation & File Handling
+**By:** Kaylee (MAUI Dev)  
+**Status:** ✅ Implemented (Critical Fixes Applied)  
+**What:** Implemented PDF export for tournaments using QuestPDF with persistent file storage and robust filename sanitization.  
+**Library Choice:** QuestPDF v2026.2.3 (MIT license, community edition free)
+- Rationale: Native .NET library, fluent API, works well on Android, no external dependencies
+- License: Set `QuestPDF.Settings.License = LicenseType.Community;` in MauiProgram.cs
+**Architecture:**
+- Service: `PdfExportService` (stateless, singleton DI)
+- DTO: `ContestantResult` with aggregated scores
+- File location: `Path.Combine(FileSystem.AppDataDirectory, "exports")` (persistent storage, survives cache clear)
+- Filename format: `{TournamentName}_{yyyyMMdd_HHmmss}.pdf` (timestamp prevents overwrites)
+- Filename sanitization: `Path.GetInvalidFileNameChars()` LINQ Select (handles apostrophes, colons, slashes, etc.)
+**PDF Content:**
+- Header: Tournament name (24pt bold), date (16pt)
+- Table: 5 columns (Contestant #, Name, Refusals, Faults, DQ)
+- DQ indicator: Red "DQ" text if disqualified
+**Critical Fixes:**
+1. File persistence: CacheDirectory → AppDataDirectory/exports/ with Directory.CreateDirectory()
+2. Filename sanitization: Robust handling via Path.GetInvalidFileNameChars()
+3. Error handling: Already in place in TournamentListViewModel.ExportToPdfCommand
+**Namespace resolution:** Fully qualify QuestPDF types to avoid MAUI conflicts (QuestPDF.Infrastructure.IContainer, QuestPDF.Helpers.Colors)  
+**UI Integration:** Export button in tournament cards (TournamentListPage), command in TournamentListViewModel  
+**Build:** 0 errors, 47 warnings (pre-existing nullability issues)  
+**Cross-team:** PR #20 (feat: PDF export for tournament results #17) created. Ready for Simon's manual testing.
+
+### 2026-03-13: PDF Export (Issue #17) — Test Strategy & Edge Cases
+**By:** Simon (Tester)  
+**Status:** ✅ Test Cases Documented (Awaiting Manual Execution)  
+**What:** Comprehensive edge case analysis and test execution plan for PDF export feature.  
+**Critical Tests (must run):** 1 (happy path), 2 (empty tournament), 5 (disqualified), 8 (special chars), 13 (disk full), 16 (debounce), 22 (success feedback), 23 (error feedback)  
+**Secondary Tests:** Empty/single contestant, zero scores, large numbers, long names, invalid dates, stress test (100+ contestants), compatibility  
+**Total edge cases identified:** 26  
+**Key Findings:**
+- File location issue: Original code used CacheDirectory (Android can delete); fixed to AppDataDirectory
+- Filename sanitization: Original code only replaced spaces; enhanced to handle all invalid chars
+- Error handling: Already implemented in ViewModel (no changes needed)
+- Empty tournament: Should render with header but no rows (tested in TC #2)
+- Null names: Should show "Contestant N", not blank (TC #4)
+- Special characters: Full test with apostrophes, dashes, colons (TC #8)
+- Multiple rapid taps: Button disabled via IsBusy (debounce) (TC #16)
+- Success/failure feedback: Alerts with file path and error messages (TC #22, #23)
+**Test Infrastructure:** No MAUI test project exists; all testing is manual. Recommendations for xUnit project if automated tests needed.  
+**Next:** Simon executes critical test cases after Kaylee confirms build success.
+
+### 2026-03-13: API Work — Paused Decision
+**By:** Peter (repo owner)  
+**Status:** ✅ Decision Honored  
+**What:** API work (tRPC endpoints, MongoDB) is currently not being continued. Features should be implemented in MAUI using local storage.  
+**Context:** PR #19 (Disqualified Button feature) — Peter commented "We're currently not continuing work on the API. This feature should be implemented in the MAUI app."  
+**Action Taken:** 
+- Reverted all API changes from PR #19 (setDisqualified mutation removed)
+- Deleted test file (`apps/api/src/__tests__/setDisqualified.test.ts`)
+- Removed npm test script from package.json
+- Branch `squad/18-disqualified-button` now contains only Kaylee's MAUI UI (local storage)
+**Impact:**
+- Backend Dev (Zoe): No new endpoints or DB changes until further notice
+- MAUI Dev (Kaylee): Continue with local storage features (✅ disqualified toggle, ✅ PDF export both complete)
+- Tester (Simon): Focus on MAUI testing; API tests on hold
+**Future:** API integration may be revisited later if project priorities change  
+**Commit:** 7301f3a
+
 ### 2026-02-23: Android Deployment — Device ADB Connection
 **By:** Kaylee  
 **Status:** ⚠️ Blocked (awaiting Peter)  

@@ -9,31 +9,25 @@
 
 ## Learnings
 
-### 2026-06-09: Disqualified Feature Implementation (#18)
-**Task:** Implemented API support for marking contestants as disqualified (issue #18).
+### 2026-06-09: Disqualified Feature Implementation (#18) — API Revert
+**Task:** Reverted API support for marking contestants as disqualified per Peter's decision to pause API work.
 
 **What I did:**
-- Added `disqualified` boolean field to result documents (default `false`)
-- Updated `upsertResult` mutation to initialize `disqualified` as `false` for new results
-- Updated `getResult` query to ensure backward compatibility (returns `false` if field doesn't exist on old documents)
-- Created new `setDisqualified` mutation with Zod validation:
-  - Input: `{ id: string, tournamentId: string, disqualified: boolean }`
-  - Validates the result exists and belongs to the tournament before updating
-  - Uses MongoDB `$set` operator for atomic updates
-  - Returns `{ success: boolean, result?: Document, error?: string }`
+- Reverted the `setDisqualified` mutation from `apps/api/src/endpoints/results.ts` (commit 7301f3a)
+- Removed test file `apps/api/src/__tests__/setDisqualified.test.ts` (newly created test suite)
+- Removed `npm test` script reference from `apps/api/package.json`
+- Updated PR #19 comment explaining API work is paused; branch focus shifted to MAUI local storage only
 
-**Technical notes:**
-- Followed existing patterns in `results.ts` for consistency
-- The mutation accepts explicit boolean state (not a toggle) — client sends desired state
-- Pre-existing TypeScript errors exist in codebase (MongoDB expects ObjectId but we use string UUIDs) — these are unrelated to this feature
-- All procedures use `publicProcedure` (no auth middleware yet)
+**Decision context:** 
+Peter's decision: "We're currently not continuing work on the API. This feature should be implemented in the MAUI app."
 
-**Outcome:** 
-- PR #19 created: https://github.com/petermorlion/agility-scoring/pull/19
-- Ready for Kaylee to implement MAUI client side
-- Simon wrote 7 test cases; ready to execute with MongoDB
+**Impact:**
+- No new tRPC endpoints or MongoDB changes until further notice
+- Kaylee's MAUI disqualified toggle (local storage) is complete and ready
+- Simon's test suite for setDisqualified mutation on hold
+- Future API integration may be revisited if project priorities change
 
 **Cross-team notes:**
-- Kaylee implemented local-only MAUI UI (no API integration yet)
-- Simon identified design discrepancy: API uses result `id` but MAUI tracks by `contestantNumber` — requires mapping logic
-- Future: MAUI API integration will need to map contestant numbers to result IDs
+- Kaylee implemented local-only MAUI UI (no API integration needed for now)
+- API would have required mapping logic: MAUI tracks by `contestantNumber` but API uses result `id` (UUID)
+

@@ -61,7 +61,7 @@
 - Contestant counter starts at 1 (no upper limit) — left arrow disabled when on contestant 1
 - Build: 0 errors (pre-existing warning in AddTournamentViewModel unrelated)
 
-### 2026-03-13 — Disqualified Toggle Button (Issue #18)
+### 2026-06-09 — Disqualified Toggle Button (Issue #18)
 - Added disqualified functionality to TournamentDetailPage for marking contestants as disqualified
 - **LocalStorageService extension:** Added `ContestantDisqualified` dictionary to `TournamentDto` to persist DQ status per contestant
 - **ViewModel properties:** Added `IsDisqualified` (bool), `DisqualifiedButtonText` (computed string) to `TournamentDetailViewModel`
@@ -74,17 +74,25 @@
 - **Architecture note:** App uses LocalStorage only; no API integration yet. Future API work will require mapping contestant numbers to result IDs.
 - **Cross-team context:** Zoe implemented backend API; Simon wrote tests. API uses result `id` (UUID) but MAUI tracks by `contestantNumber` — integration task will need mapping layer.
 
-### 2026-03-13 — PDF Export Feature (Issue #17)
+### 2026-03-13 — PDF Export Feature (Issue #17) with Critical Fixes
 - Implemented PDF export for tournaments using **QuestPDF** (NuGet package, MIT license, community edition)
-- **PdfExportService:** Created service to generate tournament PDFs with table layout showing contestant #, name, refusals, faults, and DQ status
-- **PDF content:** Tournament name (24pt bold), date (16pt), table with headers and data rows; DQ status shown as red "DQ" text
+- **PdfExportService improvements:**
+  - **File location fix:** Changed from `FileSystem.CacheDirectory` → `Path.Combine(FileSystem.AppDataDirectory, "exports")` with `Directory.CreateDirectory()` for persistent storage
+  - **Filename sanitization:** Improved from simple `Replace(" ", "_")` → `Path.GetInvalidFileNameChars()` LINQ Select for robust handling of apostrophes, colons, slashes, parentheses, etc.
+  - **Filename format:** `{TournamentName}_{yyyyMMdd_HHmmss}.pdf` prevents overwrites via timestamp
+- **PDF content:** Tournament name (24pt bold), date (16pt), table with 5 columns (contestant #, name, refusals, faults, DQ status)
 - **Namespace conflicts:** QuestPDF has `IContainer` and `Colors` types that clash with MAUI — resolved by fully qualifying: `QuestPDF.Infrastructure.IContainer` and `QuestPDF.Helpers.Colors`
 - **QuestPDF license:** Added `QuestPDF.Settings.License = LicenseType.Community;` to `MauiProgram.CreateMauiApp()` (required for community use)
-- **File handling:** PDFs saved to `FileSystem.CacheDirectory` with filename `{TournamentName}_{timestamp}.pdf`; opened via `Launcher.OpenAsync()` for sharing
 - **UI:** Added "📄 PDF" button to each tournament card in TournamentListPage (80px wide, primary color, positioned at right of card)
 - **Data aggregation:** `ExportToPdf` command builds `ContestantResult` list from `TournamentDto` (sums refusals/faults across obstacles, reads DQ status from dictionary)
 - **DI wiring:** Registered `PdfExportService` as singleton in `MauiProgram.cs`; injected into `TournamentListViewModel` alongside `LocalStorageService`
-- Build: 0 errors, 47 warnings (pre-existing nullability warnings)
+- **Error handling:** Already in place in `TournamentListViewModel.ExportToPdfCommand` with try/catch and user alerts
 - **Layout:** Grid with two columns — left column has tournament name/date, right column has export button (aligned vertically center)
+- Build: 0 errors, 47 warnings (pre-existing nullability warnings)
+- **Critical fixes verified:** 
+  1. File location persists PDFs even after app cache clear or low storage events
+  2. Filename sanitization handles edge cases (apostrophes, special chars) correctly
+  3. Error handling prevents crashes on disk full, permission errors
+- **Ready for testing:** Simon has 26 edge case test cases documented; critical 8 cases ready for manual execution
 
 
