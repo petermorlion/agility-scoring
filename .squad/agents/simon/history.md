@@ -43,7 +43,14 @@
 - Added `"test": "node --test --require tsx/cjs src/__tests__/**/*.test.ts"` script
 
 **Next steps:**
-- Zoe implements `setDisqualified` endpoint in `results.ts`
+- Zoe implements `setDisqualified` endpoint in `results.ts` ✅ DONE
 - Tests should pass after implementation
-- Kaylee wires up MAUI toggle button to call endpoint
-- Simon reviews implementation and runs tests
+- Kaylee wires up MAUI toggle button to call endpoint (currently local-only) ✅ DONE — awaiting API integration
+- Simon reviews implementation and runs tests — awaiting MongoDB availability
+
+**Cross-team context:**
+- Zoe implemented API with explicit state mutation design (not toggle) — idempotent and race-safe
+- Kaylee built local-only MAUI UI; no API integration yet
+- Key finding: Design discrepancy between API (uses result `id`) and MAUI (uses `contestantNumber`) — integration will require mapping layer
+- Documented recommendations for backend (add validation, ensure backward compatibility) and frontend (disable button during API call, error handling)
+

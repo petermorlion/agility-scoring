@@ -72,5 +72,7 @@
 - **Backward compatibility:** Gracefully handles missing `ContestantDisqualified` in existing tournament JSON (defaults to false via `GetValueOrDefault`)
 - Build: 0 errors, 41 warnings (pre-existing nullability warnings)
 - **Architecture note:** App uses LocalStorage only; no API integration yet. Future API work will require mapping contestant numbers to result IDs.
+- **Cross-team context:** Zoe implemented backend API; Simon wrote tests. API uses result `id` (UUID) but MAUI tracks by `contestantNumber` — integration task will need mapping layer.
+
 
 

@@ -31,3 +31,9 @@
 **Outcome:** 
 - PR #19 created: https://github.com/petermorlion/agility-scoring/pull/19
 - Ready for Kaylee to implement MAUI client side
+- Simon wrote 7 test cases; ready to execute with MongoDB
+
+**Cross-team notes:**
+- Kaylee implemented local-only MAUI UI (no API integration yet)
+- Simon identified design discrepancy: API uses result `id` but MAUI tracks by `contestantNumber` — requires mapping logic
+- Future: MAUI API integration will need to map contestant numbers to result IDs
