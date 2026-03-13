@@ -61,3 +61,16 @@
 - Contestant counter starts at 1 (no upper limit) — left arrow disabled when on contestant 1
 - Build: 0 errors (pre-existing warning in AddTournamentViewModel unrelated)
 
+### 2026-03-13 — Disqualified Toggle Button (Issue #18)
+- Added disqualified functionality to TournamentDetailPage for marking contestants as disqualified
+- **LocalStorageService extension:** Added `ContestantDisqualified` dictionary to `TournamentDto` to persist DQ status per contestant
+- **ViewModel properties:** Added `IsDisqualified` (bool), `DisqualifiedButtonText` (computed string) to `TournamentDetailViewModel`
+- **Toggle command:** `ToggleDisqualifiedCommand` flips local state, persists to storage, rolls back on error with alert
+- **UI:** Added full-width button below contestant nav bar with dynamic text ("Mark as Disqualified" / "Disqualified ✓")
+- **Visual feedback:** Created `BoolToDisqualifiedColorConverter` — gray when not DQ'd (#6c757d), red when DQ'd (#dc3545)
+- **State sync:** DQ status loads when contestant number changes; persists in `_contestantDisqualified` dictionary
+- **Backward compatibility:** Gracefully handles missing `ContestantDisqualified` in existing tournament JSON (defaults to false via `GetValueOrDefault`)
+- Build: 0 errors, 41 warnings (pre-existing nullability warnings)
+- **Architecture note:** App uses LocalStorage only; no API integration yet. Future API work will require mapping contestant numbers to result IDs.
+
+
