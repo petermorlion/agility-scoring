@@ -1,9 +1,5 @@
-using iText.Kernel.Pdf;
-using iText.Layout;
-using iText.Layout.Element;
-using iText.Layout.Properties;
-using iText.Kernel.Colors;
-using iTextCell = iText.Layout.Element.Cell;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 
 namespace AgilityScoring.Maui.Services
 {
@@ -20,33 +16,59 @@ namespace AgilityScoring.Maui.Services
                 Directory.CreateDirectory(exportsDir);
                 var filePath = System.IO.Path.Combine(exportsDir, fileName);
 
-                using var writer = new PdfWriter(filePath);
-                using var pdf = new PdfDocument(writer);
-                using var document = new Document(pdf, iText.Kernel.Geom.PageSize.A4);
-                document.SetMargins(50, 50, 50, 50);
+                var document = new PdfDocument();
+                var page = document.AddPage();
+                page.Size = PdfSharp.PageSize.A4;
+                using var gfx = XGraphics.FromPdfPage(page);
 
-                document.Add(new Paragraph(tournament.Name).SetFontSize(24).SimulateBold());
-                document.Add(new Paragraph(tournament.Date).SetFontSize(14));
+                var titleFont = new XFont("Helvetica", 24, XFontStyleEx.Bold);
+                var dateFont = new XFont("Helvetica", 14, XFontStyleEx.Regular);
+                var headerFont = new XFont("Helvetica", 11, XFontStyleEx.Bold);
+                var regularFont = new XFont("Helvetica", 11, XFontStyleEx.Regular);
 
-                var table = new Table(UnitValue.CreatePercentArray(new float[] { 1, 4, 2, 2, 1 }))
-                    .UseAllAvailableWidth()
-                    .SetMarginTop(20);
+                double yPos = 50;
+                gfx.DrawString(tournament.Name, titleFont, XBrushes.Black, new XRect(50, yPos, page.Width - 100, 40), XStringFormats.TopLeft);
+                yPos += 40;
 
-                foreach (var header in new[] { "#", "Name", "Refusals", "Faults", "DQ" })
-                    table.AddHeaderCell(new iTextCell().Add(new Paragraph(header).SimulateBold()));
+                gfx.DrawString(tournament.Date, dateFont, XBrushes.Black, new XRect(50, yPos, page.Width - 100, 30), XStringFormats.TopLeft);
+                yPos += 50;
+
+                double tableLeft = 50;
+                double tableWidth = page.Width - 100;
+                double col1 = tableLeft;
+                double col2 = col1 + 40;
+                double col3 = col2 + 200;
+                double col4 = col3 + 80;
+                double col5 = col4 + 80;
+                double rowHeight = 25;
+
+                var pen = new XPen(XColors.Black, 0.5);
+
+                gfx.DrawRectangle(pen, col1, yPos, tableWidth, rowHeight);
+                gfx.DrawString("#", headerFont, XBrushes.Black, new XRect(col1 + 5, yPos + 5, 30, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("Name", headerFont, XBrushes.Black, new XRect(col2 + 5, yPos + 5, 190, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("Refusals", headerFont, XBrushes.Black, new XRect(col3 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("Faults", headerFont, XBrushes.Black, new XRect(col4 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("DQ", headerFont, XBrushes.Black, new XRect(col5 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+                yPos += rowHeight;
 
                 foreach (var c in contestants.OrderBy(c => c.ContestantNumber))
                 {
-                    table.AddCell(c.ContestantNumber.ToString());
-                    table.AddCell(c.Name ?? "");
-                    table.AddCell(c.TotalRefusals.ToString());
-                    table.AddCell(c.TotalFaults.ToString());
-                    var dqPara = new Paragraph(c.IsDisqualified ? "DQ" : "")
-                        .SetFontColor(c.IsDisqualified ? ColorConstants.RED : ColorConstants.BLACK);
-                    table.AddCell(new iTextCell().Add(dqPara));
+                    gfx.DrawRectangle(pen, col1, yPos, tableWidth, rowHeight);
+
+                    gfx.DrawString(c.ContestantNumber.ToString(), regularFont, XBrushes.Black, new XRect(col1 + 5, yPos + 5, 30, rowHeight), XStringFormats.TopLeft);
+                    gfx.DrawString(c.Name ?? "", regularFont, XBrushes.Black, new XRect(col2 + 5, yPos + 5, 190, rowHeight), XStringFormats.TopLeft);
+                    gfx.DrawString(c.TotalRefusals.ToString(), regularFont, XBrushes.Black, new XRect(col3 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+                    gfx.DrawString(c.TotalFaults.ToString(), regularFont, XBrushes.Black, new XRect(col4 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+
+                    var dqBrush = c.IsDisqualified ? XBrushes.Red : XBrushes.Black;
+                    var dqText = c.IsDisqualified ? "DQ" : "";
+                    gfx.DrawString(dqText, regularFont, dqBrush, new XRect(col5 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+
+                    yPos += rowHeight;
                 }
 
-                document.Add(table);
+                document.Save(filePath);
 
                 return filePath;
             });
