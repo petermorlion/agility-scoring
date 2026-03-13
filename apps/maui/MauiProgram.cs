@@ -2,17 +2,12 @@ using AgilityScoring.Maui.Services;
 using AgilityScoring.Maui.ViewModels;
 using AgilityScoring.Maui.Views;
 using CommunityToolkit.Maui;
-using QuestPDF.Infrastructure;
-
 namespace AgilityScoring.Maui
 {
     public static class MauiProgram
     {
         public static MauiApp CreateMauiApp()
         {
-            // Set QuestPDF license
-            QuestPDF.Settings.License = LicenseType.Community;
-
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()

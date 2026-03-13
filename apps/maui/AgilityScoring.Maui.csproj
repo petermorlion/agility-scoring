@@ -52,7 +52,7 @@
     <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.41" />
     <PackageReference Include="CommunityToolkit.Maui" Version="14.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="QuestPDF" Version="2026.2.3" />
+    <PackageReference Include="itext7" Version="9.1.0" />
   </ItemGroup>
 
   <ItemGroup>
