@@ -82,13 +82,12 @@
 
 ## Deployment Decisions
 
-### 2026-03-13: PDF Export (Issue #17) — QuestPDF Implementation & File Handling
+### 2026-03-13: PDF Export (Issue #17) — QuestPDF → iText7 Migration for Android Compatibility
 **By:** Kaylee (MAUI Dev)  
-**Status:** ✅ Implemented (Critical Fixes Applied)  
-**What:** Implemented PDF export for tournaments using QuestPDF with persistent file storage and robust filename sanitization.  
-**Library Choice:** QuestPDF v2026.2.3 (MIT license, community edition free)
-- Rationale: Native .NET library, fluent API, works well on Android, no external dependencies
-- License: Set `QuestPDF.Settings.License = LicenseType.Community;` in MauiProgram.cs
+**Status:** ✅ Implemented (iText7 replaces QuestPDF)  
+**What:** Implemented PDF export for tournaments using QuestPDF with persistent file storage and robust filename sanitization; subsequently replaced QuestPDF with iText7 for Android compatibility.  
+**Original Library:** QuestPDF v2026.2.3 (MIT license, community edition free) — **NO ANDROID SUPPORT** (native Linux libraries only)
+**Replacement:** iText7 v9.1.0 (pure managed .NET, zero native dependencies, full Android support, AGPL-3.0 license — commercial license required for closed-source use)
 **Architecture:**
 - Service: `PdfExportService` (stateless, singleton DI)
 - DTO: `ContestantResult` with aggregated scores
@@ -103,10 +102,14 @@
 1. File persistence: CacheDirectory → AppDataDirectory/exports/ with Directory.CreateDirectory()
 2. Filename sanitization: Robust handling via Path.GetInvalidFileNameChars()
 3. Error handling: Already in place in TournamentListViewModel.ExportToPdfCommand
-**Namespace resolution:** Fully qualify QuestPDF types to avoid MAUI conflicts (QuestPDF.Infrastructure.IContainer, QuestPDF.Helpers.Colors)  
+4. **iText7 API specifics:** Bold via `SimulateBold()` (not `SetBold()`), namespace aliases for Cell and Path conflicts
+**Namespace resolution:** 
+- iText.Kernel.Geom.Path vs System.IO.Path: Don't import iText.Kernel.Geom; qualify PageSize inline
+- iText.Layout.Element.Cell vs Microsoft.Maui.Controls.Cell: Use `using iTextCell = iText.Layout.Element.Cell` alias
 **UI Integration:** Export button in tournament cards (TournamentListPage), command in TournamentListViewModel  
-**Build:** 0 errors, 47 warnings (pre-existing nullability issues)  
+**Build:** 0 errors  
 **Cross-team:** PR #20 (feat: PDF export for tournament results #17) created. Ready for Simon's manual testing.
+**Commit:** 7040e66 on `squad/17-pdf-export`
 
 ### 2026-03-13: PDF Export (Issue #17) — Test Strategy & Edge Cases
 **By:** Simon (Tester)  

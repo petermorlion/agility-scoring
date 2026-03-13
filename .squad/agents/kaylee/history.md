@@ -95,4 +95,19 @@
   3. Error handling prevents crashes on disk full, permission errors
 - **Ready for testing:** Simon has 26 edge case test cases documented; critical 8 cases ready for manual execution
 
+### 2026-06-09 — iText7 replaces QuestPDF (Issue #17, Android fix)
+- **QuestPDF does NOT support Android** — it ships only Linux native libraries; causes `System.DllNotFoundException` at runtime on Android devices
+- Replaced QuestPDF v2026.2.3 with **iText7 v9.1.0** (NuGet id: `itext7`), a pure managed .NET library with zero native dependencies — works on Android
+- Removed `QuestPDF.Settings.License = LicenseType.Community;` initialisation from `MauiProgram.cs` (iText7 needs no startup licence call)
+- **iText7 9.x API patterns used in `PdfExportService.cs`:**
+  - `new PdfWriter(filePath)` → `new PdfDocument(writer)` → `new Document(pdf, iText.Kernel.Geom.PageSize.A4)`
+  - Bold text: `SimulateBold()` — **NOT `SetBold()`** (renamed in iText7 v9.x; `SetBold()` no longer exists)
+  - Font color: `.SetFontColor(ColorConstants.RED)` from `iText.Kernel.Colors`
+  - Table: `new Table(UnitValue.CreatePercentArray(new float[] {...})).UseAllAvailableWidth()`
+  - Header cells: `table.AddHeaderCell(new Cell().Add(new Paragraph(...)))`
+- **Namespace conflicts with MAUI globals:** `iText.Kernel.Geom.Path` clashes with `System.IO.Path` (don't `using iText.Kernel.Geom`; use `iText.Kernel.Geom.PageSize` inline); `iText.Layout.Element.Cell` clashes with `Microsoft.Maui.Controls.Cell` (use `using iTextCell = iText.Layout.Element.Cell` alias)
+- **License:** iText7 is AGPL-3.0. For commercial/closed-source use, a commercial iText licence is required.
+- Build: 0 errors
+- Commit: 7040e66 on branch `squad/17-pdf-export`
+
 
