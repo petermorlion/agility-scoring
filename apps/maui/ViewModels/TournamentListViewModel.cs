@@ -121,10 +121,18 @@ namespace AgilityScoring.Maui.ViewModels
 
                     bool isDisqualified = tournament.ContestantDisqualified.TryGetValue(contestantNumber, out var dq) && dq;
 
+                    // Format time
+                    string timeStr = "0:00";
+                    if (tournament.ContestantTimes.TryGetValue(contestantNumber, out var t))
+                    {
+                        timeStr = $"{t.Minutes}:{t.Seconds:D2}";
+                    }
+
                     contestants.Add(new ContestantResult
                     {
                         ContestantNumber = contestantNumber,
                         Name = name,
+                        Time = timeStr,
                         TotalRefusals = totalRefusals,
                         TotalFaults = totalFaults,
                         IsDisqualified = isDisqualified

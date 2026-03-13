@@ -67,20 +67,22 @@ namespace AgilityScoring.Maui.Services
                 double tableLeft = 50;
                 double tableWidth = page.Width - 100;
                 double col1 = tableLeft;
-                double col2 = col1 + 40;
-                double col3 = col2 + 200;
-                double col4 = col3 + 80;
-                double col5 = col4 + 80;
+                double col2 = col1 + 35;
+                double col3 = col2 + 155;
+                double col4 = col3 + 65;
+                double col5 = col4 + 70;
+                double col6 = col5 + 70;
                 double rowHeight = 25;
 
                 var pen = new XPen(XColors.Black, 0.5);
 
                 gfx.DrawRectangle(pen, col1, yPos, tableWidth, rowHeight);
                 gfx.DrawString("#", headerFont, XBrushes.Black, new XRect(col1 + 5, yPos + 5, 30, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("Name", headerFont, XBrushes.Black, new XRect(col2 + 5, yPos + 5, 190, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("Refusals", headerFont, XBrushes.Black, new XRect(col3 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("Faults", headerFont, XBrushes.Black, new XRect(col4 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("DQ", headerFont, XBrushes.Black, new XRect(col5 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("Name", headerFont, XBrushes.Black, new XRect(col2 + 5, yPos + 5, 145, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("Time", headerFont, XBrushes.Black, new XRect(col3 + 5, yPos + 5, 55, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("Refusals", headerFont, XBrushes.Black, new XRect(col4 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("Faults", headerFont, XBrushes.Black, new XRect(col5 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString("DQ", headerFont, XBrushes.Black, new XRect(col6 + 5, yPos + 5, 90, rowHeight), XStringFormats.TopLeft);
                 yPos += rowHeight;
 
                 foreach (var c in contestants.OrderBy(c => c.ContestantNumber))
@@ -88,13 +90,14 @@ namespace AgilityScoring.Maui.Services
                     gfx.DrawRectangle(pen, col1, yPos, tableWidth, rowHeight);
 
                     gfx.DrawString(c.ContestantNumber.ToString(), regularFont, XBrushes.Black, new XRect(col1 + 5, yPos + 5, 30, rowHeight), XStringFormats.TopLeft);
-                    gfx.DrawString(c.Name ?? "", regularFont, XBrushes.Black, new XRect(col2 + 5, yPos + 5, 190, rowHeight), XStringFormats.TopLeft);
-                    gfx.DrawString(c.TotalRefusals.ToString(), regularFont, XBrushes.Black, new XRect(col3 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
-                    gfx.DrawString(c.TotalFaults.ToString(), regularFont, XBrushes.Black, new XRect(col4 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+                    gfx.DrawString(c.Name ?? "", regularFont, XBrushes.Black, new XRect(col2 + 5, yPos + 5, 145, rowHeight), XStringFormats.TopLeft);
+                    gfx.DrawString(c.Time ?? "0:00", regularFont, XBrushes.Black, new XRect(col3 + 5, yPos + 5, 55, rowHeight), XStringFormats.TopLeft);
+                    gfx.DrawString(c.TotalRefusals.ToString(), regularFont, XBrushes.Black, new XRect(col4 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
+                    gfx.DrawString(c.TotalFaults.ToString(), regularFont, XBrushes.Black, new XRect(col5 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
 
                     var dqBrush = c.IsDisqualified ? XBrushes.Red : XBrushes.Black;
                     var dqText = c.IsDisqualified ? "DQ" : "";
-                    gfx.DrawString(dqText, regularFont, dqBrush, new XRect(col5 + 5, yPos + 5, 70, rowHeight), XStringFormats.TopLeft);
+                    gfx.DrawString(dqText, regularFont, dqBrush, new XRect(col6 + 5, yPos + 5, 90, rowHeight), XStringFormats.TopLeft);
 
                     yPos += rowHeight;
                 }
@@ -110,6 +113,7 @@ namespace AgilityScoring.Maui.Services
     {
         public int ContestantNumber { get; set; }
         public string Name { get; set; }
+        public string Time { get; set; }
         public int TotalRefusals { get; set; }
         public int TotalFaults { get; set; }
         public bool IsDisqualified { get; set; }

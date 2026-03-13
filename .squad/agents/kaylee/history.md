@@ -153,4 +153,26 @@
 - Commit: 7cc20cd on branch `squad/17-pdf-export`
 - **Status:** PDFsharp now functional on Android with proper font rendering using OpenSans
 
+### 2025-01-11 — Contestant Run Time Input (minutes/seconds)
+- Added time tracking for contestant runs with minutes and seconds input fields
+- **UI changes (`TournamentDetailPage.xaml`):** Added time input section below disqualified button, above obstacle grid — horizontal layout with two numeric Entry fields (50px wide each) for minutes and seconds, labeled "Time: [MM] min [SS] sec"
+- **ViewModel properties (`TournamentDetailViewModel.cs`):** 
+  - Added `ContestantMinutes` (int) and `ContestantSeconds` (int) with `SetProperty<T>` backing
+  - Both properties trigger `SaveContestantTimeAsync()` immediately on change (auto-save pattern like disqualified toggle)
+  - Added `_contestantTimes` dictionary (keyed by contestant number) to cache time values locally
+  - `ContestantNumber` setter now loads time from `_contestantTimes` dictionary alongside loading disqualified status
+  - `LoadContestantNamesAsync()` loads `_contestantTimes` from storage alongside `_contestantDisqualified`
+- **Data model (`LocalStorageService.cs`):** 
+  - Created `ContestantTime` class with `Minutes` (int) and `Seconds` (int) properties
+  - Added `ContestantTimes` dictionary to `TournamentDto` to persist per-contestant times
+- **PDF export (`PdfExportService.cs`):** 
+  - Added `Time` (string) property to `ContestantResult` class
+  - Adjusted PDF table column widths for 6 columns: # (35), Name (155), Time (65), Refusals (70), Faults (70), DQ (100 remainder) — total fits A4 page width (495 usable points)
+  - Added "Time" column header and per-row time rendering (format: "M:SS", default "0:00" if not set)
+- **Export logic (`TournamentListViewModel.cs`):** Updated `ExportToPdf` to read `ContestantTimes` from tournament and format as `$"{Minutes}:{Seconds:D2}"` before passing to PDF service
+- **Persistence:** Time values saved immediately to LocalStorage when either minutes or seconds changes (mirroring disqualified save pattern)
+- **Backward compatibility:** Missing `ContestantTimes` in existing tournaments handled gracefully via `GetValueOrDefault()` with null-safe defaults
+- Build: 0 errors (exit code 0), ~70 seconds
+- Commit: 2aa35e2 on branch `main`
+- **Pattern consistency:** Time input follows the same dictionary-based per-contestant state management pattern as disqualified status — single source of truth in `_contestantTimes` dict, loaded on contestant change, saved on property change
 

@@ -8,6 +8,12 @@ namespace AgilityScoring.Maui.Services
         public int Faults { get; set; }
     }
 
+    public class ContestantTime
+    {
+        public int Minutes { get; set; }
+        public int Seconds { get; set; }
+    }
+
     public class TournamentDto
     {
         public string Id { get; set; }
@@ -16,6 +22,7 @@ namespace AgilityScoring.Maui.Services
         public Dictionary<int, string> ContestantNames { get; set; } = new();
         public Dictionary<int, Dictionary<string, ObstacleScore>> ContestantScores { get; set; } = new();
         public Dictionary<int, bool> ContestantDisqualified { get; set; } = new();
+        public Dictionary<int, ContestantTime> ContestantTimes { get; set; } = new();
     }
 
     public class LocalStorageService

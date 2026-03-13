@@ -71,6 +71,41 @@
                     CornerRadius="8"
                     Margin="0,0,0,8" />
 
+            <!-- Contestant Time Input -->
+            <Border BackgroundColor="White"
+                    StrokeShape="RoundRectangle 8"
+                    Stroke="Transparent"
+                    Padding="12"
+                    Margin="0,0,0,8">
+                <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                    <Label Text="Time:"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource TextDark}"
+                           VerticalOptions="Center" />
+                    <Entry Text="{Binding ContestantMinutes}"
+                           Keyboard="Numeric"
+                           WidthRequest="50"
+                           HorizontalTextAlignment="Center"
+                           FontSize="16"
+                           Placeholder="0" />
+                    <Label Text="min"
+                           FontSize="16"
+                           TextColor="{StaticResource TextMedium}"
+                           VerticalOptions="Center" />
+                    <Entry Text="{Binding ContestantSeconds}"
+                           Keyboard="Numeric"
+                           WidthRequest="50"
+                           HorizontalTextAlignment="Center"
+                           FontSize="16"
+                           Placeholder="0" />
+                    <Label Text="sec"
+                           FontSize="16"
+                           TextColor="{StaticResource TextMedium}"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+
             <!-- Obstacle Scoring Grid -->
             <Border BackgroundColor="White"
                     StrokeShape="RoundRectangle 12"

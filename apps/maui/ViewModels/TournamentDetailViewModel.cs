@@ -27,6 +27,7 @@ namespace AgilityScoring.Maui.ViewModels
         private readonly LocalizationService _localizationService;
         private Dictionary<int, string> _contestantNames = new();
         private Dictionary<int, bool> _contestantDisqualified = new();
+        private Dictionary<int, ContestantTime> _contestantTimes = new();
 
         public ObservableCollection<ObstacleRowViewModel> Obstacles { get; } = new();
 
@@ -55,6 +56,9 @@ namespace AgilityScoring.Maui.ViewModels
                     OnPropertyChanged(nameof(ContestantName));
                     OnPropertyChanged(nameof(CanGoPrevious));
                     IsDisqualified = _contestantDisqualified.GetValueOrDefault(value, false);
+                    var time = _contestantTimes.GetValueOrDefault(value);
+                    ContestantMinutes = time?.Minutes ?? 0;
+                    ContestantSeconds = time?.Seconds ?? 0;
                     NextContestantCommand.NotifyCanExecuteChanged();
                     PreviousContestantCommand.NotifyCanExecuteChanged();
                     _ = LoadContestantScoresAsync();
@@ -81,6 +85,32 @@ namespace AgilityScoring.Maui.ViewModels
 
         public string DisqualifiedButtonText => IsDisqualified ? "Disqualified ✓" : "Mark as Disqualified";
 
+        private int _contestantMinutes;
+        public int ContestantMinutes
+        {
+            get => _contestantMinutes;
+            set
+            {
+                if (SetProperty(ref _contestantMinutes, value))
+                {
+                    _ = SaveContestantTimeAsync();
+                }
+            }
+        }
+
+        private int _contestantSeconds;
+        public int ContestantSeconds
+        {
+            get => _contestantSeconds;
+            set
+            {
+                if (SetProperty(ref _contestantSeconds, value))
+                {
+                    _ = SaveContestantTimeAsync();
+                }
+            }
+        }
+
         public bool CanGoPrevious => ContestantNumber > 1;
 
         public TournamentDetailViewModel(LocalStorageService localStorageService, LocalizationService localizationService)
@@ -103,8 +133,14 @@ namespace AgilityScoring.Maui.ViewModels
             _contestantDisqualified = tournament?.ContestantDisqualified != null
                 ? new Dictionary<int, bool>(tournament.ContestantDisqualified)
                 : new Dictionary<int, bool>();
+            _contestantTimes = tournament?.ContestantTimes != null
+                ? new Dictionary<int, ContestantTime>(tournament.ContestantTimes)
+                : new Dictionary<int, ContestantTime>();
             OnPropertyChanged(nameof(ContestantName));
             IsDisqualified = _contestantDisqualified.GetValueOrDefault(ContestantNumber, false);
+            var time = _contestantTimes.GetValueOrDefault(ContestantNumber);
+            ContestantMinutes = time?.Minutes ?? 0;
+            ContestantSeconds = time?.Seconds ?? 0;
         }
 
         public async Task SetContestantNameAsync(int contestantNumber, string name)
@@ -183,6 +219,31 @@ namespace AgilityScoring.Maui.ViewModels
             finally
             {
                 IsBusy = false;
+            }
+        }
+
+        private async Task SaveContestantTimeAsync()
+        {
+            if (string.IsNullOrEmpty(TournamentId)) return;
+
+            try
+            {
+                _contestantTimes[ContestantNumber] = new ContestantTime
+                {
+                    Minutes = ContestantMinutes,
+                    Seconds = ContestantSeconds
+                };
+
+                var tournament = await _localStorageService.GetTournamentAsync(TournamentId);
+                if (tournament != null)
+                {
+                    tournament.ContestantTimes = _contestantTimes;
+                    await _localStorageService.SaveTournamentAsync(tournament);
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Failed to save time: {ex.Message}", "OK");
             }
         }
 
