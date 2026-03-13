@@ -110,4 +110,24 @@
 - Build: 0 errors
 - Commit: 7040e66 on branch `squad/17-pdf-export`
 
+### 2026-06-09 — PDFsharp replaces iText7 (Issue #17, Final Android Fix)
+- **iText7 9.1.0 ALSO does NOT support Android** — requires `itext.bouncy-castle-adapter` which has native dependencies; causes runtime failures on Android devices
+- Replaced iText7 with **PDFsharp 6.2.0** (empira PDFsharp, NuGet id: `PDFsharp`), a pure managed .NET library with zero native dependencies — works on Android
+- **PDFsharp API patterns used in `PdfExportService.cs`:**
+  - `new PdfDocument()` → `document.AddPage()` → `XGraphics.FromPdfPage(page)` → draw with `gfx.DrawString()` and `gfx.DrawRectangle()`
+  - Fonts: `new XFont("Helvetica", size, XFontStyleEx.Bold/Regular)` — **NOT `XFontStyle`** (renamed in PDFsharp 6.x to `XFontStyleEx`)
+  - Colors: `XBrushes.Black`, `XBrushes.Red` for text; `XPen` for lines/borders
+  - Page size: `page.Size = PdfSharp.PageSize.A4` (fully qualified to avoid MAUI namespace conflicts)
+  - Drawing: `gfx.DrawString(text, font, brush, new XRect(x, y, width, height), XStringFormats.TopLeft)`
+- **Font handling on Android:** PDFsharp 6.x does NOT have access to system fonts like "Arial" on Android; used "Helvetica" which PDFsharp's built-in font resolver can handle. If Helvetica is unavailable, PDFsharp falls back to its default font.
+- **Table rendering:** Manual table layout using `XRect` positioning and `DrawRectangle` for borders — no high-level table API in PDFsharp (unlike iText7 or QuestPDF)
+- **Library comparison:**
+  - QuestPDF (v2026.2.3): Fluent API, great DX, BUT native Linux libs only → no Android support
+  - iText7 (v9.1.0): High-level API with tables, BUT requires bouncy-castle-adapter with native dependencies → Android fails at runtime
+  - PDFsharp (v6.2.0): Low-level XGraphics API (more code), BUT pure managed .NET → Android works ✅
+- **No MauiProgram.cs changes:** PDFsharp requires no initialization calls (unlike QuestPDF's license setting)
+- Build: 0 errors (exit code 0), ~56 seconds
+- Commit: ddadb66 on branch `squad/17-pdf-export`
+- **Final verdict:** PDFsharp is the ONLY PDF library we tested that works on Android without native dependencies.
+
 

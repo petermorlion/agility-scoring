@@ -82,12 +82,14 @@
 
 ## Deployment Decisions
 
-### 2026-03-13: PDF Export (Issue #17) — QuestPDF → iText7 Migration for Android Compatibility
+### 2026-03-13: PDF Export (Issue #17) — PDFsharp Migration for Android Compatibility
 **By:** Kaylee (MAUI Dev)  
-**Status:** ✅ Implemented (iText7 replaces QuestPDF)  
-**What:** Implemented PDF export for tournaments using QuestPDF with persistent file storage and robust filename sanitization; subsequently replaced QuestPDF with iText7 for Android compatibility.  
-**Original Library:** QuestPDF v2026.2.3 (MIT license, community edition free) — **NO ANDROID SUPPORT** (native Linux libraries only)
-**Replacement:** iText7 v9.1.0 (pure managed .NET, zero native dependencies, full Android support, AGPL-3.0 license — commercial license required for closed-source use)
+**Status:** ✅ Implemented (PDFsharp replaces iText7)  
+**What:** Implemented PDF export for tournaments using QuestPDF → iText7 → PDFsharp. Final migration to PDFsharp for Android compatibility due to critical runtime failures with iText7's native bouncy-castle-adapter dependency.
+**Library Journey:**
+- **QuestPDF v2026.2.3** — MIT license, excellent fluent API, **NOT viable** (native Linux `.so` files only, no Android support)
+- **iText7 v9.1.0** — AGPL-3.0 license, high-level table API, **NOT viable** (native bouncy-castle-adapter causes `System.DllNotFoundException` on Android)
+- **PDFsharp v6.2.0** — MIT license, pure managed .NET, **✅ VIABLE** (zero native dependencies, full Android compatibility)
 **Architecture:**
 - Service: `PdfExportService` (stateless, singleton DI)
 - DTO: `ContestantResult` with aggregated scores
@@ -96,20 +98,17 @@
 - Filename sanitization: `Path.GetInvalidFileNameChars()` LINQ Select (handles apostrophes, colons, slashes, etc.)
 **PDF Content:**
 - Header: Tournament name (24pt bold), date (16pt)
-- Table: 5 columns (Contestant #, Name, Refusals, Faults, DQ)
+- Table: 5 columns (Contestant #, Name, Refusals, Faults, DQ) — drawn manually via XGraphics rectangles + positioned text
 - DQ indicator: Red "DQ" text if disqualified
-**Critical Fixes:**
-1. File persistence: CacheDirectory → AppDataDirectory/exports/ with Directory.CreateDirectory()
-2. Filename sanitization: Robust handling via Path.GetInvalidFileNameChars()
-3. Error handling: Already in place in TournamentListViewModel.ExportToPdfCommand
-4. **iText7 API specifics:** Bold via `SimulateBold()` (not `SetBold()`), namespace aliases for Cell and Path conflicts
-**Namespace resolution:** 
-- iText.Kernel.Geom.Path vs System.IO.Path: Don't import iText.Kernel.Geom; qualify PageSize inline
-- iText.Layout.Element.Cell vs Microsoft.Maui.Controls.Cell: Use `using iTextCell = iText.Layout.Element.Cell` alias
-**UI Integration:** Export button in tournament cards (TournamentListPage), command in TournamentListViewModel  
-**Build:** 0 errors  
-**Cross-team:** PR #20 (feat: PDF export for tournament results #17) created. Ready for Simon's manual testing.
-**Commit:** 7040e66 on `squad/17-pdf-export`
+**PDFsharp API Specifics:**
+- Low-level `XGraphics` API (more verbose than QuestPDF/iText7)
+- Font style: `XFontStyleEx` (not `XFontStyle`)
+- System fonts unavailable on Android; use "Helvetica" (PDFsharp fallback)
+- No high-level table API — columns/rows positioned with fixed heights (25px per row)
+- Namespace conflict: `PdfSharp.PageSize.A4` fully qualified to avoid MAUI `Page.Size` conflict
+**Build:** 0 errors, exit code 0, ~56 seconds
+**Cross-team:** PR #20 (feat: PDF export for tournament results #17) ready for Simon's manual testing (TC #1-26 remain valid).
+**Commit:** ddadb66 on `squad/17-pdf-export`
 
 ### 2026-03-13: PDF Export (Issue #17) — Test Strategy & Edge Cases
 **By:** Simon (Tester)  

@@ -1,0 +1,11 @@
+Scribe: Orchestration record — Kaylee iText7 migration
+
+- Agent: Kaylee (MAUI Dev)
+- Work: Replaced QuestPDF v2026.2.3 with iText7 v9.1.0 (Issue #17 Android compatibility fix)
+- Reason: QuestPDF has zero Android support (native Linux libraries only); iText7 is pure .NET
+- Changes: Updated AgilityScoring.Maui.csproj, MauiProgram.cs, PdfExportService.cs
+- Namespace conflicts resolved: Path vs iText.Kernel.Geom.Path, Cell vs iText.Layout.Element.Cell, SetBold() → SimulateBold()
+- Build: 0 errors
+- Artifacts: Orchestration log, session log, Kaylee history updated, decisions.md merged
+
+Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
