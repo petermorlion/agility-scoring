@@ -26,6 +26,7 @@ namespace AgilityScoring.Maui.ViewModels
         private readonly LocalStorageService _localStorageService;
         private readonly LocalizationService _localizationService;
         private Dictionary<int, string> _contestantNames = new();
+        private Dictionary<int, bool> _contestantDisqualified = new();
 
         public ObservableCollection<ObstacleRowViewModel> Obstacles { get; } = new();
 
@@ -53,6 +54,7 @@ namespace AgilityScoring.Maui.ViewModels
                 {
                     OnPropertyChanged(nameof(ContestantName));
                     OnPropertyChanged(nameof(CanGoPrevious));
+                    IsDisqualified = _contestantDisqualified.GetValueOrDefault(value, false);
                     NextContestantCommand.NotifyCanExecuteChanged();
                     PreviousContestantCommand.NotifyCanExecuteChanged();
                     _ = LoadContestantScoresAsync();
@@ -63,6 +65,21 @@ namespace AgilityScoring.Maui.ViewModels
         public string ContestantName => _contestantNames.TryGetValue(ContestantNumber, out var name)
             ? name
             : $"Contestant {ContestantNumber}";
+
+        private bool _isDisqualified;
+        public bool IsDisqualified
+        {
+            get => _isDisqualified;
+            set
+            {
+                if (SetProperty(ref _isDisqualified, value))
+                {
+                    OnPropertyChanged(nameof(DisqualifiedButtonText));
+                }
+            }
+        }
+
+        public string DisqualifiedButtonText => IsDisqualified ? "Disqualified ✓" : "Mark as Disqualified";
 
         public bool CanGoPrevious => ContestantNumber > 1;
 
@@ -83,7 +100,11 @@ namespace AgilityScoring.Maui.ViewModels
             _contestantNames = tournament?.ContestantNames != null
                 ? new Dictionary<int, string>(tournament.ContestantNames)
                 : new Dictionary<int, string>();
+            _contestantDisqualified = tournament?.ContestantDisqualified != null
+                ? new Dictionary<int, bool>(tournament.ContestantDisqualified)
+                : new Dictionary<int, bool>();
             OnPropertyChanged(nameof(ContestantName));
+            IsDisqualified = _contestantDisqualified.GetValueOrDefault(ContestantNumber, false);
         }
 
         public async Task SetContestantNameAsync(int contestantNumber, string name)
@@ -135,6 +156,34 @@ namespace AgilityScoring.Maui.ViewModels
         {
             if (ContestantNumber > 1)
                 ContestantNumber--;
+        }
+
+        [RelayCommand]
+        private async Task ToggleDisqualifiedAsync()
+        {
+            try
+            {
+                IsBusy = true;
+                IsDisqualified = !IsDisqualified;
+                _contestantDisqualified[ContestantNumber] = IsDisqualified;
+
+                var tournament = await _localStorageService.GetTournamentAsync(TournamentId);
+                if (tournament != null)
+                {
+                    tournament.ContestantDisqualified = _contestantDisqualified;
+                    await _localStorageService.SaveTournamentAsync(tournament);
+                }
+            }
+            catch (Exception ex)
+            {
+                IsDisqualified = !IsDisqualified;
+                _contestantDisqualified[ContestantNumber] = IsDisqualified;
+                await Application.Current.MainPage.DisplayAlert("Error", $"Failed to update disqualified status: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         public void ApplyQueryAttributes(IDictionary<string, object> query)

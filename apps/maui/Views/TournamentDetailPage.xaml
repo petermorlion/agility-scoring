@@ -60,6 +60,17 @@
                 </Grid>
             </Border>
 
+            <!-- Disqualified Toggle Button -->
+            <Button Text="{Binding DisqualifiedButtonText}"
+                    Command="{Binding ToggleDisqualifiedCommand}"
+                    BackgroundColor="{Binding IsDisqualified, Converter={StaticResource BoolToDisqualifiedColorConverter}}"
+                    TextColor="White"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    Padding="12"
+                    CornerRadius="8"
+                    Margin="0,0,0,8" />
+
             <!-- Obstacle Scoring Grid -->
             <Border BackgroundColor="White"
                     StrokeShape="RoundRectangle 12"

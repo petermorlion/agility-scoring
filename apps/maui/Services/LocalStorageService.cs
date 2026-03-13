@@ -15,6 +15,7 @@ namespace AgilityScoring.Maui.Services
         public string Date { get; set; }
         public Dictionary<int, string> ContestantNames { get; set; } = new();
         public Dictionary<int, Dictionary<string, ObstacleScore>> ContestantScores { get; set; } = new();
+        public Dictionary<int, bool> ContestantDisqualified { get; set; } = new();
     }
 
     public class LocalStorageService
