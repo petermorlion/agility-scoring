@@ -45,6 +45,14 @@ namespace AgilityScoring.Maui.Services
                 ["ObstacleDogWalk"] = "Dog Walk",
                 ["ScoreRefusals"] = "R",
                 ["ScoreFaults"] = "F",
+                ["MarkAsDisqualified"] = "Mark as Disqualified",
+                ["DisqualifiedResult"] = "Disqualified ✓",
+                ["DQAcronym"] = "DQ",
+                ["PdfHeaderNumber"] = "#",
+                ["PdfHeaderName"] = "Name",
+                ["PdfHeaderTime"] = "Time",
+                ["PdfHeaderRefusals"] = "Refusals",
+                ["PdfHeaderFaults"] = "Faults",
             },
             ["Français"] = new()
             {
@@ -83,6 +91,14 @@ namespace AgilityScoring.Maui.Services
                 ["ObstacleDogWalk"] = "Passerelle",
                 ["ScoreRefusals"] = "R",
                 ["ScoreFaults"] = "F",
+                ["MarkAsDisqualified"] = "Marquer comme disqualifié",
+                ["DisqualifiedResult"] = "Disqualifié ✓",
+                ["DQAcronym"] = "DQ",
+                ["PdfHeaderNumber"] = "#",
+                ["PdfHeaderName"] = "Nom",
+                ["PdfHeaderTime"] = "Temps",
+                ["PdfHeaderRefusals"] = "Refus",
+                ["PdfHeaderFaults"] = "Fautes",
             },
             ["Deutsch"] = new()
             {
@@ -121,6 +137,14 @@ namespace AgilityScoring.Maui.Services
                 ["ObstacleDogWalk"] = "Laufsteg",
                 ["ScoreRefusals"] = "R",
                 ["ScoreFaults"] = "F",
+                ["MarkAsDisqualified"] = "Als disqualifiziert markieren",
+                ["DisqualifiedResult"] = "Disqualifiziert ✓",
+                ["DQAcronym"] = "DQ",
+                ["PdfHeaderNumber"] = "#",
+                ["PdfHeaderName"] = "Name",
+                ["PdfHeaderTime"] = "Zeit",
+                ["PdfHeaderRefusals"] = "Verweigerungen",
+                ["PdfHeaderFaults"] = "Fehler",
             },
             ["Nederlands"] = new()
             {
@@ -159,6 +183,14 @@ namespace AgilityScoring.Maui.Services
                 ["ObstacleDogWalk"] = "Kattenloop",
                 ["ScoreRefusals"] = "R",
                 ["ScoreFaults"] = "F",
+                ["MarkAsDisqualified"] = "Als gediskwalificeerd markeren",
+                ["DisqualifiedResult"] = "Gediskwalificeerd ✓",
+                ["DQAcronym"] = "DK",
+                ["PdfHeaderNumber"] = "#",
+                ["PdfHeaderName"] = "Naam",
+                ["PdfHeaderTime"] = "Tijd",
+                ["PdfHeaderRefusals"] = "Weigeringen",
+                ["PdfHeaderFaults"] = "Fouten",
             },
         };
 

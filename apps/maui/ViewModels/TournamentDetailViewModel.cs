@@ -83,7 +83,9 @@ namespace AgilityScoring.Maui.ViewModels
             }
         }
 
-        public string DisqualifiedButtonText => IsDisqualified ? "Disqualified ✓" : "Mark as Disqualified";
+        public string DisqualifiedButtonText => IsDisqualified
+            ? _localizationService["DisqualifiedResult"]
+            : _localizationService["MarkAsDisqualified"];
 
         private int _contestantMinutes;
         public int ContestantMinutes

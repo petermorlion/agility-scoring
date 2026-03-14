@@ -84,6 +84,7 @@
                            TextColor="{StaticResource TextDark}"
                            VerticalOptions="Center" />
                     <Entry Text="{Binding ContestantMinutes}"
+                           TextColor="{StaticResource TextDark}"
                            Keyboard="Numeric"
                            WidthRequest="50"
                            HorizontalTextAlignment="Center"
@@ -94,6 +95,7 @@
                            TextColor="{StaticResource TextMedium}"
                            VerticalOptions="Center" />
                     <Entry Text="{Binding ContestantSeconds}"
+                           TextColor="{StaticResource TextDark}"
                            Keyboard="Numeric"
                            WidthRequest="50"
                            HorizontalTextAlignment="Center"

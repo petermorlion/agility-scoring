@@ -44,6 +44,7 @@
                     <Picker Title="{Binding [SelectLanguage], Source={StaticResource Loc}}"
                             ItemsSource="{Binding AvailableLanguages}"
                             SelectedItem="{Binding SelectedLanguage}"
+                            TextColor="{StaticResource TextDark}"
                             HorizontalOptions="FillAndExpand" />
 
                     <Button Text="{Binding [ChangeLanguage], Source={StaticResource Loc}}"

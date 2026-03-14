@@ -6,6 +6,13 @@ namespace AgilityScoring.Maui.Services
 {
     public class PdfExportService
     {
+        private readonly LocalizationService _localizationService;
+
+        public PdfExportService(LocalizationService localizationService)
+        {
+            _localizationService = localizationService;
+        }
+
         private static async Task InitializeFontResolverAsync()
         {
             // Load OpenSans-Regular font bytes from MAUI app package
@@ -77,12 +84,12 @@ namespace AgilityScoring.Maui.Services
                 var pen = new XPen(XColors.Black, 0.5);
 
                 gfx.DrawRectangle(pen, col1, yPos, tableWidth, rowHeight);
-                gfx.DrawString("#", headerFont, XBrushes.Black, new XRect(col1 + 5, yPos + 5, 30, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("Name", headerFont, XBrushes.Black, new XRect(col2 + 5, yPos + 5, 145, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("Time", headerFont, XBrushes.Black, new XRect(col3 + 5, yPos + 5, 55, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("Refusals", headerFont, XBrushes.Black, new XRect(col4 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("Faults", headerFont, XBrushes.Black, new XRect(col5 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
-                gfx.DrawString("DQ", headerFont, XBrushes.Black, new XRect(col6 + 5, yPos + 5, 90, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(_localizationService["PdfHeaderNumber"], headerFont, XBrushes.Black, new XRect(col1 + 5, yPos + 5, 30, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(_localizationService["PdfHeaderName"], headerFont, XBrushes.Black, new XRect(col2 + 5, yPos + 5, 145, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(_localizationService["PdfHeaderTime"], headerFont, XBrushes.Black, new XRect(col3 + 5, yPos + 5, 55, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(_localizationService["PdfHeaderRefusals"], headerFont, XBrushes.Black, new XRect(col4 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(_localizationService["PdfHeaderFaults"], headerFont, XBrushes.Black, new XRect(col5 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
+                gfx.DrawString(_localizationService["DQAcronym"], headerFont, XBrushes.Black, new XRect(col6 + 5, yPos + 5, 90, rowHeight), XStringFormats.TopLeft);
                 yPos += rowHeight;
 
                 foreach (var c in contestants.OrderBy(c => c.ContestantNumber))
@@ -96,7 +103,7 @@ namespace AgilityScoring.Maui.Services
                     gfx.DrawString(c.TotalFaults.ToString(), regularFont, XBrushes.Black, new XRect(col5 + 5, yPos + 5, 60, rowHeight), XStringFormats.TopLeft);
 
                     var dqBrush = c.IsDisqualified ? XBrushes.Red : XBrushes.Black;
-                    var dqText = c.IsDisqualified ? "DQ" : "";
+                    var dqText = c.IsDisqualified ? _localizationService["DQAcronym"] : "";
                     gfx.DrawString(dqText, regularFont, dqBrush, new XRect(col6 + 5, yPos + 5, 90, rowHeight), XStringFormats.TopLeft);
 
                     yPos += rowHeight;
