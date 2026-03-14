@@ -176,3 +176,20 @@
 - Commit: 2aa35e2 on branch `main`
 - **Pattern consistency:** Time input follows the same dictionary-based per-contestant state management pattern as disqualified status — single source of truth in `_contestantTimes` dict, loaded on contestant change, saved on property change
 
+### 2025-01-12 — Disqualified Text and PDF Headers Localization
+- Localized hardcoded "Mark as Disqualified" / "Disqualified ✓" button text in TournamentDetailPage to respond to language settings
+- Added new localization keys to all four languages in `LocalizationService.cs`:
+  - `MarkAsDisqualified`: "Mark as Disqualified" (English), "Marquer comme disqualifié" (Français), "Als disqualifiziert markieren" (Deutsch), "Als gediskwalificeerd markeren" (Nederlands)
+  - `DisqualifiedResult`: "Disqualified ✓" (English), "Disqualifié ✓" (Français), "Disqualifiziert ✓" (Deutsch), "Gediskwalificeerd ✓" (Nederlands)
+  - `DQAcronym`: "DQ" (English/Français/Deutsch), "DK" (Nederlands) — used in PDF export column
+  - PDF column headers: `PdfHeaderNumber` (#), `PdfHeaderName` (Name/Nom/Name/Naam), `PdfHeaderTime` (Time/Temps/Zeit/Tijd), `PdfHeaderRefusals` (Refusals/Refus/Verweigerungen/Weigeringen), `PdfHeaderFaults` (Faults/Fautes/Fehler/Fouten)
+- **ViewModel changes (`TournamentDetailViewModel.cs`):** Changed `DisqualifiedButtonText` from hardcoded ternary strings to use `_localizationService["DisqualifiedResult"]` / `_localizationService["MarkAsDisqualified"]`
+- **PDF export changes (`PdfExportService.cs`):** 
+  - Injected `LocalizationService` via constructor (DI wired in `MauiProgram.cs`)
+  - Replaced all hardcoded column headers (`"#"`, `"Name"`, `"Time"`, `"Refusals"`, `"Faults"`, `"DQ"`) with localized keys using `_localizationService["PdfHeader..."]`
+  - Replaced hardcoded `"DQ"` row text with `_localizationService["DQAcronym"]`
+- **DI wiring:** `LocalizationService` already registered as singleton in `MauiProgram.cs` before `PdfExportService` — constructor injection works automatically
+- Build: 0 errors (exit code 0), ~87 seconds
+- Commit: 867fa4c on branch `main`
+- **Why localize DQ separately:** Button text uses full phrase ("Mark as Disqualified" / "Disqualified ✓"), but PDF column header needs short acronym ("DQ" / "DK") to fit narrow table column — separate keys allow different formats for same concept
+
